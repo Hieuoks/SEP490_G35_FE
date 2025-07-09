@@ -5,6 +5,8 @@ import LoginPage from '../features/auth/Login'
 import RegisterPage from '../features/auth/SignUp';
 import HomePage from '../pages/HomePage'; // Bạn có thể tạo file HomePage.jsx sau
 import ForgotPasswordPage from '../features/auth/ForgotPassword';
+import ProflePage from '../features/profile/ProfilePage'; // Bạn có thể tạo file ProfilePage.jsx sau
+import SettingProfile from '../features/setting/SettingProfile'; // Bạn có thể tạo file SettingPage.jsx sau
 const AppRoutes = () => {
   return (
     <Router>
@@ -14,6 +16,9 @@ const AppRoutes = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/profile" element={<ProflePage />} />
+        <Route path="/setting/editProfile" element={<SettingProfile />} />
+        
         {/* Nếu cần thêm trang lỗi 404 */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
