@@ -109,121 +109,121 @@ const Header = () => (
 
     {/* Header */}
     <header>
-            <div class="container">
-                <div class="offcanvas-info">
-                    <div class="offcanvas-wrap">
-                        <div class="offcanvas-detail">
-                            <div class="offcanvas-head">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <a href="index.html" class="black-logo-responsive">
+            <div className="container">
+                <div className="offcanvas-info">
+                    <div className="offcanvas-wrap">
+                        <div className="offcanvas-detail">
+                            <div className="offcanvas-head">
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <a href="index.html" className="black-logo-responsive">
                                         <img src="assets/img/logo-dark.svg" alt="logo-img"/>
                                     </a>
-                                    <a href="index.html" class="white-logo-responsive">
+                                    <a href="index.html" className="white-logo-responsive">
                                         <img src="assets/img/logo.svg" alt="logo-img"/>
                                     </a>
-                                    <div class="offcanvas-close">
-                                        <i class="ti ti-x"></i>
+                                    <div className="offcanvas-close">
+                                        <i className="ti ti-x"></i>
                                     </div>
                                 </div>
-                                <div class="wishlist-info d-flex justify-content-between align-items-center">
-                                    <h6 class="fs-16 fw-medium">Wishlist</h6>
-                                    <div class="d-flex align-items-center">
-                                        <div class="fav-dropdown">
-                                            <a href="wishlist.html" class="position-relative">
-                                                <i class="isax isax-heart"></i><span class="count-icon bg-secondary text-gray-9">0</span>
+                                <div className="wishlist-info d-flex justify-content-between align-items-center">
+                                    <h6 className="fs-16 fw-medium">Wishlist</h6>
+                                    <div className="d-flex align-items-center">
+                                        <div className="fav-dropdown">
+                                            <a href="wishlist.html" className="position-relative">
+                                                <i className="isax isax-heart"></i><span className="count-icon bg-secondary text-gray-9">0</span>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="mobile-menu fix mb-3"></div>
-                            <div class="offcanvas__contact">
-                                <div class="mt-4">
-                                    <a href="add-hotel.html" class="btn btn-primary w-100">Add Listing</a>
+                            <div className="mobile-menu fix mb-3"></div>
+                            <div className="offcanvas__contact">
+                                <div className="mt-4">
+                                    <a href="add-hotel.html" className="btn btn-primary w-100">Add Listing</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="offcanvas-overlay"></div>
-                <div class="header-nav">
-                    <div class="main-menu-wrapper">
-                        <div class="navbar-logo">
-                            <a class="logo-white header-logo" href="index.html">
-                                <img src="assets/img/logo.svg" class="logo" alt="Logo"/>
+                <div className="offcanvas-overlay"></div>
+                <div className="header-nav">
+                    <div className="main-menu-wrapper">
+                        <div className="navbar-logo">
+                            <a className="logo-white header-logo" href="index.html">
+                                <img src="assets/img/logo.svg" className="logo" alt="Logo"/>
                             </a>
-                            <a class="logo-dark header-logo" href="index.html">
-                                <img src="assets/img/logo-dark.svg" class="logo" alt="Logo"/>
+                            <a className="logo-dark header-logo" href="index.html">
+                                <img src="assets/img/logo-dark.svg" className="logo" alt="Logo"/>
                             </a>
                         </div>
                         <nav id="mobile-menu">
-                            <ul class="main-nav">
-                                <li class="has-submenu megamenu">
-                                    <a href="javascript:void(0);">Home<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
+                            <ul className="main-nav">
+                                <li className="has-submenu megamenu">
+                                    <a href="javascript:void(0);">Home<i className="fa-solid fa-angle-down"></i></a>
+                                    <ul className="submenu mega-submenu">
                                         <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="d-none d-lg-flex align-items-center justify-content-between flex-wrap">
-                                                    <h6 class="mb-3">Home Pages</h6>
-                                                    <a href="javascript:void(0);" class="btn btn-dark btn-md mb-3 text-white d-inline-block w-auto">Purchase Template</a>
+                                            <div className="megamenu-wrapper">
+                                                <div className="d-none d-lg-flex align-items-center justify-content-between flex-wrap">
+                                                    <h6 className="mb-3">Home Pages</h6>
+                                                    <a href="javascript:void(0);" className="btn btn-dark btn-md mb-3 text-white d-inline-block w-auto">Purchase Template</a>
                                                 </div>
-                                                <div class="row g-lg-4">
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo">
-                                                            <div class="demo-img">
-                                                                <a href="index.html"><img src="assets/img/menu/home-01.jpg" class="img-fluid" alt="img"/></a>
+                                                <div className="row g-lg-4">
+                                                    <div className="col-lg-2">
+                                                        <div className="single-demo">
+                                                            <div className="demo-img">
+                                                                <a href="index.html"><img src="assets/img/menu/home-01.jpg" className="img-fluid" alt="img"/></a>
                                                             </div>
-                                                            <div class="demo-info">
+                                                            <div className="demo-info">
                                                                 <a href="index.html">All Bookings</a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo">
-                                                            <div class="demo-img">
-                                                                <a href="index-2.html"><img src="assets/img/menu/home-02.jpg" class="img-fluid" alt="img"/></a>
+                                                    <div className="col-lg-2">
+                                                        <div className="single-demo">
+                                                            <div className="demo-img">
+                                                                <a href="index-2.html"><img src="assets/img/menu/home-02.jpg" className="img-fluid" alt="img"/></a>
                                                             </div>
-                                                            <div class="demo-info">
+                                                            <div className="demo-info">
                                                                 <a href="index-2.html">Hotels</a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo">
-                                                            <div class="demo-img">
-                                                                <a href="index-3.html"><img src="assets/img/menu/home-03.jpg" class="img-fluid" alt="img"/></a>
+                                                    <div className="col-lg-2">
+                                                        <div className="single-demo">
+                                                            <div className="demo-img">
+                                                                <a href="index-3.html"><img src="assets/img/menu/home-03.jpg" className="img-fluid" alt="img"/></a>
                                                             </div>
-                                                            <div class="demo-info">
+                                                            <div className="demo-info">
                                                                 <a href="index-3.html">Cars</a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo">
-                                                            <div class="demo-img">
-                                                                <a href="index-4.html"><img src="assets/img/menu/home-04.jpg" class="img-fluid" alt="img"/></a>
+                                                    <div className="col-lg-2">
+                                                        <div className="single-demo">
+                                                            <div className="demo-img">
+                                                                <a href="index-4.html"><img src="assets/img/menu/home-04.jpg" className="img-fluid" alt="img"/></a>
                                                             </div>
-                                                            <div class="demo-info">
+                                                            <div className="demo-info">
                                                                 <a href="index-4.html">Flight</a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo">
-                                                            <div class="demo-img">
-                                                                <a href="index-5.html"><img src="assets/img/menu/home-05.jpg" class="img-fluid" alt="img"/></a>
+                                                    <div className="col-lg-2">
+                                                        <div className="single-demo">
+                                                            <div className="demo-img">
+                                                                <a href="index-5.html"><img src="assets/img/menu/home-05.jpg" className="img-fluid" alt="img"/></a>
                                                             </div>
-                                                            <div class="demo-info">
+                                                            <div className="demo-info">
                                                                 <a href="index-5.html">Cruise</a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="single-demo">
-                                                            <div class="demo-img">
-                                                                <a href="index-6.html"><img src="assets/img/menu/home-06.jpg" class="img-fluid" alt="img"/></a>
+                                                    <div className="col-lg-2">
+                                                        <div className="single-demo">
+                                                            <div className="demo-img">
+                                                                <a href="index-6.html"><img src="assets/img/menu/home-06.jpg" className="img-fluid" alt="img"/></a>
                                                             </div>
-                                                            <div class="demo-info">
+                                                            <div className="demo-info">
                                                                 <a href="index-6.html">Tours</a>
                                                             </div>
                                                         </div>
@@ -233,13 +233,13 @@ const Header = () => (
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu mega-innermenu">
-                                    <a href="javascript:void(0);">Flight<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
+                                <li className="has-submenu mega-innermenu">
+                                    <a href="javascript:void(0);">Flight<i className="fa-solid fa-angle-down"></i></a>
+                                    <ul className="submenu mega-submenu">
                                         <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
+                                            <div className="megamenu-wrapper">
+                                                <div className="row">
+                                                    <div className="col-lg-6">
                                                         <h6>Flight Bookings</h6>
                                                         <ul>
                                                             <li><a href="flight-grid.html">Flight Grid</a></li>
@@ -249,9 +249,9 @@ const Header = () => (
                                                             <li><a href="add-flight.html">Add Flight</a></li>
                                                         </ul>
                                                     </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="assets/img/menu/flight.jpg" alt="img" class="img-fluid"/>
+                                                    <div className="col-lg-6">
+                                                        <div className="menu-img">
+                                                            <img src="assets/img/menu/flight.jpg" alt="img" className="img-fluid"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -259,13 +259,13 @@ const Header = () => (
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu mega-innermenu">
-                                    <a href="javascript:void(0);">Hotel<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
+                                <li className="has-submenu mega-innermenu">
+                                    <a href="javascript:void(0);">Hotel<i className="fa-solid fa-angle-down"></i></a>
+                                    <ul className="submenu mega-submenu">
                                         <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
+                                            <div className="megamenu-wrapper">
+                                                <div className="row">
+                                                    <div className="col-lg-6">
                                                         <h6>Hotel Bookings</h6>
                                                         <ul>
                                                             <li><a href="hotel-grid.html">Hotel Grid</a></li>
@@ -276,9 +276,9 @@ const Header = () => (
                                                             <li><a href="add-hotel.html">Add Hotel</a></li>
                                                         </ul>
                                                     </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="assets/img/menu/hotel.jpg" alt="img" class="img-fluid"/>
+                                                    <div className="col-lg-6">
+                                                        <div className="menu-img">
+                                                            <img src="assets/img/menu/hotel.jpg" alt="img" className="img-fluid"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -286,13 +286,13 @@ const Header = () => (
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu mega-innermenu">
-                                    <a href="javascript:void(0);">Car<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
+                                <li className="has-submenu mega-innermenu">
+                                    <a href="javascript:void(0);">Car<i className="fa-solid fa-angle-down"></i></a>
+                                    <ul className="submenu mega-submenu">
                                         <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
+                                            <div className="megamenu-wrapper">
+                                                <div className="row">
+                                                    <div className="col-lg-6">
                                                         <h6>Car Bookings</h6>
                                                         <ul>
                                                             <li><a href="car-grid.html">Car Grid</a></li>
@@ -303,9 +303,9 @@ const Header = () => (
                                                             <li><a href="add-car.html">Add Car</a></li>
                                                         </ul>
                                                     </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="assets/img/menu/car.jpg" alt="img" class="img-fluid"/>
+                                                    <div className="col-lg-6">
+                                                        <div className="menu-img">
+                                                            <img src="assets/img/menu/car.jpg" alt="img" className="img-fluid"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -313,13 +313,13 @@ const Header = () => (
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu mega-innermenu">
-                                    <a href="javascript:void(0);">Cruise<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
+                                <li className="has-submenu mega-innermenu">
+                                    <a href="javascript:void(0);">Cruise<i className="fa-solid fa-angle-down"></i></a>
+                                    <ul className="submenu mega-submenu">
                                         <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
+                                            <div className="megamenu-wrapper">
+                                                <div className="row">
+                                                    <div className="col-lg-6">
                                                         <h6>Cruise Bookings</h6>
                                                         <ul>
                                                             <li><a href="cruise-grid.html">Cruise Grid</a></li>
@@ -330,9 +330,9 @@ const Header = () => (
                                                             <li><a href="add-cruise.html">Add Cruise</a></li>
                                                         </ul>
                                                     </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="assets/img/menu/cruise.jpg" alt="img" class="img-fluid"/>
+                                                    <div className="col-lg-6">
+                                                        <div className="menu-img">
+                                                            <img src="assets/img/menu/cruise.jpg" alt="img" className="img-fluid"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -340,13 +340,13 @@ const Header = () => (
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu mega-innermenu">
-                                    <a href="javascript:void(0);">Tour<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
+                                <li className="has-submenu mega-innermenu">
+                                    <a href="javascript:void(0);">Tour<i className="fa-solid fa-angle-down"></i></a>
+                                    <ul className="submenu mega-submenu">
                                         <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
+                                            <div className="megamenu-wrapper">
+                                                <div className="row">
+                                                    <div className="col-lg-6">
                                                         <h6>Tour Bookings</h6>
                                                         <ul>
                                                             <li><a href="tour-grid.html">Tour Grid</a></li>
@@ -357,9 +357,9 @@ const Header = () => (
                                                             <li><a href="add-tour.html">Add Tour</a></li>
                                                         </ul>
                                                     </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="menu-img">
-                                                            <img src="assets/img/menu/tour.jpg" alt="img" class="img-fluid"/>
+                                                    <div className="col-lg-6">
+                                                        <div className="menu-img">
+                                                            <img src="assets/img/menu/tour.jpg" alt="img" className="img-fluid"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -367,14 +367,14 @@ const Header = () => (
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu mega-innermenu">
-                                    <a href="javascript:void(0);">Pages<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
+                                <li className="has-submenu mega-innermenu">
+                                    <a href="javascript:void(0);">Pages<i className="fa-solid fa-angle-down"></i></a>
+                                    <ul className="submenu mega-submenu">
                                         <li>
-                                            <div class="megamenu-wrapper">
+                                            <div className="megamenu-wrapper">
                                                 <h6>Pages</h6>
-                                                <div class="row g-lg-4">
-                                                    <div class="col-lg-6">
+                                                <div className="row g-lg-4">
+                                                    <div className="col-lg-6">
                                                         <ul>
                                                             <li><a href="about-us.html">About</a></li>
                                                             <li><a href="gallery.html">Gallery</a></li>
@@ -390,7 +390,7 @@ const Header = () => (
                                                             <li><a href="booking-confirmation.html">Booking Confirmation</a></li>
                                                         </ul>
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    <div className="col-lg-6">
                                                         <ul>
                                                             <li><a href="destination.html">Destination</a></li>
                                                             <li><a href="terms-conditions.html">Terms & Conditions</a></li>
@@ -411,13 +411,13 @@ const Header = () => (
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="has-submenu mega-innermenu active">
-                                    <a href="javascript:void(0);">Dashboard<i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="submenu mega-submenu">
+                                <li className="has-submenu mega-innermenu active">
+                                    <a href="javascript:void(0);">Dashboard<i className="fa-solid fa-angle-down"></i></a>
+                                    <ul className="submenu mega-submenu">
                                         <li>
-                                            <div class="megamenu-wrapper">
-                                                <div class="row g-lg-4">
-                                                    <div class="col-lg-6">
+                                            <div className="megamenu-wrapper">
+                                                <div className="row g-lg-4">
+                                                    <div className="col-lg-6">
                                                         <h6>User Dashboard</h6>
                                                         <ul>
                                                             <li><a href="dashboard.html">Dashboard</a></li>
@@ -429,11 +429,11 @@ const Header = () => (
                                                             <li><a href="payment.html">Payments</a></li>
                                                             <li><a href="profile-settings.html">Profile Settings</a></li>
                                                             <li><a href="notification-settings.html">Notifications</a></li>
-                                                            <li class="active"><a href="my-profile.html">My Profile</a></li>
+                                                            <li className="active"><a href="my-profile.html">My Profile</a></li>
                                                             <li><a href="security-settings.html">Settings</a></li>
                                                         </ul>
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    <div className="col-lg-6">
                                                         <h6>Agent Dashboard</h6>
                                                         <ul>
                                                             <li><a href="agent-dashboard.html">Dashboard</a></li>
@@ -452,46 +452,46 @@ const Header = () => (
                                 </li>
                             </ul>
                         </nav>
-                        <div class="header-btn d-flex align-items-center">
-                            <div class="me-3">
-                                <a href="javascript:void(0);" id="dark-mode-toggle" class="theme-toggle">
-                                    <i class="isax isax-moon"></i>
+                        <div className="header-btn d-flex align-items-center">
+                            <div className="me-3">
+                                <a href="javascript:void(0);" id="dark-mode-toggle" className="theme-toggle">
+                                    <i className="isax isax-moon"></i>
                                 </a>
-                                <a href="javascript:void(0);" id="light-mode-toggle" class="theme-toggle">
-                                    <i class="isax isax-sun-1"></i>
+                                <a href="javascript:void(0);" id="light-mode-toggle" className="theme-toggle">
+                                    <i className="isax isax-sun-1"></i>
                                 </a>
                             </div>
-                            <div class="dropdown profile-dropdown">
-                                <a href="javascript:void(0);" class="d-flex align-items-center" data-bs-toggle="dropdown">
-                                    <span class="avatar avatar-md">
-										<img src="assets/img/users/user-05.jpg" alt="Img" class="img-fluid rounded-circle border border-white border-4"/>
+                            <div className="dropdown profile-dropdown">
+                                <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
+                                    <span className="avatar avatar-md">
+										<img src="assets/img/users/user-05.jpg" alt="Img" className="img-fluid rounded-circle border border-white border-4"/>
 									</span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end p-3">
+                                <ul className="dropdown-menu dropdown-menu-end p-3">
                                     <li>
-                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="dashboard.html">Dashboard</a>
+                                        <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="dashboard.html">Dashboard</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="customer-hotel-booking.html">My Booking</a>
+                                        <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="customer-hotel-booking.html">My Booking</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="my-profile.html">My Profile</a>
+                                        <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="my-profile.html">My Profile</a>
                                     </li>
                                     <li>
-                                        <hr class="dropdown-divider my-2"/>
+                                        <hr className="dropdown-divider my-2"/>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="profile-settings.html">Settings</a>
+                                        <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="profile-settings.html">Settings</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="login.html">Logout</a>
+                                        <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="login.html">Logout</a>
                                     </li>
                                 </ul>
                             </div>
-                            <a href="add-hotel.html" class="btn btn-primary me-0">Add Listing</a>
-                            <div class="header__hamburger d-xl-none my-auto">
-                                <div class="sidebar-menu">
-                                    <i class="isax isax-menu5"></i>
+                            <a href="add-hotel.html" className="btn btn-primary me-0">Add Listing</a>
+                            <div className="header__hamburger d-xl-none my-auto">
+                                <div className="sidebar-menu">
+                                    <i className="isax isax-menu5"></i>
                                 </div>
                             </div>
                         </div>
