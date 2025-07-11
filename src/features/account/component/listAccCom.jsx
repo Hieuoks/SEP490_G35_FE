@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {getAccounts}  from "../../../services/accountService";
+import {getAccounts,updateStatusAccount}  from "../../../services/accountService";
+import { toast } from "react-toastify";
 const ListAccCom = () => {
     const [accounts, setAccounts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -34,6 +35,25 @@ const ListAccCom = () => {
         setPageSize(Number(e.target.value));
         setPageNumber(1);
     };
+    const handleStatusChange = async (userId, newStatus) => {
+        try {
+            const response = await updateStatusAccount(userId,newStatus);
+            toast.success('Status updated successfully');
+            console.log("Status updated successfully:", response);
+            setLoading(true);
+            // Cập nhật lại danh sách tài khoản sau khi thay đổi trạng thái
+            setAccounts(prevAccounts =>
+                prevAccounts.map(acc =>
+                    acc.userId === userId ? { ...acc, isActive: newStatus } : acc
+                )
+            );
+            console.log("Change status:", userId, newStatus);   
+        } catch (error) {
+            console.error("Failed to update status:", error);
+        }finally {
+            setLoading(false);
+        }
+    }
     return (
         <div className="col-xl-9 col-lg-8 theiaStickySidebar">
 
@@ -137,8 +157,8 @@ const ListAccCom = () => {
                                             </tr>
                                             ): (
                                             accounts.map((acc) => (
-                                                <tr key={acc.id}>
-                                                    <td><a href="javascript:void(0);" className="link-primary fw-medium" data-bs-toggle="modal" data-bs-target="#upcoming">{acc.userId}</a></td>
+                                                <tr key={acc.userId}>
+                                                    <td><a href="javascript:void(0);" className="link-primary fw-medium" data-bs-toggle="modal" data-bs-target="#upcoming">#{acc.userId}</a></td>
                                                     <td>
                                                         <div className="d-flex align-items-center">
                                                             <a href="flight-details.html" className="avatar avatar-lg"><img src={acc.avatar} className="img-fluid rounded-circle" alt="img"/></a>
@@ -152,12 +172,12 @@ const ListAccCom = () => {
                                                     <td>{acc.phoneNumber}</td>
                                                     <td>
                                                             <h6 className="fs-14 mb-1">{acc.isActive? "Active": "InActive"}</h6>
-                                                    </td>
+                                                    </td> 
                                                     <td>
                                                         {acc.isActive? (
-                                                            <button type="submit" className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">Inactive</button>
+                                                            <button type="button" className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10" onClick={() => handleStatusChange(acc.userId,false)}>Inactive</button>
                                                         ) : (
-                                                            <button type="submit" className="badge badge-info rounded-pill d-inline-flex align-items-center fs-10">Active</button>
+                                                            <button type="button" className="badge badge-info rounded-pill d-inline-flex align-items-center fs-10" onClick={() => handleStatusChange(acc.userId,true)}>Active</button>
                                                         )}
                                                     </td>
                                                 </tr>

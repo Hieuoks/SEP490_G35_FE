@@ -20,6 +20,7 @@ const AppRoutes = () => {
         <Route path="/profile" element={<ProflePage />} />
         <Route path="/setting/editProfile" element={<SettingProfile />} />
         <Route path="/admin/ListAccount" element={<ListAccount /> } />
+        
         {/* Nếu cần thêm trang lỗi 404 */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
