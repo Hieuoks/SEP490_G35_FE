@@ -19,6 +19,7 @@
     "antd": "^5.26.1",
     "axios": "^1.10.0",
     "bootstrap": "^5.3.6",
+    "iconsax-react": "^0.0.8",
     "js-cookie": "^3.0.5",
     "owl.carousel": "^2.3.4",
     "react": "^19.1.0",

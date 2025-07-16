@@ -8,6 +8,8 @@ import ForgotPasswordPage from '../features/auth/ForgotPassword';
 import ProflePage from '../features/profile/ProfilePage'; 
 import SettingProfile from '../features/setting/SettingProfile'; 
 import ListAccount from '../features/account/ListAccount'; 
+import PackagePage from '../pages/PackagePage';
+import ListPackages from '../features/package/ListPackages';
 const AppRoutes = () => {
   return (
     <Router>
@@ -20,7 +22,8 @@ const AppRoutes = () => {
         <Route path="/profile" element={<ProflePage />} />
         <Route path="/setting/editProfile" element={<SettingProfile />} />
         <Route path="/admin/ListAccount" element={<ListAccount /> } />
-        
+        <Route path="/package" element={<PackagePage /> } />
+        <Route path="/admin/packages" element={<ListPackages />} />
         {/* Nếu cần thêm trang lỗi 404 */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>

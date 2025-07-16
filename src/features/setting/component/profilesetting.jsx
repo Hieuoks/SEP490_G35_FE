@@ -55,7 +55,7 @@ const ProfileSetting = () => {
         if (validate()) {
             updateProfile(formData)
                 .then(response => {
-                    console.log('Registration successful:', response);
+                    console.log('Profile updated successful:', response);
                     toast.success('Profile updated successfully!');
                     setFormData({   UserId: '' , UserName:'', Email: '', 
                                     Address: '', PhoneNumber: '', AvatarFile: '',AvatarPreview: ''});
@@ -63,7 +63,7 @@ const ProfileSetting = () => {
                     navigate('/profile');
                 })
                 .catch(error => {
-                    console.error('Registration failed:', error);
+                    console.error('Profile update failed:', error);
                     toast.error('Profile update failed.');
                     setErrors({ api: 'Profile update failed. Please try again.' });
                 });

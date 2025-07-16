@@ -464,7 +464,7 @@ const Header = () => (
                             <div className="dropdown profile-dropdown">
                                 <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
                                     <span className="avatar avatar-md">
-										<img src="assets/img/users/user-05.jpg" alt="Img" className="img-fluid rounded-circle border border-white border-4"/>
+										<img src="assets/img/users/user-05.jpg" alt="Img" className="img-fluid rounded-circle border border-white "/>
 									</span>
                                 </a>
                                 <ul className="dropdown-menu dropdown-menu-end p-3">
