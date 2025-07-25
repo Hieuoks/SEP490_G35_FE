@@ -10,20 +10,27 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fancyapps/ui": "^6.0.16",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@hookform/resolvers": "^5.0.1",
     "@tailwindcss/vite": "^4.1.8",
-    "antd": "^5.26.1",
+
+    
     "axios": "^1.10.0",
+    "antd": "^5.26.5",
+   
+
     "bootstrap": "^5.3.6",
     "js-cookie": "^3.0.5",
+    "moment": "^2.30.1",
     "owl.carousel": "^2.3.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.57.0",
+    "react-icons": "^5.5.0",
     "react-owl-carousel": "^2.3.3",
     "react-router-dom": "^7.6.1",
     "react-toastify": "^11.0.5",

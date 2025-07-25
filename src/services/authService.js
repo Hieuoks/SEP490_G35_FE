@@ -33,7 +33,8 @@ axios.request(config)
 };
 export const login = async (email, password) => {
   try {
-    const response = await axios.post('https://localhost:7012/api/Auth/login', {
+
+    const response = await axios.post(`${BASE_URL}/Auth/login`, {
       email,
       password
     }, {
