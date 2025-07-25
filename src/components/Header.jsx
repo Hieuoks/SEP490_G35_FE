@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const HeaderTopbar = () => {
@@ -37,6 +38,7 @@ const HeaderTopbar = () => {
                 USD
               </a>
               <ul className="dropdown-menu p-2 mt-2">
+
                 <li><a className="dropdown-item rounded" href="#">USD</a></li>
                 <li><a className="dropdown-item rounded" href="#">YEN</a></li>
                 <li><a className="dropdown-item rounded" href="#">EURO</a></li>
@@ -73,7 +75,9 @@ const HeaderTopbar = () => {
         </div>
       </div>
     </div>
+
   );
 };
 
 export default HeaderTopbar;
+

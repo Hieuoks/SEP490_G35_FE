@@ -1,3 +1,4 @@
+
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -115,17 +116,20 @@ const Footer = () => {
                                 </div>
                             </div>
                             <div className="col-lg-12 col-xl-5 col-xxl-5">
+
                                 <div className="d-flex flex-column flex-sm-row align-items-center justify-content-center justify-content-xl-end">
                                     <div className="d-flex align-items-center justify-content-center justify-content-sm-start me-0 pe-0 me-sm-3 pe-sm-3 border-end mb-3">
                                         <span className="avatar avatar-lg bg-primary rounded-circle d-flex align-items-center justify-content-center me-2" style={{ width: '48px', height: '48px' }}>
                                             <i className="fas fa-headphones fs-5"></i>
                                         </span>
                                         <div>
+
                                             <p className="mb-1">Customer Support</p>
                                             <p className="fw-medium text-dark">+1 56589 54598</p>
                                         </div>
                                     </div>
                                     <div className="d-flex align-items-center justify-content-center justify-content-sm-start mb-3">
+
                                         <span className="avatar avatar-lg bg-secondary rounded-circle d-flex align-items-center justify-content-center me-2" style={{ width: '48px', height: '48px' }}>
                                             <i className="fas fa-message fs-5"></i>
                                         </span>
@@ -133,6 +137,7 @@ const Footer = () => {
                                             <p className="mb-1">Drop Us an Email</p>
                                             <p className="fw-medium text-dark">
                                                 <a href="mailto:info@dreamstour.com">info@dreamstour.com</a>
+
                                             </p>
                                         </div>
                                     </div>
@@ -140,6 +145,7 @@ const Footer = () => {
                             </div>
                         </div>
                     </div>
+
                     <div className="footer-img mt-4">
                         <img src="assets/img/bg/footer.svg" className="img-fluid" alt="footer-bg" />
                     </div>
@@ -150,6 +156,7 @@ const Footer = () => {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="d-flex align-items-center justify-content-between flex-wrap">
+
                                 <p className="fs-3 mb-0">
                                     Copyright © 2025. All Rights Reserved, <a href="#" className="text-primary fw-medium text-decoration-none">DreamsTour</a>
                                 </p>
@@ -180,6 +187,7 @@ const Footer = () => {
             </div>
         </footer>
     );
+
 };
 
 export default Footer;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { message } from 'antd';
 
-const BASE_URL = 'http://localhost:5298/api'
+const BASE_URL = 'http://localhost:7012/api'
 export const register = async (userName, email, password, address,phoneNumber) => {
   let data = JSON.stringify({
   "userName": userName,
@@ -10,14 +10,13 @@ export const register = async (userName, email, password, address,phoneNumber) =
   "address": address,
   "phoneNumber": phoneNumber,
   "avatar": "string",
-  "roleName": "Customer"
-});
+  "roleName": "Customer"});
 
-let config = {
-  method: 'post',
-  maxBodyLength: Infinity,
-  url: `${BASE_URL}/Auth/register`,
-  headers: { 
+  let config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: `${BASE_URL}/Auth/register`,
+    headers: { 
     'Content-Type': 'application/json'
   },
   data : data
@@ -34,6 +33,7 @@ axios.request(config)
 };
 export const login = async (email, password) => {
   try {
+
     const response = await axios.post(`${BASE_URL}/Auth/login`, {
       email,
       password

@@ -9,7 +9,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const isValidEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -43,7 +43,7 @@ const navigate = useNavigate();
       }else{
         Cookies.set("token", token, { expires: 1 }); // Hết hạn sau 1 ngày
         Cookies.set("email", email, { expires: 1 });
-Cookies.set("userId", userId, { expires: 1 });
+        Cookies.set("userId", userId, { expires: 1 });
         Cookies.set("roleName", roleName, { expires: 1 });  
       }
 
