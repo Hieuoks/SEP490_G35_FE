@@ -38,6 +38,8 @@ const LoginForm = () => {
       if (rememberMe) {
         Cookies.set("token", token, { expires: 7 });
         Cookies.set("email", email, { expires: 7 });
+        Cookies.set("userId", userId, { expires: 7 });
+        Cookies.set("roleName", roleName, { expires: 7 });  
       }else{
         Cookies.set("token", token, { expires: 1 }); // Hết hạn sau 1 ngày
         Cookies.set("email", email, { expires: 1 });
@@ -48,7 +50,7 @@ const LoginForm = () => {
       localStorage.setItem("token", token);
 
       toast.success("Login successful!");
-      navigate('/home') // Hoặc dùng useNavigate nếu dùng React Router
+      navigate('/tour-list') // Hoặc dùng useNavigate nếu dùng React Router
     } catch (error) {
       console.error("Login failed:", error);
       toast.error(error?.message || "Login failed. Please check your credentials.");
