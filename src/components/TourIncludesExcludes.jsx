@@ -16,7 +16,7 @@ const excludes = [
   "Personal Expenses",
 ];
 
-function IncludesExcludes() {
+function IncludesExcludes({tour}) {
   return (
     <div className="bg-light-200 card-bg-light mb-4">
       <h5 className="fs-18 mb-3">Includes & Excludes</h5>

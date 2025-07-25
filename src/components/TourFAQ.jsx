@@ -28,7 +28,7 @@ const faqs = [
   },
 ];
 
-function FAQ() {
+function FAQ({tour}) {
   const [openIndex, setOpenIndex] = useState(0);
 
   const handleToggle = (idx) => {

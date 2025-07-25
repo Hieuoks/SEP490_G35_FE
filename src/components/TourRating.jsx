@@ -1,88 +1,36 @@
-import React from "react";
+import React ,{useState}from "react";
+import ReviewModal from "./ReviewModal";
+import { createFeedback } from "../services/feedbackService";
+// Hàm xử lý dữ liệu từ tour.tourRatings để hiển thị
+import { toast } from "react-toastify";
+const mapTourRatingsToReviews = (tourRatings) => {
+  if (!Array.isArray(tourRatings)) return [];
 
-const ratingStats = [
-  { label: "5 Star Ratings", percent: 90, count: 247 },
-  { label: "4 Star Ratings", percent: 80, count: 145 },
-  { label: "3 Star Ratings", percent: 70, count: 600 },
-  { label: "2 Star Ratings", percent: 60, count: 560 },
-  { label: "1 Star Ratings", percent: 40, count: 400 },
-];
-
-const reviews = [
-  {
+  return tourRatings.map((r) => ({
     user: {
-      name: "Joseph Massey",
-      avatar: "assets/img/users/user-05.jpg",
+      name: r.tourRating_Username || "Ẩn danh",
+      avatar: "https://via.placeholder.com/40", // bạn có thể sửa lại nếu có avatar user
     },
-    date: "2 days ago",
-    rating: 5.0,
-    title: "Unforgettable Stay!",
-    text: "It was a good location however the cocoon concept was weird. No tables, chairs etc was difficult as everything went on the floor.",
-    images: [
-      {
-        thumb: "assets/img/tours/tour-thumb-01.jpg",
-        large: "assets/img/tours/tour-large-01.jpg",
-      },
-      {
-        thumb: "assets/img/tours/tour-thumb-02.jpg",
-        large: "assets/img/tours/tour-large-02.jpg",
-      },
-      {
-        thumb: "assets/img/tours/tour-thumb-03.jpg",
-        large: "assets/img/tours/tour-large-03.jpg",
-      },
-    ],
-    likes: 21,
-    dislikes: 50,
-    hearts: 45,
+    date: new Date(r.createdAt).toLocaleDateString(),
+    rating: r.rating,
+    title: r.comment?.slice(0, 30) || "Đánh giá",
+    text: r.comment || "",
+    images: r.mediaUrl
+      ? [
+          {
+            thumb: r.mediaUrl,
+            large: r.mediaUrl,
+          },
+        ]
+      : [],
+    likes: 0,
+    dislikes: 0,
+    hearts: 0,
     replies: [],
-  },
-  {
-    user: {
-      name: "Jeffrey Jones",
-      avatar: "assets/img/users/user-21.jpg",
-    },
-    date: "2 days ago",
-    rating: 4.0,
-    title: "Excellent service!",
-    text: "From the moment we arrived, the staff made us feel welcome. The rooms were immaculate, and every detail was thoughtfully arranged. It was the perfect blend of comfort and luxury!",
-    images: [],
-    likes: 15,
-    dislikes: 30,
-    hearts: 52,
-    replies: [],
-  },
-  {
-    user: {
-      name: "Jessie Alves",
-      avatar: "assets/img/users/user-26.jpg",
-    },
-    date: "2 days ago",
-    rating: 5.0,
-    title: "Convenient Location!",
-    text: "The location was perfect for exploring the city, and the views from our room were breathtaking. It made our trip so much more enjoyable to stay somewhere central and scenic",
-    images: [],
-    likes: 13,
-    dislikes: 38,
-    hearts: 75,
-    replies: [
-      {
-        user: {
-          name: "Adrian Hendriques",
-          avatar: "assets/img/users/user-25.jpg",
-        },
-        date: "2 days ago",
-        rating: 2.0,
-        title: "Excellent service!",
-        text: "Thank you so much for your kind words! We're thrilled to hear that our location and views made your trip even more enjoyable. We hope to welcome you back soon for another scenic stay!",
-        likes: 10,
-        dislikes: 21,
-        hearts: 46,
-      },
-    ],
-  },
-];
+  }));
+};
 
+// Component con hiển thị mỗi review
 function ReviewItem({ review, isReply }) {
   return (
     <div className={`review-info${isReply ? " reply mt-4 p-3" : ""}`}>
@@ -102,12 +50,10 @@ function ReviewItem({ review, isReply }) {
             </div>
           </div>
         </div>
-        <a href="#" className="btn btn-outline-light btn-md d-inline-flex align-items-center mb-2">
-          <i className="isax isax-repeat me-1"></i>Reply
-        </a>
+        
       </div>
       <p className="mb-2">{review.text}</p>
-      {review.images && review.images.length > 0 && (
+      {review.images?.length > 0 && (
         <div className="d-flex align-items-center">
           {review.images.map((img, idx) => (
             <div
@@ -136,53 +82,95 @@ function ReviewItem({ review, isReply }) {
   );
 }
 
-function Reviews() {
+function Reviews({ tour }) {
+const [reviewList, setReviewList] = useState(mapTourRatingsToReviews(tour?.tourRatings || []));
+
+  const [totalRatings,setTotalRatings] = useState(reviewList.length);
+  const averageRating = tour?.averageRating?.toFixed(1) || "0.0";
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+const handleSubmitReview = async (reviewData) => {
+  try {
+    const result = await createFeedback(reviewData);
+    const res = result?.data;
+
+    if (!res || !res.data) {
+      throw new Error("Dữ liệu phản hồi không hợp lệ");
+    }
+
+    const newReview = {
+      user: {
+        name: res.data.userName || "Ẩn danh",
+        avatar: "https://via.placeholder.com/40",
+      },
+      date: new Date(res.data.createdAt).toLocaleDateString(),
+      rating: res.data.rating,
+      title: res.data.comment?.slice(0, 30) || "Đánh giá",
+      text: res.data.comment || "",
+      images: res.data.mediaUrl && res.data.mediaUrl !== "string"
+        ? [
+            {
+              thumb: res.data.mediaUrl,
+              large: res.data.mediaUrl,
+            },
+          ]
+        : [],
+      likes: 0,
+      dislikes: 0,
+      hearts: 0,
+      replies: [],
+    };
+
+    // Cập nhật danh sách đánh giá ngay lập tức
+    setReviewList((prev) => [newReview, ...prev]);
+setTotalRatings((prev) => prev + 1);
+    toast.success("Đánh giá của bạn đã được gửi!");
+    setIsModalOpen(false);
+  } catch (error) {
+    console.error("Lỗi khi gửi đánh giá:", error);
+    toast.error("Không thể gửi đánh giá. Vui lòng thử lại sau.");
+  }
+};
+
+
   return (
     <div>
       <div className="d-flex align-items-center justify-content-between flex-wrap mb-2" id="reviews">
-        <h6 className="mb-3">Reviews (45)</h6>
-        <a href="#" className="btn btn-primary btn-md mb-3">
-          <i className="isax isax-edit-2 me-1"></i>Write a Review
-        </a>
+        <h6 className="mb-3">Reviews ({tour?.reviews?.length || 0})</h6>
+        <button className="btn btn-primary btn-md mb-3" onClick={handleOpenModal}>
+          <i className="isax isax-edit-2 me-1"></i>Viết đánh giá
+        </button>
       </div>
+
       <div className="row">
         <div className="col-md-6 d-flex">
           <div className="rating-item bg-light-200 text-center flex-fill mb-3">
-            <h6 className="fw-medium mb-3">Customer Reviews & Ratings</h6>
-            <h5 className="display-6">4.9 / 5.0</h5>
+            <h6 className="fw-medium mb-3">Đánh giá từ khách hàng</h6>
+            <h5 className="display-6">{averageRating} / 5.0</h5>
             <div className="d-inline-flex align-items-center justify-content-center mb-3">
-              <i className="ti ti-star-filled text-primary me-1"></i>
-              <i className="ti ti-star-filled text-primary me-1"></i>
-              <i className="ti ti-star-filled text-primary me-1"></i>
-              <i className="ti ti-star-filled text-primary me-1"></i>
-              <i className="ti ti-star-filled text-primary"></i>
+              {Array.from({ length: 5 }, (_, i) => (
+                <i
+                  key={i}
+                  className={`ti ti-star-filled ${i < Math.round(averageRating) ? "text-primary" : "text-muted"} me-1`}
+                ></i>
+              ))}
             </div>
-            <p>Based On 2,459 Reviews</p>
+            <p>Dựa trên {totalRatings} đánh giá</p>
           </div>
         </div>
         <div className="col-md-6 d-flex">
           <div className="card rating-progress shadow-none flex-fill mb-3">
             <div className="card-body">
-              {ratingStats.map((stat, idx) => (
-                <div className={`d-flex align-items-center${idx < ratingStats.length - 1 ? " mb-2" : ""}`} key={idx}>
-                  <p className="me-2 text-nowrap mb-0">{stat.label}</p>
-                  <div
-                    className="progress w-100"
-                    role="progressbar"
-                    aria-valuenow={stat.percent}
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  >
-                    <div className="progress-bar bg-primary" style={{ width: `${stat.percent}%` }}></div>
-                  </div>
-                  <p className="progress-count ms-2">{stat.count}</p>
-                </div>
-              ))}
+              <p className="text-muted">* Chức năng thống kê chi tiết chưa được hỗ trợ</p>
             </div>
           </div>
         </div>
       </div>
-      {reviews.map((review, idx) => (
+
+      {reviewList.map((review, idx) => (
         <div className="card review-item shadow-none mb-3" key={idx}>
           <div className="card-body p-3">
             <ReviewItem review={review} />
@@ -193,11 +181,13 @@ function Reviews() {
           </div>
         </div>
       ))}
+
       <div className="text-center mb-4 mb-xl-0">
         <a href="#" className="btn btn-primary btn-md d-inline-flex align-items-center justify-content-center mt-2">
-          See all 4,078 reviews<i className="isax isax-arrow-right-3 ms-1"></i>
+          Xem tất cả đánh giá<i className="isax isax-arrow-right-3 ms-1"></i>
         </a>
       </div>
+      <ReviewModal open={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmitReview} id={tour?.tourId}/>
     </div>
   );
 }

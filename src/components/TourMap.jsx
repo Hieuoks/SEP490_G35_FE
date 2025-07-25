@@ -1,6 +1,6 @@
 import React from "react";
 
-function Location() {
+function Location({tour}) {
   return (
     <div className="bg-light-200 card-bg-light mb-4" id="location">
       <h5 className="fs-18 mb-3">Location</h5>

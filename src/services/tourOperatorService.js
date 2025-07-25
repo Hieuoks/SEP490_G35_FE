@@ -24,3 +24,37 @@ export const getTourOpDetail = async (id) => {
     throw error;
   }
 };
+export const createTourOperator = async (tourOperatorData) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/TourOperator`,
+      tourOperatorData,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi tạo tour operator:', error);
+    throw error;
+  }
+};
+export const updateTourOperator = async (id, tourOperatorData) => {
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/TourOperator/${id}`,
+      tourOperatorData,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi cập nhật tour operator:', error);
+    throw error;
+  }
+};
