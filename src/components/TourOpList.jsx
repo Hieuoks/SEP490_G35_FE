@@ -78,17 +78,23 @@ const navigate = useNavigate();
           {tourData.length > 0 ? (
             tourData.map((tour) => (
               <div key={tour.tourOperatorId} className="col-xxl-4 col-md-6 d-flex">
-                <div className="place-item mb-4 flex-fill">
-                  <div className="place-img">
-                    <img
-                      src={tour.companyLogo || 'assets/img/tours/tours-07.jpg'}
-                      className="img-fluid"
-                      alt={tour.companyName}
-                    />
-                  </div>
+              <div className="place-item mb-4 flex-fill">
+  <div className="place-img" style={{ width: "100%", height: "220px", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <img
+      src={tour.companyLogo || 'assets/img/tours/tours-07.jpg'}
+      className="img-fluid"
+      alt={tour.companyName}
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        objectPosition: "center"
+      }}
+    />
+  </div>
                   <div className="place-content">
                     <h5 className="mb-1 text-truncate">
-                      <a href={`tour-operator-detail/${tour.tourOperatorId}`}>{tour.companyName}</a>
+                      <a href={`tour-operator/detail/${tour.tourOperatorId}`}>{tour.companyName}</a>
                     </h5>
                     <p className="fs-14 text-gray-9">{tour.description}</p>
                     <p className="fs-14 text-muted">

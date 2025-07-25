@@ -6,7 +6,7 @@ const highlights = [
   "Special acoustic set in select cities",
 ];
 
-function Highlights() {
+function Highlights({tour}) {
   return (
     <div className="bg-light-200 card-bg-light mb-4">
       <h5 className="fs-18 mb-3">Highlights</h5>

@@ -34,13 +34,13 @@ const TourDetailPage = () => {
 
   return (
     <>
-      <HeaderTopbar />
+      
 
       <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
         <div className="container">
           <div className="row">
             <div className="col-md-12 col-12">
-              <h2 className="breadcrumb-title mb-2">Chi Tiết Tour</h2>
+              <h2 className="breadcrumb-title mb-2">Nhà Điều Hành</h2>
               <nav aria-label="breadcrumb">
                 <ol className="breadcrumb justify-content-center mb-0">
                   <li className="breadcrumb-item">
@@ -48,7 +48,7 @@ const TourDetailPage = () => {
                       <i className="fas fa-home"></i>
                     </a>
                   </li>
-                  <li className="breadcrumb-item">Chi tiết tour</li>
+                  <li className="breadcrumb-item">Chi tiết nhà điều hành</li>
                 </ol>
               </nav>
             </div>
@@ -69,7 +69,7 @@ const TourDetailPage = () => {
         </div>
       </div>
 
-      <Footer />
+      
     </>
   );
 };
