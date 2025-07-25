@@ -9,7 +9,8 @@ import ForgotPasswordPage from '../features/auth/ForgotPassword';
 import ProflePage from '../features/profile/ProfilePage'; 
 import SettingProfile from '../features/setting/SettingProfile'; 
 import ListAccount from '../features/account/ListAccount'; 
-
+import PackagePage from '../pages/PackagePage';
+import ListPackages from '../features/package/ListPackages';
 import TourOperatorPage from '../pages/TourOperatorPage'; // Trang dành cho nhà điều hành tour
 import TourDetailPage from '../pages/TourDetailPage';
 import TourOperatorDateilPage from '../pages/TourOperatorDetail'
@@ -38,7 +39,8 @@ const AppRoutes = () => {
         <Route path="/profile" element={<ProflePage />} />
         <Route path="/setting/editProfile" element={<SettingProfile />} />
         <Route path="/admin/ListAccount" element={<ListAccount /> } />
-        
+        <Route path="/package" element={<PackagePage /> } />
+        <Route path="/admin/packages" element={<ListPackages />} />
         <Route path="/home" element={<MainLayout><HomePage /></MainLayout>} />
         <Route path="/tour-operator" element={<MainLayout><TourOperatorPage /></MainLayout>} />
         <Route path="/tour-operator/detail/:id" element={<MainLayout><TourOperatorDateilPage /></MainLayout>} />
