@@ -20,6 +20,7 @@ import CreateCompanyPage from '../pages/CreateTourOpPage';
 import UpdateTourOpPage from '../pages/UpdateTourOpPage';
 import UpdateTourPage from '../pages/UpdateTourPage'; // Trang cập nhật tour, nếu cần
 import BookingConfirmation from '../pages/Booking';
+import BookingOperator from '../features/booking/BookingOperator';
 const MainLayout = ({ children }) => {
   return (
     <>
@@ -52,6 +53,7 @@ const AppRoutes = () => {
         <Route path="/tour-operator/create" element={<MainLayout><CreateCompanyPage /></MainLayout>} />
         <Route path="/booking" element={<MainLayout><BookingConfirmation /></MainLayout>} />
         <Route path="/forgot-password" element={<MainLayout><ForgotPasswordPage /></MainLayout>} />
+        <Route path="/operator/booking" element={<BookingOperator />} />
         {/* Nếu cần thêm trang lỗi 404 */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
