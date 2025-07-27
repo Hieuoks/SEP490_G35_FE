@@ -47,7 +47,7 @@ axios.interceptors.response.use(
         return success;
     },
     (fail) => {
-        let msg = fail.response.data.message && !Array.isArray(fail.response.data.message) ? fail.response.data.message : 'An error occurred, please try again later.';
+        let msg = fail.response?.data.message && !Array.isArray(fail.response.data.message) ? fail.response.data.message : 'An error occurred, please try again later.';
         message.error(msg === 'Forbidden resource' ? 'You do not have permission or data does not exist' : msg);
         if (msg === 'Forbidden resource' &&  fail.response.status === 403) {
         }

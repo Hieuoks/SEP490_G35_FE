@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { createBooking } from "../services/bookingService";
 import { toast } from "react-toastify";
 import {
@@ -23,6 +23,22 @@ function TourSidebar({ tour }) {
   const [departureId, setDepartureID]=useState(tour?.departureDates?.[0]?.id)
 const [note, setNote] = useState("");
 const [contract, setContract] = useState("");
+ 
+
+  useEffect(() => {
+    if (tour && tour.departureDates?.length > 0) {
+      const firstDeparture = tour.departureDates[0];
+      setSelectedDate(firstDeparture.departureDate1 || "");
+      setDepartureID(firstDeparture.id || null);
+    }
+
+    if (tour?.note) {
+      setNote(tour.note);
+    }
+  }, [tour]);
+
+  
+
 
   const handleIncrement = (setter, value) => setter(value + 1);
   const handleDecrement = (setter, value) =>
