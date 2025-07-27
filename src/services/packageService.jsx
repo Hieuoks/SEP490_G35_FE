@@ -2,9 +2,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const userId = Cookies.get('userId');
+const BASE_URL = 'http://localhost:5298/api'
 export const getPackages = async () => {
     try {
-    const response = await axios.get(`https://localhost:7012/api/ServicePackage/ListAllServicePackage`,  {
+    const response = await axios.get(`${BASE_URL}/ServicePackage/ListAllServicePackageForAdmin`,  {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -19,7 +20,7 @@ export const getPackages = async () => {
 
 export const updatePackage = async (formData) => {
   try {
-    const response = await axios.put(`https://localhost:7012/api/ServicePackage/UpdateServicePackage`, formData, {
+    const response = await axios.put(`${BASE_URL}/ServicePackage/UpdateServicePackage`, formData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -35,7 +36,7 @@ export const updatePackage = async (formData) => {
 
 export const deletePackage = async (packageId) => {
   try {
-    const response = await axios.delete(`https://localhost:7012/api/ServicePackage/SoftDeleteServicePackage/${packageId}`, {
+    const response = await axios.delete(`${BASE_URL}/ServicePackage/SoftDeleteServicePackage/${packageId}`, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -50,7 +51,7 @@ export const deletePackage = async (packageId) => {
 
 export const createPackage = async (formData) => {
   try {
-    const response = await axios.post(`https://localhost:7012/api/ServicePackage/CreateServicePackage`, formData, {
+    const response = await axios.post(`${BASE_URL}/ServicePackage/CreateServicePackage`, formData, {
       headers: {
         'Content-Type': 'application/json',
       },

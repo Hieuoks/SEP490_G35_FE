@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { message } from 'antd';
 
-const BASE_URL = 'http://localhost:7012/api'
+const BASE_URL = 'http://localhost:5298/api'
 export const register = async (userName, email, password, address,phoneNumber) => {
   let data = JSON.stringify({
   "userName": userName,

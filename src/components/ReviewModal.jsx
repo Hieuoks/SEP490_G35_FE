@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Rate, Upload, Input, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Cookies from "js-cookie";
+import { uploadToCloudinary } from "../services/imgUploadService";
 const ReviewModal = ({ open, onClose, onSubmit,id }) => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
