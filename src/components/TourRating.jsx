@@ -83,7 +83,7 @@ function ReviewItem({ review, isReply }) {
 }
 
 function Reviews({ tour }) {
-const [reviewList, setReviewList] = useState(mapTourRatingsToReviews(tour?.tourRatings || []));
+const reviewList = mapTourRatingsToReviews(tour?.tourRatings);
 
   const [totalRatings,setTotalRatings] = useState(reviewList.length);
   const averageRating = tour?.averageRating?.toFixed(1) || "0.0";
@@ -95,38 +95,9 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 const handleSubmitReview = async (reviewData) => {
   try {
     const result = await createFeedback(reviewData);
-    const res = result?.data;
+    const res = result?.data.data;
 
-    if (!res || !res.data) {
-      throw new Error("Dữ liệu phản hồi không hợp lệ");
-    }
-
-    const newReview = {
-      user: {
-        name: res.data.userName || "Ẩn danh",
-        avatar: "https://via.placeholder.com/40",
-      },
-      date: new Date(res.data.createdAt).toLocaleDateString(),
-      rating: res.data.rating,
-      title: res.data.comment?.slice(0, 30) || "Đánh giá",
-      text: res.data.comment || "",
-      images: res.data.mediaUrl && res.data.mediaUrl !== "string"
-        ? [
-            {
-              thumb: res.data.mediaUrl,
-              large: res.data.mediaUrl,
-            },
-          ]
-        : [],
-      likes: 0,
-      dislikes: 0,
-      hearts: 0,
-      replies: [],
-    };
-
-    // Cập nhật danh sách đánh giá ngay lập tức
-    setReviewList((prev) => [newReview, ...prev]);
-setTotalRatings((prev) => prev + 1);
+  
     toast.success("Đánh giá của bạn đã được gửi!");
     setIsModalOpen(false);
   } catch (error) {
