@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../components/Header";
 import Breadcrumb from "../../components/breadcrumb";
 import Footer from "../../components/Footer";
-import Sidebar from "../../components/sidebar";
+import Sidebar from "../../components/sidebar1";
 import ListAccCom from "./component/ListAccCom";
 
 const ListAccount = () => {

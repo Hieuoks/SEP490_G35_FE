@@ -1,64 +1,63 @@
-
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import '../assets/css/style.css'; // Adjust the path as necessary
+import '../assets/css/style.css';
 
 const Footer = () => {
     const footerWidgets = [
         {
-            title: 'Pages',
+            title: 'Trang',
             links: [
-                { label: 'Our Team', href: 'team.html' },
-                { label: 'Pricing Plans', href: 'pricing-plan.html' },
-                { label: 'Gallery', href: 'gallery.html' },
-                { label: 'Settings', href: 'profile-settings.html' },
-                { label: 'Profile', href: 'my-profile.html' },
-                { label: 'Listings', href: 'agent-listings.html' },
+                { label: 'Đội ngũ của chúng tôi', href: 'team.html' },
+                { label: 'Gói giá', href: 'pricing-plan.html' },
+                { label: 'Thư viện ảnh', href: 'gallery.html' },
+                { label: 'Cài đặt', href: 'profile-settings.html' },
+                { label: 'Hồ sơ', href: 'my-profile.html' },
+                { label: 'Danh sách', href: 'agent-listings.html' },
             ],
         },
         {
-            title: 'Company',
+            title: 'Công ty',
             links: [
-                { label: 'About Us', href: 'about-us.html' },
-                { label: 'Careers', href: '#' },
+                { label: 'Về chúng tôi', href: 'about-us.html' },
+                { label: 'Tuyển dụng', href: '#' },
                 { label: 'Blog', href: 'blog-grid.html' },
-                { label: 'Affiliate Program', href: '#' },
-                { label: 'Add Your Listing', href: 'add-flight.html' },
-                { label: 'Our Partners', href: '#' },
+                { label: 'Chương trình liên kết', href: '#' },
+                { label: 'Thêm danh sách của bạn', href: 'add-flight.html' },
+                { label: 'Đối tác', href: '#' },
             ],
         },
         {
-            title: 'Destinations',
+            title: 'Điểm đến',
             links: [
                 { label: 'Hawai', href: '#' },
                 { label: 'Istanbul', href: '#' },
                 { label: 'San Diego', href: '#' },
-                { label: 'Belgium', href: '#' },
+                { label: 'Bỉ', href: '#' },
                 { label: 'Los Angeles', href: '#' },
-                { label: 'Newyork', href: '#' },
+                { label: 'New York', href: '#' },
             ],
         },
         {
-            title: 'Support',
+            title: 'Hỗ trợ',
             links: [
-                { label: 'Contact Us', href: 'contact-us.html' },
-                { label: 'Legal Notice', href: '#' },
-                { label: 'Privacy Policy', href: 'privacy-policy.html' },
-                { label: 'Terms and Conditions', href: 'terms-conditions.html' },
-                { label: 'Chat Support', href: 'chat.html' },
-                { label: 'Refund Policy', href: '#' },
+                { label: 'Liên hệ', href: 'contact-us.html' },
+                { label: 'Thông báo pháp lý', href: '#' },
+                { label: 'Chính sách bảo mật', href: 'privacy-policy.html' },
+                { label: 'Điều khoản & Điều kiện', href: 'terms-conditions.html' },
+                { label: 'Hỗ trợ trò chuyện', href: 'chat.html' },
+                { label: 'Chính sách hoàn tiền', href: '#' },
             ],
         },
         {
-            title: 'Services',
+            title: 'Dịch vụ',
             links: [
-                { label: 'Hotel', href: 'hotel-grid.html' },
-                { label: 'Activity Finder', href: '#' },
-                { label: 'Flight Finder', href: 'flight-grid.html' },
-                { label: 'Holiday Rental', href: 'tour-grid.html' },
-                { label: 'Car Rental', href: 'car-grid.html' },
-                { label: 'Holiday Packages', href: 'tour-details.html' },
+                { label: 'Khách sạn', href: 'hotel-grid.html' },
+                { label: 'Tìm hoạt động', href: '#' },
+                { label: 'Tìm chuyến bay', href: 'flight-grid.html' },
+                { label: 'Thuê kỳ nghỉ', href: 'tour-grid.html' },
+                { label: 'Thuê xe', href: 'car-grid.html' },
+                { label: 'Gói du lịch', href: 'tour-details.html' },
             ],
         },
     ];
@@ -101,12 +100,10 @@ const Footer = () => {
                                 <a href="index.html" className="d-block mb-2">
                                     <img src="assets/img/logo-dark.svg" alt="logo-dark" style={{ height: '40px' }} />
                                 </a>
-                                
                             </div>
                             <div className="col-lg-6 col-xl-4 col-xxl-4 mb-3">
                                 <div className="d-flex align-items-center justify-content-center flex-wrap">
-                                    <h6 className="fs-4 fw-medium me-2 mb-2">Available on:</h6>
-
+                                    <h6 className="fs-4 fw-medium me-2 mb-2">Có trên:</h6>
                                     <a href="#" className="d-block mb-2 me-2">
                                         <img src="assets/img/icons/googleplay.svg" alt="googleplay" style={{ height: '30px' }} />
                                     </a>
@@ -116,28 +113,24 @@ const Footer = () => {
                                 </div>
                             </div>
                             <div className="col-lg-12 col-xl-5 col-xxl-5">
-
                                 <div className="d-flex flex-column flex-sm-row align-items-center justify-content-center justify-content-xl-end">
                                     <div className="d-flex align-items-center justify-content-center justify-content-sm-start me-0 pe-0 me-sm-3 pe-sm-3 border-end mb-3">
                                         <span className="avatar avatar-lg bg-primary rounded-circle d-flex align-items-center justify-content-center me-2" style={{ width: '48px', height: '48px' }}>
                                             <i className="fas fa-headphones fs-5"></i>
                                         </span>
                                         <div>
-
-                                            <p className="mb-1">Customer Support</p>
+                                            <p className="mb-1">Hỗ trợ khách hàng</p>
                                             <p className="fw-medium text-dark">+1 56589 54598</p>
                                         </div>
                                     </div>
                                     <div className="d-flex align-items-center justify-content-center justify-content-sm-start mb-3">
-
                                         <span className="avatar avatar-lg bg-secondary rounded-circle d-flex align-items-center justify-content-center me-2" style={{ width: '48px', height: '48px' }}>
                                             <i className="fas fa-message fs-5"></i>
                                         </span>
                                         <div>
-                                            <p className="mb-1">Drop Us an Email</p>
+                                            <p className="mb-1">Gửi email cho chúng tôi</p>
                                             <p className="fw-medium text-dark">
                                                 <a href="mailto:info@dreamstour.com">info@dreamstour.com</a>
-
                                             </p>
                                         </div>
                                     </div>
@@ -145,7 +138,6 @@ const Footer = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className="footer-img mt-4">
                         <img src="assets/img/bg/footer.svg" className="img-fluid" alt="footer-bg" />
                     </div>
@@ -156,9 +148,8 @@ const Footer = () => {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="d-flex align-items-center justify-content-between flex-wrap">
-
                                 <p className="fs-3 mb-0">
-                                    Copyright © 2025. All Rights Reserved, <a href="#" className="text-primary fw-medium text-decoration-none">DreamsTour</a>
+                                    Bản quyền © 2025. Đã đăng ký bản quyền, <a href="#" className="text-primary fw-medium text-decoration-none">DreamsTour</a>
                                 </p>
                                 <div className="d-flex align-items-center">
                                     <ul className="list-unstyled d-flex mb-0">
@@ -187,7 +178,6 @@ const Footer = () => {
             </div>
         </footer>
     );
-
 };
 
 export default Footer;

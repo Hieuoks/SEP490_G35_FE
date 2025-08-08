@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { createTour } from "../services/tourService";
 import { message, Modal, Button } from "antd";
@@ -11,21 +11,21 @@ const initialState = {
   title: "",
   description: "",
   priceOfAdults: "",
-priceOfChildren: "",
-priceOfInfants: "",
+  priceOfChildren: "",
+  priceOfInfants: "",
   durationInDays: "",
   startPoint: "",
   transportation: "",
   maxSlots: "",
-  tourType: "Share",
+  minSlots: "",
   note: "",
-  tourStatus: "Active",
   isActive: true,
- TourOperatorId: 1,
+  TourOperatorId: 1,
   departureDates: [{ departureDate1: "" }],
   tourExperiences: [{ content: "" }],
   tourItineraries: [],
   tourMedia: [{ mediaFile: null, mediaType: "", mediaUrl: "" }],
+  TourAvatarFile: null,
 };
 
 function CreateTourPage() {
@@ -39,8 +39,34 @@ function CreateTourPage() {
     description: "",
     itineraryMedia: [{ mediaFile: null, mediaType: "", caption: "" }]
   });
-  const navigate = useNavigate(); 
-  // Handle input change for simple fields
+  const [apiErrors, setApiErrors] = useState({});
+  const [apiErrorMessage, setApiErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const days = parseInt(form.durationInDays) || 0;
+    if (days > 0) {
+      setForm((prev) => {
+        if (prev.tourItineraries.length < days) {
+          const newItineraries = [...prev.tourItineraries];
+          for (let i = prev.tourItineraries.length; i < days; i++) {
+            newItineraries.push({
+              dayNumber: i + 1,
+              title: "",
+              description: "",
+              itineraryMedia: [{ mediaFile: null, mediaType: "", caption: "" }]
+            });
+          }
+          return { ...prev, tourItineraries: newItineraries };
+        }
+        if (prev.tourItineraries.length > days) {
+          return { ...prev, tourItineraries: prev.tourItineraries.slice(0, days) };
+        }
+        return prev;
+      });
+    }
+  }, [form.durationInDays]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
@@ -49,7 +75,6 @@ function CreateTourPage() {
     }));
   };
 
-  // Handle array fields
   const handleArrayChange = (field, idx, key, value) => {
     setForm((prev) => ({
       ...prev,
@@ -59,7 +84,6 @@ function CreateTourPage() {
     }));
   };
 
-  // Handle file input for tourMedia
   const handleTourMediaFileChange = (idx, file) => {
     setForm((prev) => ({
       ...prev,
@@ -69,8 +93,15 @@ function CreateTourPage() {
     }));
   };
 
-  // Add/remove for array fields
+  const handleAvatarChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      TourAvatarFile: e.target.files[0] || null,
+    }));
+  };
+
   const addArrayField = (field, newItem) => {
+    
     setForm((prev) => ({
       ...prev,
       [field]: [...prev[field], newItem],
@@ -83,7 +114,6 @@ function CreateTourPage() {
     }));
   };
 
-  // Itinerary Modal handlers
   const openItineraryModal = (idx = null) => {
     setItineraryEditIdx(idx);
     if (idx !== null) {
@@ -167,10 +197,8 @@ function CreateTourPage() {
     closeItineraryModal();
   };
 
-  // Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validate required fields
     const newErrors = {};
     if (!form.title) newErrors.title = "Title is required";
     if (!form.priceOfAdults) newErrors.priceOfAdults = "Price is required";
@@ -179,39 +207,40 @@ function CreateTourPage() {
     if (!form.startPoint) newErrors.startPoint = "Start Point is required";
     if (!form.transportation) newErrors.transportation = "Transportation is required";
     if (!form.maxSlots) newErrors.maxSlots = "Max Slots is required";
+    if (!form.minSlots) newErrors.minSlots = "Min Slots is required";
+    if (!form.TourAvatarFile) newErrors.TourAvatarFile = "Tour avatar is required";
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) {
-    Object.values(newErrors).forEach(msg => toast.error(msg));
-    return;
-  }
+      Object.values(newErrors).forEach(msg => toast.error(msg));
+      return;
+    }
 
-    // Build FormData
     let data = new FormData();
     data.append('Title', form.title);
     data.append('Description', form.description);
     data.append('PriceOfAdults', form.priceOfAdults);
-data.append('PriceOfChildren', form.priceOfChildren);
-data.append('PriceOfInfants', form.priceOfInfants);
+    data.append('PriceOfChildren', form.priceOfChildren);
+    data.append('PriceOfInfants', form.priceOfInfants);
     data.append('DurationInDays', form.durationInDays);
     data.append('StartPoint', form.startPoint);
     data.append('Transportation', form.transportation);
     data.append('MaxSlots', form.maxSlots);
-    data.append('TourType', form.tourType);
+    data.append('MinSlots', form.minSlots);
     data.append('Note', form.note);
-    data.append('TourStatus', form.tourStatus);
     data.append('IsActive', form.isActive);
-    data.append('TourOperatorId', 1); // Luôn gửi lên là 1
-    // DepartureDates
+    data.append('TourOperatorId', 1);
+  
+      data.append('TourAvartarFile', form.TourAvatarFile);
+    
+
     form.departureDates.forEach((item, idx) => {
       data.append(`DepartureDates[${idx}].departureDate1`, item.departureDate1);
     });
 
-    // TourExperiences
     form.tourExperiences.forEach((item, idx) => {
       data.append(`TourExperiences[${idx}].content`, item.content);
     });
 
-    // TourItineraries
     form.tourItineraries.forEach((item, idx) => {
       data.append(`TourItineraries[${idx}].dayNumber`, item.dayNumber);
       data.append(`TourItineraries[${idx}].title`, item.title);
@@ -225,7 +254,6 @@ data.append('PriceOfInfants', form.priceOfInfants);
       });
     });
 
-    // TourMedia
     form.tourMedia.forEach((item, idx) => {
       if (item.mediaFile) {
         data.append(`TourMedia[${idx}].mediaFile`, item.mediaFile);
@@ -234,272 +262,288 @@ data.append('PriceOfInfants', form.priceOfInfants);
       data.append(`TourMedia[${idx}].mediaUrl`, item.mediaUrl);
     });
 
-   try {
-  // Hiển thị thông tin form trước khi gửi đi
-  console.log("Form values before submit:", form);
+    try {
+      console.log("Form values before submit:", form);
+      for (let pair of data.entries()) {
+        console.log(pair[0] + ':', pair[1]);
+      }
 
-  // Hiển thị thông tin FormData (chỉ tên trường và giá trị text/file)
-  for (let pair of data.entries()) {
-    console.log(pair[0] + ':', pair[1]);
-  }
-
-  await createTour(data);
-  message.success("Tạo tour thành công!");
-  setForm(initialState);
-  toast.success("Tour created successfully!");
-  navigate("/tour-list"); // Điều hướng đến trang danh sách tour sau khi tạo thành công
-} catch (error) {
-  if (error.response && error.response.data) {
-    // Nếu backend trả về lỗi dạng object hoặc string
-    const errMsg =
-      typeof error.response.data === "string"
-        ? error.response.data
-        : JSON.stringify(error.response.data);
-    message.error(`Không thể tạo tour: ${errMsg}`);
-  } else {
-    message.error("Không thể tạo tour");
-  }
-}
+      await createTour(data);
+      message.success("Tạo tour thành công!");
+      setForm(initialState);
+      setApiErrors({});
+      setApiErrorMessage("");
+      toast.success("Tour created successfully!");
+      navigate("/tour-list");
+    } catch (error) {
+      if (error.response && error.response.data) {
+        if (error.response.data.errors) {
+          setApiErrors(error.response.data.errors);
+          setApiErrorMessage("");
+        } else if (typeof error.response.data === "string") {
+          setApiErrorMessage(error.response.data);
+          setApiErrors({});
+        } else if (error.response.data.title) {
+          setApiErrorMessage(error.response.data.title);
+          setApiErrors(error.response.data.errors || {});
+        } else {
+          setApiErrorMessage(JSON.stringify(error.response.data));
+          setApiErrors({});
+        }
+        message.error("Không thể tạo tour: Có lỗi dữ liệu!");
+      } else {
+        setApiErrorMessage("Không thể tạo tour");
+        setApiErrors({});
+        message.error("Không thể tạo tour");
+      }
+    }
   };
 
   return (
     <>
-     <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
-            <div className="container">
-              <div className="row">
-                <div className="col-md-12 col-12">
-                  <h2 className="breadcrumb-title mb-2">Tour</h2>
-                  <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb justify-content-center mb-0">
-                      <li className="breadcrumb-item">
-                        <a href="home">
-                          <FontAwesomeIcon icon={faHome} />
-                        </a>
-                      </li>
-                      <li className="breadcrumb-item">Tạo tour</li>
-                    </ol>
-                  </nav>
-                </div>
-              </div>
+      <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12 col-12">
+              <h2 className="breadcrumb-title mb-2">Tour</h2>
+              <nav aria-label="breadcrumb">
+                <ol className="breadcrumb justify-content-center mb-0">
+                  <li className="breadcrumb-item">
+                    <a href="home">
+                      <FontAwesomeIcon icon={faHome} />
+                    </a>
+                  </li>
+                  <li className="breadcrumb-item">Tạo tour</li>
+                </ol>
+              </nav>
             </div>
           </div>
-    <div className="container py-5">
-      <h2 className="mb-4 text-center">Create New Tour</h2>
-      <form className="card p-4 shadow" onSubmit={handleSubmit}>
-        <div className="row">
-          {/* Các trường cơ bản */}
-          {/* --- Nhóm 1: Thông tin cơ bản --- */}
-<div className="col-md-6 mb-3">
-  <label className="form-label">Title *</label>
-  <input type="text" className={`form-control ${errors.title ? "is-invalid" : ""}`} name="title" value={form.title} onChange={handleChange} />
-  {errors.title && <div className="invalid-feedback">{errors.title}</div>}
-</div>
-
-<div className="col-md-6 mb-3">
-  <label className="form-label">Start Point *</label>
-  <input type="text" className={`form-control ${errors.startPoint ? "is-invalid" : ""}`} name="startPoint" value={form.startPoint} onChange={handleChange} />
-  {errors.startPoint && <div className="invalid-feedback">{errors.startPoint}</div>}
-</div>
-
-<div className="col-md-6 mb-3">
-  <label className="form-label">Transportation *</label>
-  <input type="text" className={`form-control ${errors.transportation ? "is-invalid" : ""}`} name="transportation" value={form.transportation} onChange={handleChange} />
-  {errors.transportation && <div className="invalid-feedback">{errors.transportation}</div>}
-</div>
-
-<div className="col-md-6 mb-3">
-  <label className="form-label">Duration (days)</label>
-  <input type="text" className="form-control" name="durationInDays" value={form.durationInDays} onChange={handleChange} />
-</div>
-
-<div className="col-md-6 mb-3">
-  <label className="form-label">Max Slots *</label>
-  <input type="number" className={`form-control ${errors.maxSlots ? "is-invalid" : ""}`} name="maxSlots" value={form.maxSlots} onChange={handleChange} />
-  {errors.maxSlots && <div className="invalid-feedback">{errors.maxSlots}</div>}
-</div>
-
-{/* --- Nhóm 2: Giá Tour --- */}
-<div className="col-md-4 mb-3">
-  <label className="form-label">Price of Adults</label>
-  <input type="number" className="form-control" name="priceOfAdults" value={form.priceOfAdults} onChange={handleChange} />
-</div>
-
-<div className="col-md-4 mb-3">
-  <label className="form-label">Price of Children</label>
-  <input type="number" className="form-control" name="priceOfChildren" value={form.priceOfChildren} onChange={handleChange} />
-</div>
-
-<div className="col-md-4 mb-3">
-  <label className="form-label">Price of Infants</label>
-  <input type="number" className="form-control" name="priceOfInfants" value={form.priceOfInfants} onChange={handleChange} />
-</div>
-
-{/* --- Nhóm 3: Tùy chọn loại tour và trạng thái --- */}
-<div className="col-md-6 mb-3">
-  <label className="form-label">Tour Type</label>
-  <select className="form-select" name="tourType" value={form.tourType} onChange={handleChange}>
-    <option value="Share">Share</option>
-    <option value="Private">Private</option>
-  </select>
-</div>
-
-<div className="col-md-6 mb-3">
-  <label className="form-label">Tour Status</label>
-  <select className="form-select" name="tourStatus" value={form.tourStatus} onChange={handleChange}>
-    <option value="Active">Active</option>
-    <option value="Inactive">Inactive</option>
-  </select>
-</div>
-
-{/* --- Nhóm 4: Mô tả và ghi chú --- */}
-<div className="col-md-12 mb-3">
-  <label className="form-label">Description</label>
-  <textarea className="form-control" name="description" value={form.description} onChange={handleChange} rows={2} />
-</div>
-
-<div className="col-md-12 mb-3">
-  <label className="form-label">Note</label>
-  <textarea className="form-control" name="note" value={form.note || ""} onChange={handleChange} rows={2} />
-</div>
-
-
-          {/* Departure Dates */}
-          <div className="col-md-12 mb-3">
-            <label className="form-label">Departure Dates</label>
-            {form.departureDates.map((item, idx) => (
-              <div key={idx} className="input-group mb-2">
-                <input
-                  type="date"
-                  className="form-control"
-                  value={item.departureDate1}
-                  onChange={e => handleArrayChange("departureDates", idx, "departureDate1", e.target.value)}
-                />
-                <button type="button" className="btn btn-danger" onClick={() => removeArrayField("departureDates", idx)} disabled={form.departureDates.length === 1}>Remove</button>
-              </div>
-            ))}
-            <button type="button" className="btn btn-secondary" onClick={() => addArrayField("departureDates", { departureDate1: "" })}>Add Departure Date</button>
+        </div>
+      </div>
+      <div className="container py-5">
+        <h2 className="mb-4 text-center">Create New Tour</h2>
+         {(apiErrorMessage || Object.keys(apiErrors).length > 0) && (
+          <div className="alert alert-danger">
+            {apiErrorMessage && <div>{apiErrorMessage}</div>}
+            {Object.keys(apiErrors).length > 0 && (
+              <ul className="mb-0">
+                {Object.entries(apiErrors).map(([field, msgs]) =>
+                  msgs.map((msg, idx) => (
+                    <li key={field + idx}>
+                      <b>{field}:</b> {msg}
+                    </li>
+                  ))
+                )}
+              </ul>
+            )}
           </div>
-
-          {/* Tour Experiences */}
-          <div className="col-md-12 mb-3">
-            <label className="form-label">Tour Experiences</label>
-            {form.tourExperiences.map((item, idx) => (
-              <div key={idx} className="input-group mb-2">
-                <input
-                  type="text"
-                  className="form-control"
-                  value={item.content}
-                  onChange={e => handleArrayChange("tourExperiences", idx, "content", e.target.value)}
-                  placeholder="Experience Content"
-                />
-                <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourExperiences", idx)} disabled={form.tourExperiences.length === 1}>Remove</button>
-              </div>
-            ))}
-            <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourExperiences", { content: "" })}>Add Experience</button>
-          </div>
-
-          {/* Tour Itineraries - Modal Trigger */}
-          <div className="col-md-12 mb-3">
-            <label className="form-label">Tour Itineraries</label>
-            <div>
-              {form.tourItineraries.map((item, idx) => (
-                <div key={idx} className="border p-3 mb-2 d-flex justify-content-between align-items-center">
-                  <div>
-                    <b>Day {item.dayNumber}:</b> {item.title}
-                  </div>
-                  <div>
-                    <button type="button" className="btn btn-sm btn-warning me-2" onClick={() => openItineraryModal(idx)}>Edit</button>
-                    <button type="button" className="btn btn-sm btn-danger" onClick={() => removeArrayField("tourItineraries", idx)} disabled={form.tourItineraries.length === 1}>Remove</button>
-                  </div>
-                </div>
-              ))}
-              <button type="button" className="btn btn-secondary" onClick={() => openItineraryModal(null)}>Add Itinerary</button>
-            </div>
-          </div>
-
-          {/* Tour Media */}
-          <div className="col-md-12 mb-3">
-            <label className="form-label">Tour Media</label>
-            {form.tourMedia.map((item, idx) => (
-              <div key={idx} className="input-group mb-2">
-                <input
-                  type="file"
-                  className="form-control"
-                  onChange={e => handleTourMediaFileChange(idx, e.target.files[0])}
-                />
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Media Type"
-                  value={item.mediaType}
-                  onChange={e => handleArrayChange("tourMedia", idx, "mediaType", e.target.value)}
-                />
-                
-                <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourMedia", idx)} disabled={form.tourMedia.length === 1}>Remove</button>
-              </div>
-            ))}
-            <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourMedia", { mediaFile: null, mediaType: "", mediaUrl: "" })}>Add Media</button>
-          </div>
-        </div>
-        <div className="text-center mt-4">
-          <button type="submit" className="btn btn-primary px-5">
-            Create Tour
-          </button>
-        </div>
-      </form>
-
-      {/* Itinerary Modal */}
-      <Modal
-        title={itineraryEditIdx !== null ? "Edit Itinerary" : "Add Itinerary"}
-        open={showItineraryModal}
-        onCancel={closeItineraryModal}
-        footer={[
-          <Button key="cancel" onClick={closeItineraryModal}>Cancel</Button>,
-          <Button key="save" type="primary" onClick={saveItinerary}>Save</Button>
-        ]}
-      >
-        <div className="mb-2">
-          <label>Day Number</label>
-          <input type="number" className="form-control" name="dayNumber" value={itineraryForm.dayNumber} onChange={handleItineraryFormChange} />
-        </div>
-        <div className="mb-2">
-          <label>Title</label>
-          <input type="text" className="form-control" name="title" value={itineraryForm.title} onChange={handleItineraryFormChange} />
-        </div>
-        <div className="mb-2">
-          <label>Description</label>
-          <input type="text" className="form-control" name="description" value={itineraryForm.description} onChange={handleItineraryFormChange} />
-        </div>
-        <div className="mb-2">
-          <label>Itinerary Media</label>
-          {itineraryForm.itineraryMedia.map((media, mediaIdx) => (
-            <div key={mediaIdx} className="input-group mb-2">
+        )}
+        <form className="card p-4 shadow" onSubmit={handleSubmit}>
+          <div className="row">
+            {/* Tour Avatar */}
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Tour Avatar</label>
               <input
                 type="file"
                 className="form-control"
-                onChange={e => handleItineraryMediaFileChange(mediaIdx, e.target.files[0])}
+                onChange={handleAvatarChange}
+                accept="image/*"
               />
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Media Type"
-                value={media.mediaType}
-                onChange={e => handleItineraryMediaChange(mediaIdx, "mediaType", e.target.value)}
-              />
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Caption"
-                value={media.caption}
-                onChange={e => handleItineraryMediaChange(mediaIdx, "caption", e.target.value)}
-              />
-              <button type="button" className="btn btn-danger" onClick={() => removeItineraryMedia(mediaIdx)} disabled={itineraryForm.itineraryMedia.length === 1}>Remove</button>
             </div>
-          ))}
-          <button type="button" className="btn btn-secondary" onClick={addItineraryMedia}>Add Itinerary Media</button>
-        </div>
-      </Modal>
-    </div>
+            {/* Title */}
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Title *</label>
+              <input type="text" className={`form-control ${errors.title ? "is-invalid" : ""}`} name="title" value={form.title} onChange={handleChange} />
+              {errors.title && <div className="invalid-feedback">{errors.title}</div>}
+            </div>
+            {/* Start Point */}
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Start Point *</label>
+              <input type="text" className={`form-control ${errors.startPoint ? "is-invalid" : ""}`} name="startPoint" value={form.startPoint} onChange={handleChange} />
+              {errors.startPoint && <div className="invalid-feedback">{errors.startPoint}</div>}
+            </div>
+            {/* Transportation */}
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Transportation *</label>
+              <input type="text" className={`form-control ${errors.transportation ? "is-invalid" : ""}`} name="transportation" value={form.transportation} onChange={handleChange} />
+              {errors.transportation && <div className="invalid-feedback">{errors.transportation}</div>}
+            </div>
+            {/* Duration */}
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Duration (days)</label>
+              <input type="number" min={1} className="form-control" name="durationInDays" value={form.durationInDays} onChange={handleChange} />
+            </div>
+            {/* Max Slots */}
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Max Slots *</label>
+              <input type="number" className={`form-control ${errors.maxSlots ? "is-invalid" : ""}`} name="maxSlots" value={form.maxSlots} onChange={handleChange} />
+              {errors.maxSlots && <div className="invalid-feedback">{errors.maxSlots}</div>}
+            </div>
+            {/* Min Slots */}
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Min Slots *</label>
+              <input type="number" className={`form-control ${errors.minSlots ? "is-invalid" : ""}`} name="minSlots" value={form.minSlots} onChange={handleChange} />
+              {errors.minSlots && <div className="invalid-feedback">{errors.minSlots}</div>}
+            </div>
+            {/* Price of Adults */}
+            <div className="col-md-4 mb-3">
+              <label className="form-label">Price of Adults</label>
+              <input type="number" className="form-control" name="priceOfAdults" value={form.priceOfAdults} onChange={handleChange} />
+            </div>
+            {/* Price of Children */}
+            <div className="col-md-4 mb-3">
+              <label className="form-label">Price of Children</label>
+              <input type="number" className="form-control" name="priceOfChildren" value={form.priceOfChildren} onChange={handleChange} />
+            </div>
+            {/* Price of Infants */}
+            <div className="col-md-4 mb-3">
+              <label className="form-label">Price of Infants</label>
+              <input type="number" className="form-control" name="priceOfInfants" value={form.priceOfInfants} onChange={handleChange} />
+            </div>
+            {/* Description */}
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Description</label>
+              <textarea className="form-control" name="description" value={form.description} onChange={handleChange} rows={2} />
+            </div>
+            {/* Note */}
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Note</label>
+              <textarea className="form-control" name="note" value={form.note || ""} onChange={handleChange} rows={2} />
+            </div>
+            {/* Departure Dates */}
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Departure Dates</label>
+              {form.departureDates.map((item, idx) => (
+                <div key={idx} className="input-group mb-2">
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={item.departureDate1}
+                    onChange={e => handleArrayChange("departureDates", idx, "departureDate1", e.target.value)}
+                  />
+                  <button type="button" className="btn btn-danger" onClick={() => removeArrayField("departureDates", idx)} disabled={form.departureDates.length === 1}>Remove</button>
+                </div>
+              ))}
+              <button type="button" className="btn btn-secondary" onClick={() => addArrayField("departureDates", { departureDate1: "" })}>Add Departure Date</button>
+            </div>
+            {/* Tour Experiences */}
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Tour Experiences</label>
+              {form.tourExperiences.map((item, idx) => (
+                <div key={idx} className="input-group mb-2">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={item.content}
+                    onChange={e => handleArrayChange("tourExperiences", idx, "content", e.target.value)}
+                    placeholder="Experience Content"
+                  />
+                  <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourExperiences", idx)} disabled={form.tourExperiences.length === 1}>Remove</button>
+                </div>
+              ))}
+              <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourExperiences", { content: "" })}>Add Experience</button>
+            </div>
+            {/* Tour Itineraries - Modal Trigger */}
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Tour Itineraries</label>
+              <div>
+                {form.tourItineraries.map((item, idx) => (
+                  <div key={idx} className="border p-3 mb-2 d-flex justify-content-between align-items-center">
+                    <div>
+                      <b>Day {item.dayNumber}:</b> {item.title}
+                    </div>
+                    <div>
+                      <button type="button" className="btn btn-sm btn-warning me-2" onClick={() => openItineraryModal(idx)}>Edit</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Tour Media */}
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Tour Media</label>
+              {form.tourMedia.map((item, idx) => (
+                <div key={idx} className="input-group mb-2">
+                  <input
+                    type="file"
+                    className="form-control"
+                    onChange={e => handleTourMediaFileChange(idx, e.target.files[0])}
+                  />
+                  <select
+                    className="form-select"
+                    value={item.mediaType}
+                    onChange={e => handleArrayChange("tourMedia", idx, "mediaType", e.target.value)}
+                  >
+                    <option value="">Chọn loại media</option>
+                    <option value="Image">Image</option>
+                    <option value="Video">Video</option>
+                  </select>
+                  <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourMedia", idx)} disabled={form.tourMedia.length === 1}>Remove</button>
+                </div>
+              ))}
+              <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourMedia", { mediaFile: null, mediaType: "", mediaUrl: "" })}>Add Media</button>
+            </div>
+          </div>
+          <div className="text-center mt-4">
+            <button type="submit" className="btn btn-primary px-5">
+              Create Tour
+            </button>
+          </div>
+        </form>
+        {/* Itinerary Modal */}
+        <Modal
+          title={itineraryEditIdx !== null ? "Edit Itinerary" : "Add Itinerary"}
+          open={showItineraryModal}
+          onCancel={closeItineraryModal}
+          footer={[
+            <Button key="cancel" onClick={closeItineraryModal}>Cancel</Button>,
+            <Button key="save" type="primary" onClick={saveItinerary}>Save</Button>
+          ]}
+        >
+          <div className="mb-2">
+            <label>Day Number</label>
+            <input type="number" className="form-control" name="dayNumber" value={itineraryForm.dayNumber} onChange={handleItineraryFormChange} />
+          </div>
+          <div className="mb-2">
+            <label>Title</label>
+            <input type="text" className="form-control" name="title" value={itineraryForm.title} onChange={handleItineraryFormChange} />
+          </div>
+          <div className="mb-2">
+            <label>Description</label>
+            <input type="text" className="form-control" name="description" value={itineraryForm.description} onChange={handleItineraryFormChange} />
+          </div>
+          <div className="mb-2">
+            <label>Itinerary Media</label>
+            {itineraryForm.itineraryMedia.map((media, mediaIdx) => (
+              <div key={mediaIdx} className="input-group mb-2">
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={e => handleItineraryMediaFileChange(mediaIdx, e.target.files[0])}
+                />
+                <select
+                  className="form-select"
+                  value={media.mediaType}
+                  onChange={e => handleItineraryMediaChange(mediaIdx, "mediaType", e.target.value)}
+                >
+                  <option value="">Chọn loại media</option>
+                  <option value="Image">Image</option>
+                  <option value="Video">Video</option>
+                </select>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Caption"
+                  value={media.caption}
+                  onChange={e => handleItineraryMediaChange(mediaIdx, "caption", e.target.value)}
+                />
+                <button type="button" className="btn btn-danger" onClick={() => removeItineraryMedia(mediaIdx)} disabled={itineraryForm.itineraryMedia.length === 1}>Remove</button>
+              </div>
+            ))}
+            <button type="button" className="btn btn-secondary" onClick={addItineraryMedia}>Add Itinerary Media</button>
+          </div>
+        </Modal>
+      </div>
     </>
   );
 }

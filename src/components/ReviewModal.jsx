@@ -1,39 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Rate, Upload, Input, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Cookies from "js-cookie";
 import { uploadToCloudinary } from "../services/imgUploadService";
-const ReviewModal = ({ open, onClose, onSubmit,id }) => {
+
+const ReviewModal = ({ open, onClose, onSubmit, id, editData }) => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
-  const [mediaUrl, setMediaUrl] = useState("");
-const [previewUrl, setPreviewUrl] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
 
-const handleUpload = async ({ file }) => {
-  // Hiển thị ảnh preview ngay lập tức
-  const tempUrl = URL.createObjectURL(file);
-  setPreviewUrl(tempUrl);
+  // Nếu có editData thì set lại giá trị form
+  useEffect(() => {
+    if (editData) {
+      setRating(editData.rating || 5);
+      setComment(editData.comment || "");
+      setPreviewUrl(editData.mediaUrl || "");
+      setImageFile(null); // Không set file khi edit, chỉ hiển thị preview
+    } else {
+      setRating(5);
+      setComment("");
+      setImageFile(null);
+      setPreviewUrl("");
+    }
+  }, [editData, open]);
 
-  try {
-    const res = await uploadToCloudinary(file);
-    setMediaUrl(res.secure_url); // ảnh thật sau khi upload
-    setPreviewUrl(res.secure_url); // thay preview bằng ảnh thật
-  } catch (err) {
-    console.error("Lỗi upload ảnh:", err);
-    message.error("Tải ảnh lên thất bại");
-    setPreviewUrl(""); // xóa preview nếu lỗi
-  }
-};
+  const handleUpload = ({ file }) => {
+    setImageFile(file);
+    const tempUrl = URL.createObjectURL(file);
+    setPreviewUrl(tempUrl);
+  };
 
   const handleSubmit = () => {
-    const reviewData = {
-      tourId: id, // hoặc truyền prop nếu cần
-      userId: Cookies.get('userId'), // giả định
-      rating,
-      comment,
-      mediaUrl,
-    };
-    onSubmit(reviewData);
+    const formData = new FormData();
+    formData.append("TourId", id);
+    formData.append("Rating", rating);
+    formData.append("Comment", comment);
+    // Nếu có file, truyền file vào ImageFile
+    if (imageFile) {
+      formData.append("ImageFile", imageFile);
+    }
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ':', pair[1]);
+    }
+    onSubmit(formData);
     onClose();
   };
 
@@ -42,8 +52,8 @@ const handleUpload = async ({ file }) => {
       open={open}
       onCancel={onClose}
       onOk={handleSubmit}
-      title="Viết đánh giá"
-      okText="Gửi đánh giá"
+      title={editData ? "Cập nhật đánh giá" : "Viết đánh giá"}
+      okText={editData ? "Cập nhật" : "Gửi đánh giá"}
       cancelText="Hủy"
     >
       <div className="mb-3">
@@ -65,21 +75,20 @@ const handleUpload = async ({ file }) => {
         <label className="form-label">Tải ảnh lên (nếu có)</label>
         <Upload
           showUploadList={false}
-            accept="image/*"
+          accept="image/*"
           customRequest={handleUpload}
         >
           <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
         </Upload>
         {previewUrl && (
-  <div className="mt-2">
-    <img
-      src={previewUrl}
-      alt="Preview"
-      style={{ maxWidth: "100%", height: "auto", borderRadius: "4px" }}
-    />
-  </div>
-)}
-
+          <div className="mt-2">
+            <img
+              src={previewUrl}
+              alt="Preview"
+              style={{ maxWidth: "100%", height: "auto", borderRadius: "4px" }}
+            />
+          </div>
+        )}
       </div>
     </Modal>
   );
