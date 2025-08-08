@@ -23,13 +23,13 @@ const FilterSidebar = ({ onFilterChange }) => {
           <h5>Filters</h5>
           <a href="#" className="fs-14 link-primary" onClick={() => {
             const reset = {
-              title: '',
-              type: '',
-              transportation: '',
-              startPoint: '',
-              minPrice: '',
-              maxPrice: ''
-            };
+  title: '',
+  type: '',
+  transportation: '',
+  startPoint: '',
+  minPrice: 0,
+  maxPrice: 999999
+};
             setFilters(reset);
             onFilterChange(reset);
           }}>Reset</a>
@@ -96,14 +96,14 @@ const FilterSidebar = ({ onFilterChange }) => {
                     className="form-control mb-2"
                     placeholder="Min Price"
                     value={filters.minPrice}
-                    onChange={(e) => handleChange('minPrice', e.target.value)}
+onChange={(e) => handleChange('minPrice', e.target.value === '' ? 0 : e.target.value)}
                   />
                   <input
                     type="number"
                     className="form-control"
                     placeholder="Max Price"
                     value={filters.maxPrice}
-                    onChange={(e) => handleChange('maxPrice', e.target.value)}
+                    onChange={(e) => handleChange('maxPrice', e.target.value === '' ? 999999 : e.target.value)}
                   />
                 </div>
               </AccordionItem>

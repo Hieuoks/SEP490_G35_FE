@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import FilterSidebar from '../components/FilterSidebar';
 import TourCard from '../components/TourCard';
-import { filterTour } from '../services/tourService';
-import HeaderTopbar from '../components/Header';
-import Footer from '../components/Footer';
+import { getTour } from '../services/tourService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 
@@ -13,35 +11,22 @@ const TourPage = () => {
     type: '',
     transportation: '',
     startPoint: '',
-    minPrice: 0,
-    maxPrice: 999999,
+    minPrice: '',
+    maxPrice: '',
     page: 1,
     pageSize: 6,
   });
 
   const [tourList, setTourList] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  const handleFilterChange = (newFilters) => {
-    setFilters((prev) => ({ ...prev, ...newFilters, page: 1 }));
-  };
-
+  // Lấy tất cả tour
   const fetchTours = async () => {
     try {
-      const res = await filterTour(
-        filters.title,
-        filters.type,
-        filters.transportation,
-        filters.startPoint,
-        filters.minPrice,
-        filters.maxPrice,
-        filters.page,
-        filters.pageSize
-      );
+      const res = await getTour(1, 1000);
+      console.log(res.data); // lấy nhiều để filter phía client
       setTourList(res.data);
-      console.log('Tour List:', res.data);
-      console.log('Total Records:', res.totalRecords);
-      setTotalRecords(res.totalRecords);
     } catch (error) {
       console.error('Error fetching tours:', error);
     }
@@ -49,11 +34,47 @@ const TourPage = () => {
 
   useEffect(() => {
     fetchTours();
-  }, [filters]);
+  }, []);
+
+  // Filter phía client
+  useEffect(() => {
+    let filtered = tourList.filter(tour => {
+      const matchTitle = !filters.title || tour.title.toLowerCase().includes(filters.title.toLowerCase());
+      const matchType = !filters.type || tour.type === filters.type;
+      const matchTransport = !filters.transportation || tour.transportation === filters.transportation;
+      const matchStart = !filters.startPoint || tour.startPoint === filters.startPoint;
+      const min = filters.minPrice !== '' ? Number(filters.minPrice) : 0;
+      const max = filters.maxPrice !== '' ? Number(filters.maxPrice) : 999999;
+      const matchPrice =
+  (tour.priceOfAdults >= min && tour.priceOfAdults <= max) ||
+  (tour.priceOfChildren >= min && tour.priceOfChildren <= max) ||
+  (tour.priceOfInfants >= min && tour.priceOfInfants <= max);
+      return matchTitle && matchType && matchTransport && matchStart && matchPrice;
+    });
+    console.log("Filtered Tours:", filtered);
+    setTotalRecords(filtered.length);
+    // Phân trang
+    const startIdx = (filters.page - 1) * filters.pageSize;
+    setFilteredList(filtered.slice(startIdx, startIdx + filters.pageSize));
+  }, [tourList, filters]);
+
+  const totalPages = Math.ceil(totalRecords / filters.pageSize);
+
+  const handlePageChange = (newPage) => {
+    setFilters((prev) => ({ ...prev, page: newPage }));
+  };
+
+  // Nhận filter từ FilterSidebar
+  const handleFilterChange = (newFilters) => {
+    setFilters((prev) => ({
+      ...prev,
+      ...newFilters,
+      page: 1,
+    }));
+  };
 
   return (
     <>
-      
       <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
         <div className="container">
           <div className="row">
@@ -88,7 +109,7 @@ const TourPage = () => {
                 marginRight: "-12px",
               }}
             >
-              {tourList.map((tour) => (
+              {filteredList?.map((tour) => (
                 <div
                   key={tour.tourId}
                   style={{
@@ -102,10 +123,33 @@ const TourPage = () => {
                 </div>
               ))}
             </div>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <nav className="mt-4">
+                <ul className="pagination justify-content-center">
+                  <li className={`page-item${filters.page === 1 ? " disabled" : ""}`}>
+                    <button className="page-link" onClick={() => handlePageChange(filters.page - 1)}>
+                      &laquo;
+                    </button>
+                  </li>
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <li key={i + 1} className={`page-item${filters.page === i + 1 ? " active" : ""}`}>
+                      <button className="page-link" onClick={() => handlePageChange(i + 1)}>
+                        {i + 1}
+                      </button>
+                    </li>
+                  ))}
+                  <li className={`page-item${filters.page === totalPages ? " disabled" : ""}`}>
+                    <button className="page-link" onClick={() => handlePageChange(filters.page + 1)}>
+                      &raquo;
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            )}
           </div>
         </div>
       </div>
-      
     </>
   );
 };

@@ -1,6 +1,6 @@
 import Header from "../../components/Header";
 import Breadcrumb from "../../components/breadcrumb";
-import Sidebar from "../../components/sidebar";
+import Sidebar from "../../components/sidebar1";
 import Footer from "../../components/Footer";
 import AdminListPackages from "./component/AdminListPackages";
 const ListPackages = () => {

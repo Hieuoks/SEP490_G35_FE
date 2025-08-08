@@ -50,7 +50,7 @@ const LoginForm = () => {
       localStorage.setItem("token", token);
 
       toast.success("Login successful!");
-      navigate('/tour-list') // Hoặc dùng useNavigate nếu dùng React Router
+      navigate('/home') // Hoặc dùng useNavigate nếu dùng React Router
     } catch (error) {
       console.error("Login failed:", error);
       toast.error(error?.message || "Login failed. Please check your credentials.");

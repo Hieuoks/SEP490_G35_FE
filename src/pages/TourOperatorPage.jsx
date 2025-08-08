@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import TourSearch from '../components/TourOpSearch';
-import Sidebar from '../components/SideBar';
+import Sidebar from '../components/TourDetailSideBar';
 import TourList from '../components/TourOpList';
 import HeaderTopbar from '../components/Header';
 import Footer from '../components/Footer';
