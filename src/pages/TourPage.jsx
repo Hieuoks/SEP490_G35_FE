@@ -53,7 +53,7 @@ const TourPage = () => {
 
   return (
     <>
-      
+
       <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
         <div className="container">
           <div className="row">
@@ -105,7 +105,7 @@ const TourPage = () => {
           </div>
         </div>
       </div>
-      
+
     </>
   );
 };

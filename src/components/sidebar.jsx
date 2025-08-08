@@ -1,173 +1,161 @@
-import React, { useState, useEffect } from "react";
-import { getProfile } from "../services/profileService";
-                const Sidebar = () => {
-                    const [userResponse, setUserResponse] = useState(null);
-                    useEffect(() => {
-                        const fetchUserProfile = async () => {
-                            try {
-                                const data = await getProfile();
-                                setUserResponse(data);
-                            } catch (error) {
-                                console.error("Error fetching user profile:", error);
-                            }
-                        };
-                        fetchUserProfile();
-                    }, []);
-                    return (
-                        <div className="col-xl-3 col-lg-4 theiaStickySidebar">
-                        <div className="card user-sidebar mb-4 mb-lg-0">
-                            <div className="card-header user-sidebar-header">
-                                <div className="profile-content rounded-pill">
-                                    <div className="d-flex align-items-center justify-content-between">
-                                        <div className="d-flex align-items-center justify-content-center">
-                                            <img
-                                                src={userResponse?.avatar}
-                                                alt="image"
-                                                className="img-fluid avatar avatar-lg rounded-circle flex-shrink-0 me-1"
-                                            />
-                                            <div>
-                                                <h6 className="fs-16">{userResponse?.userName}</h6>
-                                                {/* <span className="fs-14 text-gray-6">Since 10 May 2025</span> */}
-                                            </div>
+import React, { useState } from 'react';
+const Sidebar = () => {
+    const [popularOpen, setPopularOpen] = useState(true);
+    const [priceOpen, setPriceOpen] = useState(true);
+    const [tourTypesOpen, setTourTypesOpen] = useState(true);
+    const [accommodationOpen, setAccommodationOpen] = useState(true);
+    const [activitiesOpen, setActivitiesOpen] = useState(true);
+    const [mealsOpen, setMealsOpen] = useState(true);
+    const [guestsOpen, setGuestsOpen] = useState(true);
+    const [reviewsOpen, setReviewsOpen] = useState(true);
+
+    const filterSections = [
+        {
+            title: 'Popular',
+            isOpen: popularOpen,
+            setOpen: setPopularOpen,
+            icon: 'fas fa-trophy',
+            items: ['Local Guide', 'VIP Access', 'Photographs', 'Adventure Gears'],
+        },
+        {
+            title: 'Price Per Night',
+            isOpen: priceOpen,
+            setOpen: setPriceOpen,
+            icon: 'fas fa-dollar-sign',
+            content: (
+                <div>
+                    <input type="text" id="range_03" readOnly />
+                    <div className="filter-range-amount">
+                        <p className="fs-6">Range: <span className="text-muted fw-medium">$200 - $800</span></p>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            title: 'Tour Types',
+            isOpen: tourTypesOpen,
+            setOpen: setTourTypesOpen,
+            icon: 'fas fa-map',
+            items: ['Ecotourism', 'Adventure Tour', 'Group Tours', 'Beach Tours', 'Honey Moon', 'Historical Tours', 'Summer Trip', 'City Trip'],
+            more: true,
+        },
+        {
+            title: 'Accommodation Type',
+            isOpen: accommodationOpen,
+            setOpen: setAccommodationOpen,
+            icon: 'fas fa-hotel',
+            items: ['Hotel', 'Campsite', 'Resort', 'Cabin'],
+        },
+        {
+            title: 'Activities',
+            isOpen: activitiesOpen,
+            setOpen: setActivitiesOpen,
+            icon: 'fas fa-hiking',
+            items: ['Hiking', 'Sightseeing', 'Wildlife Safari', 'Boat Tours'],
+        },
+        {
+            title: 'Meal plans available',
+            isOpen: mealsOpen,
+            setOpen: setMealsOpen,
+            icon: 'fas fa-utensils',
+            items: ['All inclusive', 'Breakfast', 'Lunch', 'Dinner'],
+        },
+        {
+            title: 'Guests',
+            isOpen: guestsOpen,
+            setOpen: setGuestsOpen,
+            icon: 'fas fa-users',
+            items: ['1 - 5', '5 - 10', '10 - 15', '15 - 20', '20+'],
+        },
+        {
+            title: 'Reviews',
+            isOpen: reviewsOpen,
+            setOpen: setReviewsOpen,
+            icon: 'fas fa-star',
+            items: [
+                { label: '5 Star', stars: 5 },
+                { label: '4 Star', stars: 4 },
+                { label: '3 Star', stars: 3 },
+                { label: '2 Star', stars: 2 },
+                { label: '1 Star', stars: 1 },
+            ],
+        },
+    ];
+
+    return (
+        <div className="col-xl-3 col-lg-3">
+            <div className="card filter-sidebar mb-4 mb-lg-0">
+                <div className="card-header d-flex align-items-center justify-content-between p-3">
+                    <h5>Filters</h5>
+                    <a href="#" className="fs-6 text-primary">Reset</a>
+                </div>
+                <div className="card-body p-0">
+                    <form action="search.html">
+                        <div className="p-3 border-bottom">
+                            <label className="form-label fs-6">Search by Tour Type</label>
+                            <div className="input-group">
+                                <span className="input-group-text">
+                                    <i className="fas fa-search"></i>
+                                </span>
+                                <input type="text" className="form-control" placeholder="Search by Tour Type" />
+                            </div>
+                        </div>
+                        <div className="accordion accordion-list">
+                            {filterSections.map((section, index) => (
+                                <div key={index} className="accordion-item border-bottom p-3">
+                                    <div className="accordion-header">
+                                        <div
+                                            className="accordion-button p-0"
+                                            onClick={() => section.setOpen(!section.isOpen)}
+                                        >
+                                            <i className={`${section.icon} me-2 text-primary`}></i>{section.title}
                                         </div>
-                                        <div>
-                                            <div className="d-flex align-items-center justify-content-center">
-                                                <a
-                                                    href="profile-settings.html"
-                                                    className="p-1 rounded-circle btn btn-light d-flex align-items-center justify-content-center"
-                                                >
-                                                    <i className="isax isax-edit-2 fs-14"></i>
-                                                </a>
-                                            </div>
+                                    </div>
+                                    <div className={`accordion-collapse collapse ${section.isOpen ? 'show' : ''}`}>
+                                        <div className="accordion-body pt-2">
+                                            {section.content || (
+                                                <div>
+                                                    {section.items.map((item, idx) => (
+                                                        <div key={idx} className="form-check d-flex align-items-center ps-0 mb-2">
+                                                            <input
+                                                                className="form-check-input ms-0 mt-0"
+                                                                type="checkbox"
+                                                                id={`${section.title.toLowerCase().replace(' ', '-')}${idx + 1}`}
+                                                                defaultChecked={section.title === 'Tour Types' && idx < 4 || section.title === 'Accommodation Type' && item === 'Cabin' || section.title === 'Activities' && item === 'Boat Tours' || section.title === 'Meal plans available' && item === 'Dinner' || section.title === 'Guests' && item === '15 - 20'}
+                                                            />
+                                                            <label
+                                                                className="form-check-label ms-2"
+                                                                htmlFor={`${section.title.toLowerCase().replace(' ', '-')}${idx + 1}`}
+                                                            >
+                                                                {section.title === 'Reviews' ? (
+                                                                    <span className="rating d-flex align-items-center">
+                                                                        {[...Array(item.stars)].map((_, i) => (
+                                                                            <i key={i} className="fas fa-star text-primary me-1"></i>
+                                                                        ))}
+                                                                        <span className="ms-2">{item.label}</span>
+                                                                    </span>
+                                                                ) : (
+                                                                    item
+                                                                )}
+                                                            </label>
+                                                        </div>
+                                                    ))}
+                                                    {section.more && (
+                                                        <a href="#" className="text-primary fw-medium fs-6">
+                                                            See Less
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="card-body user-sidebar-body">
-                                <ul>
-                                    <li>
-                                        <span className="fs-14 text-gray-3 fw-medium mb-2">Main</span>
-                                    </li>
-                                    <li>
-                                        <a href="dashboard.html" className="d-flex align-items-center">
-                                            <i className="isax isax-grid-55"></i> Dashboard
-                                        </a>
-                                    </li>
-                                    <li className="submenu">
-                                        <a href="javascript:void(0);" className="d-block">
-                                            <i className="isax isax-calendar-tick5"></i>
-                                            <span>My Bookings</span>
-                                            <span className="menu-arrow"></span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a
-                                                    href="customer-flight-booking.html"
-                                                    className="fs-14 d-inline-flex align-items-center"
-                                                >
-                                                    Flights
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    href="customer-hotel-booking.html"
-                                                    className="fs-14 d-inline-flex align-items-center"
-                                                >
-                                                    Hotels
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    href="customer-car-booking.html"
-                                                    className="fs-14 d-inline-flex align-items-center"
-                                                >
-                                                    Cars
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    href="customer-cruise-booking.html"
-                                                    className="fs-14 d-inline-flex align-items-center"
-                                                >
-                                                    Cruise
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    href="customer-tour-booking.html"
-                                                    className="fs-14 d-inline-flex align-items-center"
-                                                >
-                                                    Tour
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="review.html" className="d-flex align-items-center">
-                                            <i className="isax isax-magic-star5"></i> My Reviews
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div className="message-content">
-                                            <a href="chat.html" className="d-flex align-items-center">
-                                                <i className="isax isax-message-square5"></i> Messages
-                                            </a>
-                                            <span className="msg-count rounded-circle">02</span>
-                                        </div>
-                                    </li>
-                                    <li className="mb-2">
-                                        <a href="wishlist.html" className="d-flex align-items-center">
-                                            <i className="isax isax-heart5"></i> Wishlist
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <span className="fs-14 text-gray-3 fw-medium mb-2">Finance</span>
-                                    </li>
-                                    <li>
-                                        <a href="wallet.html" className="d-flex align-items-center">
-                                            <i className="isax isax-wallet-add-15"></i> Wallet
-                                        </a>
-                                    </li>
-                                    <li className="mb-2">
-                                        <a href="payment.html" className="d-flex align-items-center">
-                                            <i className="isax isax-money-recive5"></i> Payments
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <span className="fs-14 text-gray-3 fw-medium mb-2">Account</span>
-                                    </li>
-                                    <li>
-                                        <a
-                                            href="/profile"
-                                            className="d-flex align-items-center active"
-                                        >
-                                            <i className="isax isax-profile-tick5"></i> My Profile
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div className="message-content">
-                                            <a href="notification.html" className="d-flex align-items-center">
-                                                <i className="isax isax-notification-bing5"></i> Notifications
-                                            </a>
-                                            <span className="msg-count bg-purple rounded-circle">05</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="/setting/editprofile" className="d-flex align-items-center">
-                                            <i className="isax isax-setting-25"></i> Settings
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="index.html" className="d-flex align-items-center pb-0">
-                                            <i className="isax isax-logout-15"></i> Logout
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            ))}
                         </div>
-                        </div>
-                    );
-                    
-                };
-
-                export default Sidebar;
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+};
+export default Sidebar;

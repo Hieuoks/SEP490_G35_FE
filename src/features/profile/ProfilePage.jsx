@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../components/Header";
 import Breadcrumb from "../../components/breadcrumb";
 import Footer from "../../components/Footer";
-import Sidebar from "../../components/sidebar";
+import OpeSidebar from "../../components/OpeSidebar";
 import MyProfile from "./component/myprofile";
 const ProfilePage = () => {
     return (
@@ -12,7 +12,7 @@ const ProfilePage = () => {
             <div className="content">
                 <div className="container">
                     <div className="row">
-                        <Sidebar />
+                        <OpeSidebar />
                         <MyProfile />
                     </div>
                 </div>

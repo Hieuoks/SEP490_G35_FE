@@ -2,10 +2,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const userId = Cookies.get('userId');
-const BASE_URL = 'http://localhost:5298/api'
+const BASE_URL = 'https://localhost:7012/api';
 export const getProfile = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/Profile/ViewProfile/${userId}`,  {
+    const response = await axios.get(`${BASE_URL}/Profile/ViewProfile/${userId}`, {
       headers: {
         'Content-Type': 'application/json',
         'userId': userId
@@ -20,7 +20,7 @@ export const getProfile = async () => {
 };
 export const updateProfile = async (formData) => {
   try {
-    const response = await axios.put(`${BASE_URL}/Profile/UpdateProfile`,formData, {
+    const response = await axios.put(`${BASE_URL}/Profile/UpdateProfile`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

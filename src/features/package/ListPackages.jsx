@@ -1,6 +1,6 @@
 import Header from "../../components/Header";
 import Breadcrumb from "../../components/breadcrumb";
-import Sidebar from "../../components/sidebar";
+import OpeSidebar from "../../components/OpeSidebar";
 import Footer from "../../components/Footer";
 import AdminListPackages from "./component/AdminListPackages";
 const ListPackages = () => {
@@ -11,7 +11,7 @@ const ListPackages = () => {
             <div className="content">
                 <div className="container">
                     <div className="row">
-                        <Sidebar />
+                        <OpeSidebar />
                         <AdminListPackages />
                     </div>
                 </div>

@@ -1,40 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { getOperatorBooking, updateContract, updateBookingStatus, updatePaymentStatus } from "../../../services/bookingService";
+import { useNavigate, useParams } from 'react-router-dom';
+import Cookies from "js-cookie";
+import { getBookingByDepartId } from "../../../services/bookingService";
 import { FaEye, FaChevronLeft, FaChevronRight, FaEdit, FaPencilAlt } from "react-icons/fa";
-const BookingOpeCom = () => {
+const BookingDepartCom = () => {
     const [BookingRes, setBookingRes] = useState([]);
     const navigate = useNavigate();
     const [keyword, setKeyword] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(1);
-    const fetchPackages = async (keyword) => {
+    const { departureDateId } = useParams();
+    const [bookingId, setBookingId] = useState("");
+    const [departureDate, setDepartureDate] = useState("");
+
+    const fetchPackages = async () => {
+        console.log("req", departureDateId);
         try {
-            const data = await getOperatorBooking(keyword);
-            setBookingRes(data.bookings);
-            console.log("API response:", data.bookings);
+            const response = await getBookingByDepartId(departureDateId);
+            const data = response.data.bookings;
+            const sortedBookings = [...data].sort((a, b) => {
+                const dateA = new Date(a.booking.bookingDate);
+                const dateB = new Date(b.booking.bookingDate);
+                return dateB - dateA; // Giảm dần (mới nhất trước)
+            });
+            const searched = keyword
+                ? sortedBookings.filter(item =>
+                    item.billingInfo?.email.toLowerCase().includes(keyword.toLowerCase()))
+                : sortedBookings;
+
+            setBookingRes(searched);
+            console.log("API response:", data);
         } catch (error) {
+            setBookingRes([]);
             console.error("Error fetching packages:", error);
         }
     };
     useEffect(() => {
-
-        fetchPackages(keyword);
+        fetchPackages();
     }, [keyword]);
-
-    // Sắp xếp danh sách theo ngày book giảm dần (mới nhất lên đầu)
-    const sortedBookings = [...BookingRes].sort((a, b) => {
-        const dateA = new Date(a.booking.bookingDate);
-        const dateB = new Date(b.booking.bookingDate);
-        return dateB - dateA; // Giảm dần (mới nhất trước)
-    });
 
     // Tính toán pagination
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = sortedBookings.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(sortedBookings.length / itemsPerPage);
+    const currentItems = BookingRes.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(BookingRes.length / itemsPerPage);
 
     // Reset về trang 1 khi thay đổi keyword
     useEffect(() => {
@@ -52,57 +62,6 @@ const BookingOpeCom = () => {
         setCurrentPage(1);
     };
 
-    const [contract, setContract] = useState("");
-    const [bookingStatus, setBookingStatus] = useState("");
-    const [paymentStatus, setPaymentStatus] = useState("");
-    const [bookingId, setBookingId] = useState("");
-    // Hàm xử lý update
-    const handleUpdate = (e) => {
-        e.preventDefault();
-        console.log("Update booking:", bookingId, contract, bookingStatus, paymentStatus);
-        if (contract !== "") {
-            updateContract(bookingId, contract)
-                .then((response) => {
-                    toast.success("Contract updated successfully");
-                    console.log("Contract updated successfully:", response);
-                    setBookingRes((prevBookings) =>
-                        prevBookings.map((booking) =>
-                            booking.bookingId === bookingId ? { ...booking, contract: contract } : booking
-                        )
-                    );
-                    fetchPackages(keyword);
-                    // Reset contract input after successful update
-                })
-                .catch((error) => {
-                    console.error("Error updating contract:", error);
-                    toast.error("Failed to update contract");
-                });
-        }
-
-        if (paymentStatus !== "") {
-            updatePaymentStatus(bookingId, paymentStatus)
-                .then((response) => {
-                    toast.success("Payment status updated successfully");
-                    console.log("Payment status updated successfully:", response);
-                    setBookingRes((prevBookings) =>
-                        prevBookings.map((booking) =>
-                            booking.bookingId === bookingId ? { ...booking, paymentStatus: paymentStatus } : booking
-                        )
-                    );
-                    // Reset payment status input after successful update
-                })
-                .catch((error) => {
-                    console.error("Error updating payment status:", error);
-                    toast.error("Failed to update payment status");
-                });
-        }
-        setContract("");
-        setBookingStatus("");
-        setPaymentStatus("");
-
-        navigate("/operator/booking");
-    };
-
 
     return (
         <div className="col-xl-9 col-lg-8">
@@ -110,8 +69,8 @@ const BookingOpeCom = () => {
             <div className="card booking-header border-0">
                 <div className="card-body header-content d-flex align-items-center justify-content-between flex-wrap ">
                     <div>
-                        <h6 className="mb-1"> Bookings</h6>
-                        <p className="fs-14 text-gray-6 fw-normal ">Total:  {BookingRes.length}</p>
+                        <h6 className="mb-1">{Cookies.get("tourTitle") || "No titlte"}</h6>
+                        <p className="fs-14 text-gray-6 fw-normal ">Depart Date: {new Date(Cookies.get("Depart")).toLocaleDateString('en-GB')}</p>
                     </div>
                 </div>
             </div>
@@ -144,13 +103,11 @@ const BookingOpeCom = () => {
                             <thead className="thead-light">
                                 <tr>
                                     <th>ID</th>
-                                    <th>Tour</th>
-                                    <th>DepartureDate</th>
                                     <th>Booked By</th>
                                     <th>Guest</th>
                                     <th>Pricing</th>
                                     <th>Booked on</th>
-                                    <th>Status</th>
+                                    <th>Payment Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -163,17 +120,9 @@ const BookingOpeCom = () => {
                                     currentItems.map((booking) => (
                                         <tr key={booking.bookingId}>
                                             <td><a href="javascript:void(0);" className="link-primary fw-medium" data-bs-toggle="modal" data-bs-target="#upcoming">{booking.bookingId}</a></td>
-                                            <td>
-                                                <div>
-                                                    <p className="text-dark mb-0 fw-medium fs-14"><a href="hotel-details.html">{booking.tour.title}</a></p>
 
-                                                </div>
-                                            </td>
                                             <td>
-                                                <span className="fs-14 fw-normal text-gray-6">{new Date(booking.tour.departureDate).toLocaleDateString('en-GB')}</span>
-                                            </td>
-                                            <td>
-                                                <h6 className="fs-14 mb-1">{booking.billingInfo.username}</h6>
+                                                <h6 className="fs-14 mb-1">{booking.billingInfo.email}</h6>
                                                 {/* <span className="fs-14 fw-normal text-gray-6"></span> */}
                                             </td>
                                             <td>
@@ -185,17 +134,13 @@ const BookingOpeCom = () => {
                                             </td>
                                             <td>{new Date(booking.booking.bookingDate).toLocaleString('en-GB')}</td>
                                             <td>
-                                                {booking.paymentInfo.bookingStatus === "Completed" ? (
+                                                {booking.paymentInfo.paymentStatus === "Paid" ? (
                                                     <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
-                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Completed
-                                                    </span>
-                                                ) : booking.paymentInfo.bookingStatus === "Canceled" ? (
-                                                    <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
-                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Canceled
+                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Paid
                                                     </span>
                                                 ) : (
-                                                    <span className="badge badge-info rounded-pill d-inline-flex align-items-center fs-10">
-                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Pending
+                                                    <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
+                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>UnPaid
                                                     </span>
                                                 )}
                                             </td>
@@ -269,10 +214,10 @@ const BookingOpeCom = () => {
                 </div>
             </div>
             {/* <!-- /Pagination --> */}
-            {BookingRes.length === 0 ? (
+            {currentItems.length === 0 ? (
                 <div>No content</div>
             ) : (
-                BookingRes.map((booking) => (
+                currentItems.map((booking) => (
                     <div key={booking.bookingId}>
                         <div className="modal fade" id={`View${booking.bookingId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" >
                             <div className="modal-dialog  modal-dialog-centered modal-xl">
@@ -420,44 +365,6 @@ const BookingOpeCom = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="modal fade" id={`Update${booking.bookingId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" >
-                            <div className="modal-dialog  modal-dialog-centered modal-lg">
-                                <div className="modal-content">
-                                    <div className="modal-header">
-                                        <h5>Booking Update <span className="fs-14 fw-medium text-primary">#{booking.bookingId}</span></h5>
-                                        <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                                    </div>
-
-                                    <div className="modal-body">
-                                        <div className="upcoming-content">
-                                            <div className="form-group mb-3">
-                                                <label className="form-label">Contract</label>
-                                                <input type="file" className="form-control" onChange={(e) => { setContract(e.target.files[0]); }} placeholder="Enter contract" />
-                                            </div>
-                                            <div className="row gy-3">
-
-
-                                                <div className="col-lg-12">
-                                                    <label className="form-label">Payment Status</label>
-                                                    <select className="form-select" onChange={(e) => { setPaymentStatus(e.target.value); }}>
-                                                        <option value="Paid" selected={booking.paymentInfo.paymentStatus === "Paid"}>Paid</option>
-                                                        <option value="Pending" selected={booking.paymentInfo.paymentStatus === "Pending"}>Unpaid</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div className="modal-footer">
-                                        <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={handleUpdate}>Save</button>
-                                        <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal">Close</a>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                 ))
@@ -465,4 +372,5 @@ const BookingOpeCom = () => {
         </div>
     );
 }
-export default BookingOpeCom;
+export default BookingDepartCom;
+

@@ -2,9 +2,9 @@ import Header from "../../components/Header";
 import Breadcrumb from "../../components/breadcrumb";
 import OpeSidebar from "../../components/OpeSidebar";
 import Footer from "../../components/Footer";
-import BookingOpeCom from "./component/BookingOpeCom";
-const BookingOperator = () => {
-    return (
+import CRUDDepartCom from "./component/CRUDDepartCom";
+const CRUDDeparture = () => {
+    return(
         <div>
             <Header />
             <Breadcrumb/>
@@ -12,7 +12,7 @@ const BookingOperator = () => {
                 <div className="container">
                     <div className="row">
                         <OpeSidebar />
-                        <BookingOpeCom />
+                        <CRUDDepartCom />
                     </div>
                 </div>
             </div>
@@ -25,4 +25,4 @@ const BookingOperator = () => {
         </div>
     );
 }
-export default BookingOperator;
+export default CRUDDeparture;

@@ -2,17 +2,17 @@ import Header from "../../components/Header";
 import Breadcrumb from "../../components/breadcrumb";
 import OpeSidebar from "../../components/OpeSidebar";
 import Footer from "../../components/Footer";
-import BookingOpeCom from "./component/BookingOpeCom";
-const BookingOperator = () => {
-    return (
+import MyPackageCom from "./component/MyPackageCom";
+const MyPackage = () => {
+    return(
         <div>
-            <Header />
-            <Breadcrumb/>
+            <Header/>
+            <Breadcrumb />
             <div className="content">
                 <div className="container">
                     <div className="row">
                         <OpeSidebar />
-                        <BookingOpeCom />
+                        <MyPackageCom />
                     </div>
                 </div>
             </div>
@@ -25,4 +25,4 @@ const BookingOperator = () => {
         </div>
     );
 }
-export default BookingOperator;
+export default MyPackage;

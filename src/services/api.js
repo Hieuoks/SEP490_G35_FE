@@ -32,8 +32,8 @@ export function getHeaderMultiple() {
 
 export function getHeader() {
     return {
-         'Content-Type': 'application/json',
-    'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
     };
 }
@@ -49,7 +49,7 @@ axios.interceptors.response.use(
     (fail) => {
         let msg = fail.response?.data.message && !Array.isArray(fail.response.data.message) ? fail.response.data.message : 'An error occurred, please try again later.';
         message.error(msg === 'Forbidden resource' ? 'You do not have permission or data does not exist' : msg);
-        if (msg === 'Forbidden resource' &&  fail.response.status === 403) {
+        if (msg === 'Forbidden resource' && fail.response.status === 403) {
         }
 
         return Promise.reject(fail);
@@ -62,7 +62,7 @@ const api = {
             const response = await axios.post(endpoint, params, {
                 headers: HEADERS_NOT_AUTHORIZATION
             });
-            
+
             return response.data;
         } catch (err) {
             if (err.response) {
@@ -76,7 +76,7 @@ const api = {
             }
         }
     }
-,    
+    ,
     post: (endpoint, params) => {
         return axios.default
             .post(endpoint, params, {

@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { message } from 'antd';
 import { getHeader } from './api';
-const BASE_URL = 'http://localhost:5298/api';
+const BASE_URL = 'https://localhost:7012/api';
 
-export const getBookingCustomer = async (page=1, pageSize=6) => {
+export const getBookingCustomer = async (page = 1, pageSize = 6) => {
   try {
-    const response = await axios.get(`${BASE_URL}/Booking/customer`,{
-        headers: getHeader(),
+    const response = await axios.get(`${BASE_URL}/Booking/customer`, {
+      headers: getHeader(),
     });
     return response.data;
   } catch (error) {
@@ -28,7 +28,7 @@ export const getTourDetail = async (id) => {
 };
 export const createBooking = async (data) => {
   try {
-    
+
     const response = await axios.post(`${BASE_URL}/Booking`, data, {
       headers: getHeader(),
       maxBodyLength: Infinity,
@@ -41,16 +41,16 @@ export const createBooking = async (data) => {
   }
 };
 
-export const getOperatorBooking = async (keyword) => {
+export const getOperatorBooking = async (UserName) => {
   try {
-    if(!keyword) {
-      const response = await axios.get(`https://localhost:7012/api/Booking/tour-operator`, {
+    if (!UserName) {
+      const response = await axios.get(`${BASE_URL}/Booking/tour-operator`, {
         headers: getHeader(),
       });
       return response.data;
-    }else{
-      const response = await axios.get(`https://localhost:7012/api/Booking/tour-operator?Keyword=${keyword}`, {
-      headers: getHeader(),
+    } else {
+      const response = await axios.get(`${BASE_URL}/Booking/tour-operator?UserName=${UserName}`, {
+        headers: getHeader(),
       });
       return response.data;
     }
@@ -61,22 +61,69 @@ export const getOperatorBooking = async (keyword) => {
   }
 }
 
-export const getBooking  = async (keyword) => {
+export const updateBookingStatus = async (bookingId, bookingStatus) => {
   try {
-    if (!keyword) {
-      const response = await axios.get(`https://localhost:7012/api/Booking`, {
+    const response = await axios.put(`${BASE_URL}/Booking/update-booking-status`, {
+      bookingId: bookingId,
+      bookingStatus: bookingStatus,
+    }, {
       headers: getHeader(),
-      });
-      return response.data;
-    }else{
-      const response = await axios.get(`https://localhost:7012/api/Booking?Keyword=${keyword}`, {
-      headers: getHeader(),
-      });
-      return response.data;
-    }
+      method: 'PUT',
+    });
+    return response.data;
   } catch (error) {
-    console.error('Lỗi lấy danh sách booking:', error);
-    message.error('Không thể tải danh sách booking');
+    console.error(`update booking status error!`, error);
+    message.error('Không thể cập nhật trạng thái booking');
+    throw error;
+  }
+}
+export const updatePaymentStatus = async (bookingId, paymentStatus) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/Booking/update-payment-status`, {
+      bookingId: bookingId,
+      paymentStatus: paymentStatus,
+    }, {
+      headers: getHeader(),
+      method: 'PUT',
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`update payment status error!`, error);
+    message.error('Không thể cập nhật trạng thái booking');
+    throw error;
+  }
+}
+
+export const updateContract = async (bookingId, contract) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/ManageContract/UpdateContractForTourBooking`,
+      {
+        Contract: contract, // Dữ liệu hợp đồng
+        BookingId: bookingId, // ID của booking
+      }, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      method: 'PUT',
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`update contract error!`, error);
+    message.error('Không thể cập nhật hợp đồng');
+    throw error;
+  }
+}
+
+export const getBookingByDepartId = async (departureDateId) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/DepartureDates/departure-date/${departureDateId}/bookings`,
+      {
+        headers: getHeader(),
+      });
+    return response.data;
+  } catch (error) {
+    console.error(`update contract error!`, error);
+    message.error('Không thể cập nhật hợp đồng');
     throw error;
   }
 }
