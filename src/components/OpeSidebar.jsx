@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getProfile } from "../services/profileService";
 import Cookies from 'js-cookie';
-
+import { checkpackage } from "../services/packageService";
+const userId = Cookies.get('userId');
 const role = Cookies.get('roleName');
 const OpeSidebar = () => {
 
@@ -18,6 +19,22 @@ const OpeSidebar = () => {
         };
         fetchUserProfile();
     }, []);
+    const [mypackage,setMyPackage] = useState([]);
+    const getMyPackages = async () => {
+    
+                const data = await checkpackage(userId).then((res) => {
+                    setMyPackage(res);
+                })
+                .catch((error) => {
+                    setMyPackage([]);
+                    console.error("Error checking package:", error);
+                });   
+        };
+    useEffect(() => {
+        getMyPackages();
+    }, []);
+    
+
     return (
         <div className="col-xl-3 col-lg-4 theiaStickySidebar">
             <div className="card user-sidebar mb-4 mb-lg-0">
@@ -83,18 +100,29 @@ const OpeSidebar = () => {
                                     </a>
 
                                 </li>
-
+                                <li>
+                                    <div className="message-content">
+                                        <a href="/note" className="d-flex align-items-center">
+                                            <i className="isax isax-message-square5"></i> Notes
+                                        </a>
+                                        {/* <span className="msg-count rounded-circle">02</span> */}
+                                    </div>
+                                </li>
+                                {mypackage.length !==0 && mypackage.tourGuideFunction ?(
                                 <li className="mb-2">
                                     <a href="/operator/guides" className="d-flex align-items-center">
                                         <i className="isax isax-heart5"></i> TourGuides
                                     </a>
                                 </li>
+                                ):(
+                                    <li></li>
+                                ) }
                                 <li>
                                     <span className="fs-14 text-gray-3 fw-medium mb-2">Finance</span>
                                 </li>
                                 <li>
-                                    <a href="review.html" className="d-flex align-items-center">
-                                        <i className="isax isax-magic-star5"></i> My packages
+                                    <a href="/operator/package" className="d-flex align-items-center">
+                                        <i className="isax isax-magic-star5"></i> Transactions
                                     </a>
                                 </li>
                             </div>
@@ -112,6 +140,15 @@ const OpeSidebar = () => {
                                     </div>
                                 </li>
                                 <li>
+
+                                    <div className="message-content">
+                                        <a href="/note" className="d-flex align-items-center">
+                                            <i className="isax isax-message-square5"></i> Note
+                                        </a>
+                                        {/* <span className="msg-count rounded-circle">02</span> */}
+                                    </div>
+                                </li>
+
                             <div className="message-content">
                                 <a href="booking" className="d-flex align-items-center">
                                     <i className="isax isax-notification-bing5"></i> Bookings
@@ -119,9 +156,10 @@ const OpeSidebar = () => {
             
                             </div>
                         </li>
+
                             </div>
                         )}
-
+                        
 
                         <li>
                             <span className="fs-14 text-gray-3 fw-medium mb-2">Account</span>
@@ -134,7 +172,7 @@ const OpeSidebar = () => {
                                 <i className="isax isax-profile-tick5"></i> My Profile
                             </a>
                         </li>
-                        
+
                         <li>
                             <a href="/setting/editprofile" className="d-flex align-items-center">
                                 <i className="isax isax-setting-25"></i> Settings

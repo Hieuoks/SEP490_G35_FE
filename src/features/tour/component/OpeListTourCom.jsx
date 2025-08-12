@@ -78,9 +78,9 @@ const OpeListTourCom = () => {
     
 
     return (
-        <div class="col-xl-9 col-lg-8">
-            <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-                <div class="place-nav listing-nav">
+        <div className="col-xl-9 col-lg-8">
+            <div className="d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+                <div className="place-nav listing-nav">
                     <div className="input-icon-start  me-2 position-relative">
                         <span className="icon-addon">
                             <FaSearch className="fs-14" />
@@ -88,69 +88,66 @@ const OpeListTourCom = () => {
                         <input type="text" className="form-control" placeholder="Search" onChange={(e) => setKeyword(e.target.value)} />
                     </div>
                 </div>
-                {/* <div class="dropdown mb-4">
-                    <select className="dropdown-toggle text-gray-6 btn  rounded border d-inline-flex align-items-center" defaultValue={tourStatus}>
-                        <option value="All">All Tour</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
-                </div> */}
+                
             </div>
-            <div class="tab-content">
+            <div className="tab-content">
 
                 {/* <!-- Hotels List --> */}
-                <div class="tab-pane fade active show" id="Hotels-list">
-                    <div class="card border-0">
-                        <div class="card-body d-flex align-items-center justify-content-between flex-wrap row-gap-2">
+                <div className="tab-pane fade active show" id="Hotels-list">
+                    <div className="card border-0">
+                        <div className="card-body d-flex align-items-center justify-content-between flex-wrap row-gap-2">
                             <div>
-                                <h5 class="mb-1">Tours</h5>
+                                <h5 className="mb-1">Tours</h5>
                                 <p>Totals : {totalItems}</p>
                             </div>
                             <div>
-                                <a href="/tour/create" class="btn btn-primary d-inline-flex align-items-center me-0"><FaPlus className="me-1 fs-16" />Add Listing</a>
+                                <a href="/tour/create" className="btn btn-primary d-inline-flex align-items-center me-0"><FaPlus className="me-1 fs-16" />Add Listing</a>
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
+                    <div className="row justify-content-center">
                         {loading ? (
-                            <div class="col-12 text-center py-5">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
+                            <div className="col-12 text-center py-5">
+                                <div className="spinner-border text-primary" role="status">
+                                    <span className="visually-hidden">Loading...</span>
                                 </div>
-                                <p class="mt-2">Đang tải dữ liệu...</p>
+                                <p className="mt-2">Đang tải dữ liệu...</p>
                             </div>
                         ) : listTour.length === 0 ? (
-                            <div class="col-12 text-center py-5">
-                                <p class="text-muted">Không có tour nào được tìm thấy</p>
+                            <div className="col-12 text-center py-5">
+                                <p className="text-muted">Không có tour nào được tìm thấy</p>
                             </div>
                         ) : (
                             listTour.map((tour) => (
-                                <div class="col-xl-4 col-md-6 d-flex">
-                                    <div class="place-item mb-4 flex-fill">
-                                        <div class="place-img">
+                                <div className="col-xl-4 col-md-6 d-flex" key={tour.tourId}>
+                                    <div className="place-item mb-4 flex-fill">
+                                        <div className="place-img">
 
-                                            <a href={`/tour/detail/${tour.tourId}`} class="d-block" target="_blank">
-                                                <img src="https://res.cloudinary.com/dfn1slnuk/image/upload/v1753820584/ProjectSEP490/Profile/user_avatars/osgvpvxmjqvpl2o6chwy.jpg" class="img-fluid" alt="img" />
+                                            <a href={`/tour/detail/${tour.tourId}`} className="d-block" target="_blank">
+                                                <img src={tour.tourAvartar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg" } className="img-fluid" alt="img" onError={(e) => {
+                                                                                        e.target.onError = null;
+                                                                                        e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
+                                                                                    }} />
                                             </a>
-                                            <div class="edit-delete-item d-flex align-items-center">
-                                                <a href={`/tour/update/${tour.tourId}`} class="me-2 d-inline-flex align-items-center justify-content-center"><FaEdit /></a>
-                                                <a href="#" class="d-inline-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#delete-list"><FaTrash /></a>
+                                            <div className="edit-delete-item d-flex align-items-center">
+                                                <a href={`/tour/update/${tour.tourId}`} className="me-2 d-inline-flex align-items-center justify-content-center"><FaEdit /></a>
+                                                <a href="#" className="d-inline-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#delete-list"><FaTrash /></a>
                                             </div>
-                                            <div class="fav-item">
+                                            <div className="fav-item">
                                                 {tour.isActive ? (
-                                                    <span class="badge bg-info d-inline-flex align-items-center"><i class="isax isax-check me-1"></i>Active</span>
+                                                    <span className="badge bg-info d-inline-flex align-items-center"><i className="isax isax-check me-1"></i>Active</span>
                                                 ) : (
-                                                    <span class="badge bg-danger d-inline-flex align-items-center"><i class="isax isax-close me-1"></i>Inactive</span>
+                                                    <span className="badge bg-danger d-inline-flex align-items-center"><i className="isax isax-close me-1"></i>Inactive</span>
                                                 )}
                                             </div>
                                         </div>
-                                        <div class="place-content">
-                                            <h5 class="mb-1 text-truncate"><a href="hotel-details.html">{tour.title}</a></h5>
-                                            <p class="d-flex align-items-center mb-2"><FaStore className="me-2" />{tour.companyName}</p>
-                                            <div class="d-flex align-items-center justify-content-between border-top pt-3">
-                                                <h5 class="text-primary text-nowrap me-2">{formatPrice(tour.priceOfAdults)}<span class="fs-14 fw-normal text-default">/person</span></h5>
-                                                <div class="d-flex align-items-center lh-1">
-                                                    <a class="d-flex align-items-center" onClick={()=>{handleNevigate(tour.title,tour.tourId)}}><FaInfoCircle className="me-1" />DepartDate</a>
+                                        <div className="place-content">
+                                            <h5 className="mb-1 text-truncate"><a href="hotel-details.html">{tour.title}</a></h5>
+                                            <p className="d-flex align-items-center mb-2"><FaStore className="me-2" />{tour.companyName}</p>
+                                            <div className="d-flex align-items-center justify-content-between border-top pt-3">
+                                                <h5 className="text-primary text-nowrap me-2">{formatPrice(tour.priceOfAdults)}<span className="fs-14 fw-normal text-default">/person</span></h5>
+                                                <div className="d-flex align-items-center lh-1">
+                                                    <a className="d-flex align-items-center" onClick={()=>{handleNevigate(tour.title,tour.tourId)}}><FaInfoCircle className="me-1" />DepartDate</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -159,14 +156,14 @@ const OpeListTourCom = () => {
                             ))
                         )}
 
-                        <div class="col-md-12">
+                        <div className="col-md-12">
                             {/* <!-- Pagination Info --> */}
                             {!loading && totalItems > 0 && (
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-2">Items per page:</span>
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <div className="d-flex align-items-center">
+                                        <span className="me-2">Items per page:</span>
                                         <select
-                                            class="form-select form-select-sm"
+                                            className="form-select form-select-sm"
                                             style={{ width: '80px' }}
                                             value={pageSize}
                                             onChange={handlePageSizeChange}
@@ -178,7 +175,7 @@ const OpeListTourCom = () => {
                                             <option value={50}>50</option>
                                         </select>
                                     </div>
-                                    <div class="text-muted">
+                                    <div className="text-muted">
                                         Showing {getDisplayInfo().startItem} to {getDisplayInfo().endItem} of {totalItems} items
                                     </div>
                                 </div>
@@ -186,12 +183,12 @@ const OpeListTourCom = () => {
 
                             {/* <!-- Pagination --> */}
                             {!loading && totalPages > 0 && totalItems > 0 && (
-                                <nav class="pagination-nav">
-                                    <ul class="pagination justify-content-center">
+                                <nav className="pagination-nav">
+                                    <ul className="pagination justify-content-center">
                                         {/* Previous Button */}
-                                        <li class={`page-item ${pageNumber === 1 ? 'disabled' : ''}`}>
+                                        <li className={`page-item ${pageNumber === 1 ? 'disabled' : ''}`}>
                                             <a
-                                                class="page-link"
+                                                className="page-link"
                                                 href="javascript:void(0);"
                                                 aria-label="Previous"
                                                 onClick={() => handlePageChange(pageNumber - 1)}
@@ -206,9 +203,9 @@ const OpeListTourCom = () => {
                                             const isActive = pageNum === pageNumber;
 
                                             return (
-                                                <li key={pageNum} class={`page-item ${isActive ? 'active' : ''}`}>
+                                                <li key={pageNum} className={`page-item ${isActive ? 'active' : ''}`}>
                                                     <a
-                                                        class="page-link"
+                                                        className="page-link"
                                                         href="javascript:void(0);"
                                                         onClick={() => handlePageChange(pageNum)}
                                                     >
@@ -219,9 +216,9 @@ const OpeListTourCom = () => {
                                         })}
 
                                         {/* Next Button */}
-                                        <li class={`page-item ${pageNumber === totalPages ? 'disabled' : ''}`}>
+                                        <li className={`page-item ${pageNumber === totalPages ? 'disabled' : ''}`}>
                                             <a
-                                                class="page-link"
+                                                className="page-link"
                                                 href="javascript:void(0);"
                                                 aria-label="Next"
                                                 onClick={() => handlePageChange(pageNumber + 1)}

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FaCheckCircle, FaTimes } from "react-icons/fa";
-import { getPackages } from "../../../services/packageService";
+import { FaCheckCircle, FaTimes,FaCartPlus } from "react-icons/fa";
+import { getPackages,checkpackage } from "../../../services/packageService";
+import Cookies from "js-cookie";
+const userId = Cookies.get('userId');
 const PublicPackage = () => {
     const [packagesRes, setPackagesRes] = useState([]);
+
     useEffect(() => {
         const fetchPackages = async () => {
             try {
@@ -27,6 +30,20 @@ const PublicPackage = () => {
             return `${num.toLocaleString()} VND`;
         }
     };
+    const [mypackage,setMyPackage] = useState([]);
+    const getMyPackages = async () => {
+
+            await checkpackage(userId).then((res) => {
+                setMyPackage(res);
+            })
+            .catch((error) => {
+                setMyPackage([]);
+                console.error("Error checking package:", error);
+            });   
+    };
+    useEffect(() => {
+        getMyPackages();
+    }, []);
     return (
         <div className="content">
             <div className="container">
@@ -70,7 +87,15 @@ const PublicPackage = () => {
                                                             </div>
                                                         </div>
                                                         <div>
-                                                            <a href={`/package/payment/${pac.packageId}`}  class="btn btn-dark d-flex align-items-center justify-content-center ">Choose Plan <i class="ms-2 isax isax-arrow-right-3"></i></a>
+                                                            {mypackage.packageId ===pac.packageId || (mypackage.length === 0 && pac.packageId ===1)? (
+                                                                <button class="btn btn-success d-flex align-items-center justify-content-center" disabled>
+                                                                    <FaCartPlus className="me-1"/> Your Plan
+                                                                </button>
+                                                            ) : (
+                                                                <button class="btn btn-dark d-flex align-items-center justify-content-center " data-bs-toggle="modal" data-bs-target={`#Buy${pac.packageId}`}>
+                                                                    <FaCartPlus className="me-1"/> Choose Plan
+                                                                </button>
+                                                            )}
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -113,7 +138,7 @@ const PublicPackage = () => {
 
                         </div>
                         {/* <!-- /Pricing Plan List --> */}
-                        {packagesRes.filter((pac) => pac.isActive).map((pac) => (
+                        {packagesRes.map((pac) => (
                             <div className="modal fade" id={`Buy${pac.packageId}`} key={pac.packageId} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div className="modal-dialog modal-dialog-centered">
                                     <div className="modal-content">
@@ -128,7 +153,7 @@ const PublicPackage = () => {
                                         </div>
                                         <div className="modal-footer">
                                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" className="btn btn-primary">Confirm Purchase</button>
+                                            <a  className="btn btn-primary" href={`/package/payment/${pac.packageId}`} >Confirm Purchase</a>
                                         </div>
                                     </div>
                                 </div>

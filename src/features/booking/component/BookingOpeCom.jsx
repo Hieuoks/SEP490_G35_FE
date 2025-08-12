@@ -9,6 +9,9 @@ const BookingOpeCom = () => {
     const [keyword, setKeyword] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(1);
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
     const fetchPackages = async (keyword) => {
         try {
             const data = await getOperatorBooking(keyword);
@@ -59,6 +62,7 @@ const BookingOpeCom = () => {
     // Hàm xử lý update
     const handleUpdate = (e) => {
         e.preventDefault();
+
         console.log("Update booking:", bookingId, contract, bookingStatus, paymentStatus);
         if (contract !== "") {
             updateContract(bookingId, contract)
@@ -204,11 +208,16 @@ const BookingOpeCom = () => {
                                                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${booking.bookingId}`} className="me-4">
                                                         <FaEye />
                                                     </a>
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${booking.bookingId}`} className="me-4" onClick={() => {
+                                                    {new Date(booking.tour.departureDate) > tomorrow ? (
+                                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${booking.bookingId}`} className="me-4" onClick={() => {
                                                         setBookingId(booking.bookingId);
-                                                    }}>
-                                                        <FaEdit />
-                                                    </a>
+                                                        }}>
+                                                            <FaEdit />
+                                                        </a>
+                                                    ):(
+                                                        <div></div>
+                                                    )}
+                                                    
                                                 </div>
 
                                             </td>

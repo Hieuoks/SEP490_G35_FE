@@ -32,6 +32,7 @@ import ListTourGuide from '../features/tourguide/ListTourGuide'; // Trang danh s
 import CRUDDeparture from '../features/departuredate/CRUDDeparture';
 import BookingDepart from '../features/booking/BookingDepart';
 import PaymentPackage from '../pages/PaymentPackage';
+import GuideNote from '../features/note/GuideNote'; // Import component hướng dẫn sử dụng
 const MainLayout = ({ children }) => {
   return (
     <>
@@ -77,6 +78,8 @@ const AppRoutes = () => {
         <Route path="/operator/tour/departdate/:tourId" element={<CRUDDeparture />} />
         <Route path="/departure/booking/:departureDateId" element={<BookingDepart />} />
         <Route path="/package/payment/:packageId" element={<PaymentPackage />} />
+        <Route path="/Note" element={<GuideNote />} />
+        <Route path="/Note/booking/:bookingId" element={<GuideNote />} />
         {/* Nếu cần thêm trang lỗi 404 */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>

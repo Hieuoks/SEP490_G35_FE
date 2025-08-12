@@ -80,3 +80,18 @@ export const updatePackageStatus = async (packageId) => {
     throw error.response?.data || error;
   }
 }
+
+export const checkpackage = async (userId) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/ServicePackage/CheckSlotTourOperatorPackageService/${userId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        // Trả về dữ liệu (ví dụ: token)
+        return response.data;
+    } catch (error) {
+        // Ném lỗi để component gọi xử lý tiếp
+        throw error.response?.data || error;
+    }
+}

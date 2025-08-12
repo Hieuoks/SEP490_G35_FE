@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from "js-cookie";
-import { getBookingByDepartId } from "../../../services/bookingService";
-import { FaEye, FaChevronLeft, FaChevronRight, FaEdit, FaPencilAlt } from "react-icons/fa";
+import { getBookingByDepartId, updateContract, updateBookingStatus, updatePaymentStatus  } from "../../../services/bookingService";
+import { FaEye, FaChevronLeft, FaChevronRight, FaEdit, FaPencilAlt,FaList } from "react-icons/fa";
+const role = Cookies.get('roleName');
 const BookingDepartCom = () => {
     const [BookingRes, setBookingRes] = useState([]);
     const navigate = useNavigate();
@@ -11,9 +12,9 @@ const BookingDepartCom = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(1);
     const { departureDateId } = useParams();
-    const [bookingId, setBookingId] = useState("");
-    const [departureDate, setDepartureDate] = useState("");
-
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
     const fetchPackages = async () => {
         console.log("req", departureDateId);
         try {
@@ -62,6 +63,56 @@ const BookingDepartCom = () => {
         setCurrentPage(1);
     };
 
+    const [contract, setContract] = useState("");
+    const [bookingStatus, setBookingStatus] = useState("");
+    const [paymentStatus, setPaymentStatus] = useState("");
+    const [bookingId, setBookingId] = useState("");
+    const handleUpdate = (e) => {
+            e.preventDefault();
+
+            console.log("Update booking:", bookingId, contract, bookingStatus, paymentStatus);
+            if (contract !== "") {
+                updateContract(bookingId, contract)
+                    .then((response) => {
+                        toast.success("Contract updated successfully");
+                        console.log("Contract updated successfully:", response);
+                        setBookingRes((prevBookings) =>
+                            prevBookings.map((booking) =>
+                                booking.bookingId === bookingId ? { ...booking, contract: contract } : booking
+                            )
+                        );
+                        fetchPackages(keyword);
+                        // Reset contract input after successful update
+                    })
+                    .catch((error) => {
+                        console.error("Error updating contract:", error);
+                        toast.error("Failed to update contract");
+                    });
+            }
+    
+            if (paymentStatus !== "") {
+                updatePaymentStatus(bookingId, paymentStatus)
+                    .then((response) => {
+                        toast.success("Payment status updated successfully");
+                        console.log("Payment status updated successfully:", response);
+                        setBookingRes((prevBookings) =>
+                            prevBookings.map((booking) =>
+                                booking.bookingId === bookingId ? { ...booking, paymentStatus: paymentStatus } : booking
+                            )
+                        );
+                        // Reset payment status input after successful update
+                    })
+                    .catch((error) => {
+                        console.error("Error updating payment status:", error);
+                        toast.error("Failed to update payment status");
+                    });
+            }
+            setContract("");
+            setBookingStatus("");
+            setPaymentStatus("");
+    
+            navigate("/operator/booking");
+        };
 
     return (
         <div className="col-xl-9 col-lg-8">
@@ -149,11 +200,20 @@ const BookingDepartCom = () => {
                                                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${booking.bookingId}`} className="me-4">
                                                         <FaEye />
                                                     </a>
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${booking.bookingId}`} className="me-4" onClick={() => {
-                                                        setBookingId(booking.bookingId);
-                                                    }}>
-                                                        <FaEdit />
-                                                    </a>
+                                                    {new Date(booking.tour.departureDate) > tomorrow && role ==="Tour Operator" ? (
+                                                                                                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${booking.bookingId}`} className="me-4" onClick={() => {
+                                                                                                            setBookingId(booking.bookingId);
+                                                                                                            }}>
+                                                                                                                <FaEdit />
+                                                                                                            </a>
+                                                                                                        ):(
+                                                                                                            <div></div>
+                                                                                                        )}
+                                                    {role === "Tour Guide" ? (
+                                                        <a href= {`/Note/booking/${booking.bookingId}`} className="me-4" title="Note">
+                                                            <FaList />
+                                                        </a>
+                                                    ):(<div></div>)}
                                                 </div>
 
                                             </td>
@@ -361,6 +421,44 @@ const BookingDepartCom = () => {
                                     <div className="modal-footer">
                                         <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal">Close</a>
                                     </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal fade" id={`Update${booking.bookingId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" >
+                            <div className="modal-dialog  modal-dialog-centered modal-lg">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5>Booking Update <span className="fs-14 fw-medium text-primary">#{booking.bookingId}</span></h5>
+                                        <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
+                                    </div>
+
+                                    <div className="modal-body">
+                                        <div className="upcoming-content">
+                                            <div className="form-group mb-3">
+                                                <label className="form-label">Contract</label>
+                                                <input type="file" className="form-control" onChange={(e) => { setContract(e.target.files[0]); }} placeholder="Enter contract" />
+                                            </div>
+                                            <div className="row gy-3">
+
+
+                                                <div className="col-lg-12">
+                                                    <label className="form-label">Payment Status</label>
+                                                    <select className="form-select" onChange={(e) => { setPaymentStatus(e.target.value); }}>
+                                                        <option value="Paid" selected={booking.paymentInfo.paymentStatus === "Paid"}>Paid</option>
+                                                        <option value="Pending" selected={booking.paymentInfo.paymentStatus === "Pending"}>Unpaid</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div className="modal-footer">
+                                        <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={handleUpdate}>Save</button>
+                                        <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal">Close</a>
+                                    </div>
+
 
                                 </div>
                             </div>

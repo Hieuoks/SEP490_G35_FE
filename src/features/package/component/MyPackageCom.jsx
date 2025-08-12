@@ -60,7 +60,7 @@ const MyPackageCom = () => {
                                 <div>
                                     <h6>My Package</h6>
                                 </div>
-                                <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+                                {/* <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
                                     <span class="fs-14 text-gray-9 fw-medium">Current package : </span>
                                     <div className="input-icon-end position-relative">
                                         <select className="form-select form-select-sm">
@@ -74,7 +74,7 @@ const MyPackageCom = () => {
                                             
                                         </select>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -106,10 +106,10 @@ const MyPackageCom = () => {
                                             <td>{new Date(tran.createdAt).toLocaleString('en-GB')}</td>
                                             <td><span className="text-danger">{tran.amount}  VND</span></td>
                                             <td>
-                                                {tran.paymentStatus === 'Pending' ? (
+                                                {!tran.isActive ? (
                                                     <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Unpaid</span>
                                                 ) : (
-                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Compplete</span>
+                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Complete</span>
                                                 ) }
                                             </td>
                                         </tr>
