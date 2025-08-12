@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
-
+import Cookies from "js-cookie";
 const initialState = {
   title: "",
   description: "",
@@ -20,7 +20,7 @@ const initialState = {
   minSlots: "",
   note: "",
   isActive: true,
-  TourOperatorId: 1,
+  TourOperatorId: Cookies.get("operatorId") || 1,
   departureDates: [{ departureDate1: "" }],
   tourExperiences: [{ content: "" }],
   tourItineraries: [],

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
-
 import SocialLoginButtons from "./SocialLoginButtons";
-import { login } from "../../../services/authService";
+import { login,getOperatorID } from "../../../services/authService";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
+
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+
   const isValidEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -18,39 +19,49 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Kiểm tra rỗng
     if (!email || !password) {
       toast.warn("Please enter both email and password.");
       return;
     }
 
-    // Kiểm tra định dạng email
     if (!isValidEmail(email)) {
       toast.warn("Invalid email format.");
       return;
     }
 
     try {
-      const result = await login(email, password); // gọi hàm login
-
-      const { token,userId,roleName } = result;
+      const result = await login(email, password);
+      const { token, userId, roleName } = result;
 
       if (rememberMe) {
         Cookies.set("token", token, { expires: 7 });
         Cookies.set("email", email, { expires: 7 });
         Cookies.set("userId", userId, { expires: 7 });
-        Cookies.set("roleName", roleName, { expires: 7 });  
-      }else{
-        Cookies.set("token", token, { expires: 1 }); // Hết hạn sau 1 ngày
+        Cookies.set("roleName", roleName, { expires: 7 });
+      } else {
+        Cookies.set("token", token, { expires: 1 });
         Cookies.set("email", email, { expires: 1 });
         Cookies.set("userId", userId, { expires: 1 });
-        Cookies.set("roleName", roleName, { expires: 1 });  
+        Cookies.set("roleName", roleName, { expires: 1 });
       }
 
       localStorage.setItem("token", token);
+const operatorData = await getOperatorID();
+if (operatorData && operatorData.tourOperatorId) {
+  Cookies.set("operatorId", operatorData.tourOperatorId, { expires: 7 });
+}
 
       toast.success("Login successful!");
-      navigate('/home') // Hoặc dùng useNavigate nếu dùng React Router
+    
+if (roleName === "Customer") {
+  navigate('/home');
+} else if (roleName === "Admin") {
+  navigate('/admin/dashboard');
+} else if (operatorData && operatorData.tourOperatorId) {
+  navigate('/operator/dashboard');
+} else {
+  navigate('/home');
+}
     } catch (error) {
       console.error("Login failed:", error);
       toast.error(error?.message || "Login failed. Please check your credentials.");

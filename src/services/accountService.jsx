@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 const userId = Cookies.get('userId');
 const BASE_URL = 'http://localhost:5298/api';
 
-export const getAccounts = async (keyword,pageNumber,pageSize) => {
+export const getAccounts = async (keyword, pageNumber, pageSize) => {
 
     try {
         const params = {
@@ -15,11 +15,11 @@ export const getAccounts = async (keyword,pageNumber,pageSize) => {
             params.keyword = keyword;
         }
         const response = await axios.get(`${BASE_URL}/Account/PagingSearchAccount`, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        method: 'GET',
-        params: params
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+            params: params
         });
         // Trả về dữ liệu (ví dụ: token)
         return response.data;
@@ -29,7 +29,7 @@ export const getAccounts = async (keyword,pageNumber,pageSize) => {
     }
 }
 
-export const updateStatusAccount = async (userid,isActive) => {
+export const updateStatusAccount = async (userid, isActive) => {
     try {
         const response = await axios.put(`${BASE_URL}/Account/UpdateStatus`, {
             userId: userid,

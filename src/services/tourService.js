@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { message } from 'antd';
-
+import { getHeader } from './api';
+import Cookies from 'js-cookie';
 const BASE_URL = 'http://localhost:5298/api';
-
-export const getTour = async (page=1, pageSize=6) => {
+const userId = Cookies.get('userId');
+export const getTour = async (page = 1, pageSize = 6) => {
   try {
     const response = await axios.get(`${BASE_URL}/Tour/List All Tours For Customer Paging?pageNumber=${page}&pageSize=${pageSize}`);
     return response.data;
@@ -13,7 +14,7 @@ export const getTour = async (page=1, pageSize=6) => {
     throw error;
   }
 };
-export const searchTour = async (keyword,page=1, pageSize=6) => {
+export const searchTour = async (keyword, page = 1, pageSize = 6) => {
   try {
     const response = await axios.get(`${BASE_URL}/Tour/Search Tour By Name?keyword=${keyword}&pageNumber=${page}&pageSize=${pageSize}`);
     return response.data;
@@ -23,9 +24,9 @@ export const searchTour = async (keyword,page=1, pageSize=6) => {
     throw error;
   }
 };
-export const filterTour = async (title,type,transportation,startPoint,minPrice,maxPrice,page=1, pageSize=6) => {
+export const filterTour = async (title, type, transportation, startPoint, minPrice, maxPrice, page = 1, pageSize = 6) => {
   try {
-    const response = await axios.get(`${BASE_URL}/Tour/FilterToursPagingForCustomer?title=${title}&tourType=${type}&transportation=${transportation}&startPoint=${startPoint}&minPrice=${minPrice}&maxPrice=${maxPrice}&pageNumber=${page}&pageSize=${pageSize}`);
+    const response = await axios.get(`${BASE_URL}/Tour/Filter Tours Paging For Customer?title=${title}&tourType=${type}&transportation=${transportation}&startPoint=${startPoint}&minPrice=${minPrice}&maxPrice=${maxPrice}&pageNumber=${page}&pageSize=${pageSize}`);
     return response.data;
   } catch (error) {
     console.error('Lỗi lấy danh sách tour operator:', error);
@@ -82,7 +83,7 @@ export const createTour = async (formData) => {
 export const updateTour = async (formData) => {
   try {
     const response = await axios.put(`${BASE_URL}/Tour/UpdateTour`, formData, {
-     
+
       maxBodyLength: Infinity,
     });
     return response.data;
@@ -92,3 +93,22 @@ export const updateTour = async (formData) => {
     throw error;
   }
 };
+
+export const getTourByoperator = async (keyword, pageNumber, pageSize) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/Tour/Search Tour Paging By Name For Tour Operator/${userId}`, {
+      params: {
+        userid: userId,
+        keyword: keyword,
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+      },
+      headers: getHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi lấy danh sách tour operator:', error);
+    message.error('Không thể tải danh sách tour operator');
+    throw error;
+  }
+}

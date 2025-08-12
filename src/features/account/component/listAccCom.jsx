@@ -64,22 +64,8 @@ const ListAccCom = () => {
                                 <h6>Account</h6>
                                 <p className="fs-14 text-gray-6 fw-normal ">Total : {totalItems}</p>
                             </div>
-
-                            {/* <div className="d-flex align-items-center flex-wrap">
-                                <div className="dropdown ">
-                                    <a href="javascript:void(0);" className="dropdown-toggle btn border text-gray-6 rounded  fw-normal fs-14 d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                                        <i className="ti ti-file-export me-2 fs-14 text-gray-6"></i>Export
-                                    </a>
-                                    <ul className="dropdown-menu  dropdown-menu-end p-3">
-                                        <li>
-                                            <a href="javascript:void(0);" className="dropdown-item rounded-1"><i className="ti ti-file-type-pdf me-1"></i>Export as PDF</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" className="dropdown-item rounded-1"><i className="ti ti-file-type-xls me-1"></i>Export as Excel</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div> */}
+                            
+                            
                         </div>
                     </div>
                     {/* <!-- /Booking Header --> */}
@@ -100,36 +86,7 @@ const ListAccCom = () => {
                                             setPageNumber(1); // reset về trang 1 khi search
                                         }}/>
                                     </div>
-                                    {/* <div className="dropdown me-3">
-                                        <a href="javascript:void(0);" className="dropdown-toggle text-gray-6 btn  rounded border d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Role
-									</a>
-                                        <ul className="dropdown-menu dropdown-menu-end p-3">
-                                            <li>
-                                                <a href="javascript:void(0);" className="dropdown-item rounded-1">Operator</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0);" className="dropdown-item rounded-1">Customer</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0);" className="dropdown-item rounded-1">Tour Guide</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div className="dropdown me-3">
-                                        <a href="javascript:void(0);" className="dropdown-toggle text-gray-6 btn  rounded border d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
-										Status
-									</a>
-                                        <ul className="dropdown-menu dropdown-menu-end p-3">
-                                            <li>
-                                                <a href="javascript:void(0);" className="dropdown-item rounded-1">Active</a>
-                                            </li>
-                                            <li>
-                                                <a href="javascript:void(0);" className="dropdown-item rounded-1">InActive</a>
-                                            </li>
-                                        </ul>
-                                    </div> */}
-
+                                    
                                 </div>
                             </div>
 
@@ -223,7 +180,7 @@ const ListAccCom = () => {
                             <a href="javascript:void(0);"><span className="ms-3"><i className="isax isax-arrow-right-3"></i></span></a>
                         </div>
                     </div>
-                </div>
+        </div>
     );
 }
 export default ListAccCom;

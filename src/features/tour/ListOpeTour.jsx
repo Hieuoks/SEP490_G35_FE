@@ -2,17 +2,17 @@ import Header from "../../components/Header";
 import Breadcrumb from "../../components/breadcrumb";
 import OpeSidebar from "../../components/OpeSidebar";
 import Footer from "../../components/Footer";
-import AdminListPackages from "./component/AdminListPackages";
-const ListPackages = () => {
+import OpeListTourCom from "./component/OpeListTourCom";
+const ListOpeTour = () => {
     return(
         <div>
-            <Header/>
-            <Breadcrumb />
+            <Header />
+            <Breadcrumb/>
             <div className="content">
                 <div className="container">
                     <div className="row">
                         <OpeSidebar />
-                        <AdminListPackages />
+                        <OpeListTourCom />
                     </div>
                 </div>
             </div>
@@ -25,4 +25,4 @@ const ListPackages = () => {
         </div>
     );
 }
-export default ListPackages;
+export default ListOpeTour;

@@ -57,7 +57,7 @@ const fetchTourOp = async () => {
       <SupportSection />
       <AboutAdvantagesSection />
       <PopularProvidersSection tourOp={tourOp} />
-      <HomeExpertsFaqSection />
+      
     </div>
   );
 }

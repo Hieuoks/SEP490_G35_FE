@@ -64,3 +64,19 @@ export const createPackage = async (formData) => {
     throw error.response?.data || error;
   }
 }
+
+export const updatePackageStatus = async (packageId) => {
+  try {
+    const response = await axios.patch(`${BASE_URL}/ServicePackage/ToggleServicePackageStatus/${packageId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'PATCH'
+    });
+    // Trả về dữ liệu (ví dụ: token)
+    return response.data;
+  } catch (error) {
+    // Ném lỗi để component gọi xử lý tiếp
+    throw error.response?.data || error;
+  }
+}

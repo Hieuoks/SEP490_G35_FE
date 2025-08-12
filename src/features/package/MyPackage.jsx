@@ -2,8 +2,8 @@ import Header from "../../components/Header";
 import Breadcrumb from "../../components/breadcrumb";
 import OpeSidebar from "../../components/OpeSidebar";
 import Footer from "../../components/Footer";
-import AdminListPackages from "./component/AdminListPackages";
-const ListPackages = () => {
+import MyPackageCom from "./component/MyPackageCom";
+const MyPackage = () => {
     return(
         <div>
             <Header/>
@@ -12,7 +12,7 @@ const ListPackages = () => {
                 <div className="container">
                     <div className="row">
                         <OpeSidebar />
-                        <AdminListPackages />
+                        <MyPackageCom />
                     </div>
                 </div>
             </div>
@@ -25,4 +25,4 @@ const ListPackages = () => {
         </div>
     );
 }
-export default ListPackages;
+export default MyPackage;

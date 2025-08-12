@@ -1,20 +1,21 @@
 import Header from "../../components/Header";
 import Breadcrumb from "../../components/breadcrumb";
-import OpeSidebar from "../../components/OpeSidebar";
 import Footer from "../../components/Footer";
-import AdminListPackages from "./component/AdminListPackages";
-const ListPackages = () => {
-    return(
-        <div>
+import OpeSidebar from "../../components/OpeSidebar";
+import OpeDashCom from "./component/OpeDashCom";
+const OperatorDashBoard = () => {
+  return (
+    <div>
             <Header/>
             <Breadcrumb />
             <div className="content">
                 <div className="container">
                     <div className="row">
                         <OpeSidebar />
-                        <AdminListPackages />
+                        <OpeDashCom />
                     </div>
                 </div>
+
             </div>
             <Footer />
             <div className="xb-cursor tx-js-cursor">
@@ -22,7 +23,7 @@ const ListPackages = () => {
                     <div className="xb-cursor--follower xb-js-follower"></div>
                 </div>
             </div>
-        </div>
-    );
+    </div>
+  );
 }
-export default ListPackages;
+export default OperatorDashBoard;
