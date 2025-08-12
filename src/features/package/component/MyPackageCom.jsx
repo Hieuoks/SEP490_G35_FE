@@ -106,10 +106,10 @@ const MyPackageCom = () => {
                                             <td>{new Date(tran.createdAt).toLocaleString('en-GB')}</td>
                                             <td><span className="text-danger">{tran.amount}  VND</span></td>
                                             <td>
-                                                {tran.paymentStatus === 'Pending' ? (
+                                                {!tran.isActive ? (
                                                     <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Unpaid</span>
                                                 ) : (
-                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Compplete</span>
+                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Complete</span>
                                                 ) }
                                             </td>
                                         </tr>

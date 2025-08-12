@@ -3,8 +3,7 @@ import { getSchedule, getScheduleByTourGuide, cancelSchedule } from '../../../se
 import { toast } from 'react-toastify';
 import { FaEye, FaChevronLeft, FaChevronRight, FaEdit, FaPencilAlt } from "react-icons/fa";
 import Cookies from 'js-cookie';
-import { getTourGuides } from '../../../services/tourGuideService';
-
+import { useNavigate, useParams } from "react-router-dom";
 const role = Cookies.get('roleName');
 const OpeScheduleCom = () => {
     const [filterList, setFilterList] = useState([]);
@@ -94,7 +93,11 @@ const OpeScheduleCom = () => {
                 toast.error(error.response?.data.message || error.message);
             });
     }
-
+    const navigate = useNavigate();
+    const hanldeNavigate = async (departureDate, id) => {
+            Cookies.set("Depart", departureDate);
+            navigate(`/departure/booking/${id}`);
+    }
 
     return (
         <div className="col-xl-9 col-lg-8 theiaStickySidebar">
@@ -178,7 +181,10 @@ const OpeScheduleCom = () => {
                                             </td>
                                             <td>
                                                 <h6 className="fs-14 mb-1">
-                                                    <a className="link-primary fw-medium" >
+                                                    <a onClick={()=>{
+                                                    hanldeNavigate(date.departureDate, date.id);
+                                                    Cookies.set("tourTitle",date.tourTitle)}} 
+                                                    className="link-primary fw-medium" >
                                                         {new Date(date.departureDate).toLocaleDateString('en-GB')}
                                                     </a>
                                                 </h6>
@@ -323,7 +329,7 @@ const OpeScheduleCom = () => {
                                                             <div className="col-lg-5">
                                                                 <h6 className="fs-14 mb-2">Email</h6>
                                                                 <div className="d-flex align-items-center">
-                                                                    <a className="avatar avatar-lg"><img src={`${guide.avatar}`} className="img-fluid rounded-circle" onError={(e) => {
+                                                                    <a className="avatar avatar-lg"><img src={guide.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} className="img-fluid rounded-circle" onError={(e) => {
                                                                         e.target.onerror = null;
                                                                         e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
                                                                     }} /></a>

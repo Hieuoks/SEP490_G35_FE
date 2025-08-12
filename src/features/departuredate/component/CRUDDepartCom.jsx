@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getDepartDateByTourId, addDepartureDate, addTourGuideForDepartdate, deleteDepartDate, deleteTourGuideFromDepartdate } from '../../../services/scheduleService';
+import { getDepartDateByTourId, addDepartureDate, addTourGuideForDepartdate, deleteDepartDate, deleteTourGuideFromDepartdate, updateDepartDate } from '../../../services/scheduleService';
 import { getAllTourGuides } from '../../../services/tourGuideService';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
@@ -146,7 +146,12 @@ const CRUDDepartCom = () => {
 
     }
 
-    const handleDeleteDepart = async (departureDateId) => {
+    const handleDeleteDepart = async (departureDateId,booking) => {
+        if (booking > 0) {
+            toast.error("Cannot delete departure date with bookings");
+            return;
+        }
+       
         deleteDepartDate(departureDateId)
             .then((response) => {
                 toast.success(response.data?.message);
@@ -168,6 +173,15 @@ const CRUDDepartCom = () => {
 
     const handleUpdateDepart = async (departureDateId, oldGuides) => {
         try {
+            updateDepartDate(departureDateId, departDate)
+                .then((response) => {
+                    toast.success(response.message);
+                    fetchDepartureDates();
+                }).catch((error) => {
+                    console.error("Error update depart:", error);
+                    toast.error(error.response?.data.message);
+                    return;
+                });
             // 1. Tìm những guides cũ cần xóa (có trong oldGuides nhưng không có trong newGuides)
             const guidesToRemove = oldGuides.filter(oldGuide =>
                 !selectedGuide.some(newGuide => newGuide.tourGuideId === oldGuide.tourGuideId)
@@ -197,7 +211,7 @@ const CRUDDepartCom = () => {
 
             // 4. Refresh data
             await fetchDepartureDates();
-            toast.success("Cập nhật hướng dẫn viên thành công!");
+            toast.success("Cập nhật departdate thành công!");
 
             // 5. Reset states
             setSelectedGuide([]);
@@ -291,11 +305,11 @@ const CRUDDepartCom = () => {
                                                 {/* <span className="fs-14 fw-normal text-gray-6">Texas</span> */}
                                             </td>
                                             <td>
-                                                {date.availableSlots + date.totalBookings}
+                                                {date.availableSlots}
                                             </td>
                                             <td>{date.totalBookings}</td>
                                             <td>
-                                                {date.IsCancelled ? (
+                                                {date.isCancelDate ? (
                                                     <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
                                                         <i className="fa-solid fa-circle fs-5 me-1"></i>Canceled
                                                     </span>
@@ -315,17 +329,35 @@ const CRUDDepartCom = () => {
                                             </td>
                                             <td>
                                                 <div className="d-flex align-items-center">
+                                                {date.isCancelDate ? (
                                                     <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${date.id}`} className="me-4">
                                                         <FaEye />
                                                     </a>
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${date.id}`} className="me-4" onClick={() => {
-                                                        setSelectedGuide(date.tourGuides);
-                                                    }}>
-                                                        <FaEdit />
-                                                    </a>
-                                                    <a className="me-4" onClick={() => { handleDeleteDepart(date.id) }}>
-                                                        <FaTrash />
-                                                    </a>
+                                                ):(
+                                                    new Date(date.departureDate) < today ? (
+                                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${date.id}`} className="me-4">
+                                                            <FaEye />
+                                                        </a>
+                                                    ):(
+                                                        
+                                                        <div>
+                                                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${date.id}`} className="me-4">
+                                                                <FaEye />
+                                                            </a>
+                                                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${date.id}`} className="me-4" onClick={() => {
+                                                                setSelectedGuide(date.tourGuides);
+                                                            }}>
+                                                                <FaEdit />
+                                                            </a>
+                                                            <a className="me-4" onClick={() => { handleDeleteDepart(date.id,date.totalBookings) }}>
+                                                                <FaTrash />
+                                                            </a>
+                                                        </div>
+                                                    )
+                                                )}
+                                                    
+                                                    
+                                                    
                                                 </div>
                                             </td>
                                         </tr>
@@ -468,7 +500,7 @@ const CRUDDepartCom = () => {
                                                                         <td className="col-lg-5">
                                                                             <div className="d-flex align-items-center">
                                                                                 <a className="avatar avatar-lg">
-                                                                                    <img src="llll" className="img-fluid rounded-circle" onError={(e) => {
+                                                                                    <img src={guide.avatar ||"https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} className="img-fluid rounded-circle" onError={(e) => {
                                                                                         e.target.onerror = null;
                                                                                         e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
                                                                                     }} />
@@ -555,7 +587,7 @@ const CRUDDepartCom = () => {
                                                                         <td className="col-lg-5">
                                                                             <div className="d-flex align-items-center">
                                                                                 <a className="avatar avatar-lg">
-                                                                                    <img src="lll" className="img-fluid rounded-circle" onError={(e) => {
+                                                                                    <img src={guide.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} className="img-fluid rounded-circle" onError={(e) => {
                                                                                         e.target.onerror = null;
                                                                                         e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
                                                                                     }} />
@@ -673,7 +705,7 @@ const CRUDDepartCom = () => {
                                                             <td className="col-lg-5">
                                                                 <div className="d-flex align-items-center">
                                                                     <a className="avatar avatar-lg">
-                                                                        <img src={guide.avatar} className="img-fluid rounded-circle" onError={(e) => {
+                                                                        <img src={guide.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} className="img-fluid rounded-circle" onError={(e) => {
                                                                             e.target.onerror = null;
                                                                             e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
                                                                         }} />

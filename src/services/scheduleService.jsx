@@ -125,24 +125,7 @@ export const getDepartById = async (departureDateId) => {
   }
 }
 
-export const updateDepartDate = async (departureDateId, startDate) => {
-  try {
-    const requestData = {
-      departureDateId: departureDateId,
-      startDate: startDate
-    };
-    console.log('Request data:', requestData);
 
-    const response = await axios.put(`${BASE_URL}/DepartureDates/${departureDateId}`, requestData, {
-      headers: getHeader(),
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Lỗi cập nhật ngày khởi hành:', error.response?.data);
-    message.error('Không thể cập nhật ngày khởi hành');
-    throw error;
-  }
-}
 
 export const deleteTourGuideFromDepartdate = async (asignId) => {
   try {
@@ -153,6 +136,24 @@ export const deleteTourGuideFromDepartdate = async (asignId) => {
   } catch (error) {
     console.error('Lỗi xóa hướng dẫn viên khỏi ngày khởi hành:', error);
     message.error('Không thể xóa hướng dẫn viên khỏi ngày khởi hành');
+    throw error;
+  }
+}
+export const updateDepartDate = async (departureDateId, startDate) => {
+  try {
+    const requestData = {
+      id: departureDateId,
+      departureDate1: startDate
+    };
+    console.log('Request data:', requestData);
+
+    const response = await axios.put(`${BASE_URL}/DepartureDates`, requestData, {
+      headers: getHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi cập nhật ngày khởi hành:', error.response?.data);
+    message.error('Không thể cập nhật ngày khởi hành');
     throw error;
   }
 }
