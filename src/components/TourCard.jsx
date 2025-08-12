@@ -5,7 +5,7 @@ const TourCard = ({ tour }) => {
   const {
     tourId,
     title,
-    price,
+    priceOfAdults,
     startPoint,
     transportation,
     durationInDays,
@@ -13,6 +13,8 @@ const TourCard = ({ tour }) => {
     slotsBooked,
     companyName,
     companyDescription,
+    tourAvartar,
+    averageRating,
   } = tour;
 
   const guests = maxSlots;
@@ -30,19 +32,16 @@ const TourCard = ({ tour }) => {
       <div className="place-item mb-4" style={{ width: "100%" }}>
         <div className="place-img">
           <div className="img-slider image-slide owl-carousel nav-center">
-            {/* TODO: Replace with real images when available */}
-            {["tours-07.jpg"].map((img, i) => (
-              <div className="slide-images" key={i}>
-                <a href="#" onClick={handleDetailClick}>
-                  <img
-                    src={`assets/img/tours/${img}`}
-                    className="img-fluid"
-                    alt="Tour"
-                    style={{ width: "100%", objectFit: "cover" }}
-                  />
-                </a>
-              </div>
-            ))}
+            <div className="slide-images">
+              <a href="#" onClick={handleDetailClick}>
+                <img
+                  src={tourAvartar || "assets/img/tours/tours-07.jpg"}
+                  className="img-fluid"
+                  alt="Tour"
+                  style={{ width: "100%", objectFit: "cover", height: 180 }}
+                />
+              </a>
+            </div>
           </div>
           <div className="fav-item">
             <a href="#" className="fav-icon selected">
@@ -65,7 +64,7 @@ const TourCard = ({ tour }) => {
             <span className="d-inline-block border vertical-splits"></span>
             <div className="d-flex align-items-center flex-wrap">
               <span className="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">
-                5.0
+                {averageRating ? averageRating.toFixed(1) : "5.0"}
               </span>
               <p className="fs-14">(105 Reviews)</p>
             </div>
@@ -84,7 +83,7 @@ const TourCard = ({ tour }) => {
             <h6 className="d-flex align-items-center text-gray-6 fs-14 fw-normal">
               Starts From
               <span className="ms-1 fs-18 fw-semibold text-primary">
-                ${price?.toLocaleString() || 0}
+                {priceOfAdults ? `${priceOfAdults.toLocaleString()}₫` : "0₫"}
               </span>
             </h6>
           </div>
@@ -94,7 +93,7 @@ const TourCard = ({ tour }) => {
               <span className="me-1">
                 <i className="fa-solid fa-calendar-check text-gray-6"></i>
               </span>
-              <p className="fs-14 text-gray-9">{dateDisplay}</p>
+              <p className="fs-14 text-gray-9">{dateDisplay} ngày</p>
             </div>
 
             <span className="d-inline-block border vertical-splits"></span>

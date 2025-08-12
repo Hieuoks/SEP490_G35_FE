@@ -20,6 +20,8 @@ import CreateCompanyPage from '../pages/CreateTourOpPage';
 import UpdateTourOpPage from '../pages/UpdateTourOpPage';
 import UpdateTourPage from '../pages/UpdateTourPage'; // Trang cập nhật tour, nếu cần
 import BookingConfirmation from '../pages/Booking';
+import AgentDashboard from '../pages/AgentDashboard';
+import RecentFeedback from '../components/RecentFeedback';
 import BookingOperator from '../features/booking/BookingOperator';
 import ListOpeTour from '../features/tour/ListOpeTour';
 import MyPackage from '../features/package/MyPackage'; // Trang quản lý gói của nhà điều hành tour
@@ -52,6 +54,8 @@ const AppRoutes = () => {
         <Route path="/package" element={<PackagePage />} />
         <Route path="/admin/packages" element={<ListPackages />} />
         <Route path="/home" element={<MainLayout><HomePage /></MainLayout>} />
+        <Route path="/admin/dashboard" element={<MainLayout><AgentDashboard /></MainLayout>} />
+        <Route path="/admin/feedback" element={<MainLayout><RecentFeedback /></MainLayout>} />
         <Route path="/tour-operator" element={<MainLayout><TourOperatorPage /></MainLayout>} />
         <Route path="/tour-operator/detail/:id" element={<MainLayout><TourOperatorDateilPage /></MainLayout>} />
         <Route path="/tour-operator/update/:id" element={<MainLayout><UpdateTourOpPage /></MainLayout>} />

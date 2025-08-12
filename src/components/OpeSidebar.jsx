@@ -111,6 +111,14 @@ const OpeSidebar = () => {
                                         {/* <span className="msg-count rounded-circle">02</span> */}
                                     </div>
                                 </li>
+                                <li>
+                            <div className="message-content">
+                                <a href="booking" className="d-flex align-items-center">
+                                    <i className="isax isax-notification-bing5"></i> Bookings
+                                </a>
+            
+                            </div>
+                        </li>
                             </div>
                         )}
 
@@ -126,14 +134,7 @@ const OpeSidebar = () => {
                                 <i className="isax isax-profile-tick5"></i> My Profile
                             </a>
                         </li>
-                        <li>
-                            <div className="message-content">
-                                <a href="notification.html" className="d-flex align-items-center">
-                                    <i className="isax isax-notification-bing5"></i> Notifications
-                                </a>
-                                <span className="msg-count bg-purple rounded-circle">05</span>
-                            </div>
-                        </li>
+                        
                         <li>
                             <a href="/setting/editprofile" className="d-flex align-items-center">
                                 <i className="isax isax-setting-25"></i> Settings

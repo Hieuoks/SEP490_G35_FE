@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const userId = Cookies.get('userId');
-const BASE_URL = 'https://localhost:7012/api'
+const BASE_URL = 'http://localhost:5298/api'
 export const getPackages = async () => {
     try {
     const response = await axios.get(`${BASE_URL}/ServicePackage/ListAllServicePackageForAdmin`,  {

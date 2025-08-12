@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { getHeader } from './api';
 
-const BASE_URL = 'https://localhost:7012/api';
+const BASE_URL = 'http://localhost:5298/api';
 export const getTotalTour = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/DashBoardOperator/total-tours`, {
