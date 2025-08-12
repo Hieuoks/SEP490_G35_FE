@@ -1,45 +1,36 @@
 import React from "react";
 
-const includes = [
-  "Exclusive Merchandise",
-  "Early Venue Access",
-  "Acoustic Performance",
-  "Tour Program",
-  "Transportation (if applicable)",
-];
+function IncludesExcludes({ tour }) {
+  const experiences = tour?.tourExperiences?.map(e => e.content) || [];
 
-const excludes = [
-  "Travel Expenses",
-  "Accommodation",
-  "Food and Beverage",
-  "Parking Fees",
-  "Personal Expenses",
-];
+  // Chia đều thành 2 cột
+  const mid = Math.ceil(experiences.length / 2);
+  const leftCol = experiences.slice(0, mid);
+  const rightCol = experiences.slice(mid);
 
-function IncludesExcludes({tour}) {
   return (
     <div className="bg-light-200 card-bg-light mb-4">
-      <h5 className="fs-18 mb-3">Includes & Excludes</h5>
+      <h5 className="fs-18 mb-3">Trải nghiệm Tour</h5>
       <div className="row gy-2">
         <div className="col-md-6">
-          {includes.map((item, idx) => (
+          {leftCol.length > 0 ? leftCol.map((item, idx) => (
             <p
-              className={`d-flex align-items-center${idx < includes.length - 1 ? " mb-2" : ""}`}
+              className={`d-flex align-items-center${idx < leftCol.length - 1 ? " mb-2" : ""}`}
               key={idx}
             >
-              <i className="isax isax-tick-square5 text-success me-2"></i> {item}
+              <i className="fas fa-check-square text-success me-2"></i> {item}
             </p>
-          ))}
+          )) : <span className="text-muted">Không có trải nghiệm</span>}
         </div>
         <div className="col-md-6">
-          {excludes.map((item, idx) => (
+          {rightCol.length > 0 ? rightCol.map((item, idx) => (
             <p
-              className={`d-flex align-items-center${idx < excludes.length - 1 ? " mb-2" : ""}`}
+              className={`d-flex align-items-center${idx < rightCol.length - 1 ? " mb-2" : ""}`}
               key={idx}
             >
-              <i className="isax isax-close-square5 text-danger me-2"></i> {item}
+              <i className="fas fa-check-square text-success me-2"></i> {item}
             </p>
-          ))}
+          )) : null}
         </div>
       </div>
     </div>

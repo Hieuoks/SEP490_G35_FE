@@ -2,11 +2,11 @@ import axios from 'axios';
 import { message } from 'antd';
 import { getHeader } from './api';
 import Cookies from 'js-cookie';
-const BASE_URL = 'https://localhost:7012/api';
+const BASE_URL = 'http://localhost:5298/api';
 const userId = Cookies.get('userId');
 export const getTour = async (page = 1, pageSize = 6) => {
   try {
-    const response = await axios.get(`${BASE_URL}/Tour/listAllToursForUserPaging?pageNumber=${page}&pageSize=${pageSize}`);
+    const response = await axios.get(`${BASE_URL}/Tour/List All Tours For Customer Paging?pageNumber=${page}&pageSize=${pageSize}`);
     return response.data;
   } catch (error) {
     console.error('Lỗi lấy danh sách tour operator:', error);
@@ -36,8 +36,27 @@ export const filterTour = async (title, type, transportation, startPoint, minPri
 };
 export const getTourDetail = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/Tour/Tour Detail For Customer/${id}`, {
-      headers: getHeader()});
+    const response = await axios.get(`${BASE_URL}/Tour/Tour Detail For Customer/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Lỗi lấy thông tin chi tiết tour operator ID ${id}:`, error);
+    message.error('Không thể tải chi tiết tour operator');
+    throw error;
+  }
+};
+export const getTourDetailForOperator = async (id, update) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/Tour/Tour Detail For TourOperator/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Lỗi lấy thông tin chi tiết tour operator ID ${id}:`, error);
+    message.error('Không thể tải chi tiết tour operator');
+    throw error;
+  }
+};
+export const getTourDetailForOperatorUpdate = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/Tour/Tour Detail For TourOperator/${id}?forUpdate=${true}`);
     return response.data;
   } catch (error) {
     console.error(`Lỗi lấy thông tin chi tiết tour operator ID ${id}:`, error);
@@ -48,7 +67,7 @@ export const getTourDetail = async (id) => {
 export const createTour = async (formData) => {
   try {
     // formData là instance của FormData đã được build từ form
-    const response = await axios.post(`${BASE_URL}/Tour/CreateTour`, formData, {
+    const response = await axios.post(`${BASE_URL}/Tour/Create Tour`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

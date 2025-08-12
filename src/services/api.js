@@ -37,7 +37,13 @@ export function getHeader() {
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
     };
 }
-
+export function getHeader2() {
+    return {
+        'Content-Type': 'multipart/form-data',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+    };
+}
 axios.interceptors.response.use(
     (success) => {
         if (success.data.errors) {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { message } from 'antd';
 import { getHeader } from './api';
-const BASE_URL = 'https://localhost:7012/api';
+const BASE_URL = 'http://localhost:5298/api';
 
 export const getBookingCustomer = async (page = 1, pageSize = 6) => {
   try {
@@ -15,7 +15,18 @@ export const getBookingCustomer = async (page = 1, pageSize = 6) => {
     throw error;
   }
 };
-
+export const cancelBooking = async (bookingId) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/Booking/cancel/${bookingId}`,null, {
+      headers: getHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi lấy danh sách tour operator:', error);
+    message.error('Không thể tải danh sách tour operator');
+    throw error;
+  }
+};
 export const getTourDetail = async (id) => {
   try {
     const response = await axios.get(`${BASE_URL}/Tour/TourDetail/${id}`);
