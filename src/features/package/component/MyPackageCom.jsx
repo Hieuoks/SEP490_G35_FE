@@ -60,7 +60,7 @@ const MyPackageCom = () => {
                                 <div>
                                     <h6>My Package</h6>
                                 </div>
-                                <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+                                {/* <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
                                     <span class="fs-14 text-gray-9 fw-medium">Current package : </span>
                                     <div className="input-icon-end position-relative">
                                         <select className="form-select form-select-sm">
@@ -74,7 +74,7 @@ const MyPackageCom = () => {
                                             
                                         </select>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

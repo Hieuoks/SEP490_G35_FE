@@ -33,7 +33,7 @@ const PublicPackage = () => {
     const [mypackage,setMyPackage] = useState([]);
     const getMyPackages = async () => {
 
-            const data = await checkpackage(userId).then((res) => {
+            await checkpackage(userId).then((res) => {
                 setMyPackage(res);
             })
             .catch((error) => {
