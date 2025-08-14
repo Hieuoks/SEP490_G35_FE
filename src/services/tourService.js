@@ -2,7 +2,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import { getHeader } from './api';
 import Cookies from 'js-cookie';
-const BASE_URL = 'http://localhost:5298/api';
+const BASE_URL = 'https://localhost:7012/api';
 const userId = Cookies.get('userId');
 export const getTour = async (page = 1, pageSize = 6) => {
   try {

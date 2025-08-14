@@ -2,7 +2,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import { getHeader } from './api';
 
-const BASE_URL = 'http://localhost:5298/api';
+const BASE_URL = 'https://localhost:7012/api';
 export const getSchedule = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/DepartureDates/operator`, {
