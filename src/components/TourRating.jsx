@@ -1,15 +1,22 @@
-import React ,{useState}from "react";
+import React, { useState } from "react";
 import ReviewModal from "./ReviewModal";
-import { createFeedback } from "../services/feedbackService";
-// Hàm xử lý dữ liệu từ tour.tourRatings để hiển thị
+import { createFeedback, deleteFeedback, updateFeedback, getFeedbackDetail, reportFeedback } from "../services/feedbackService";
 import { toast } from "react-toastify";
+
+// Lấy userId từ Cookies
+const getUserIdFromCookies = () => {
+  const match = document.cookie.match(/(?:^|; )userId=([^;]*)/);
+  return match ? match[1] : null;
+};
+
 const mapTourRatingsToReviews = (tourRatings) => {
   if (!Array.isArray(tourRatings)) return [];
-
   return tourRatings.map((r) => ({
     user: {
       name: r.tourRating_Username || "Ẩn danh",
-      avatar: "https://via.placeholder.com/40", // bạn có thể sửa lại nếu có avatar user
+      avatar: "https://via.placeholder.com/40",
+      userId: r.userId,
+      ratingId: r.ratingId,
     },
     date: new Date(r.createdAt).toLocaleDateString(),
     rating: r.rating,
@@ -27,11 +34,76 @@ const mapTourRatingsToReviews = (tourRatings) => {
     dislikes: 0,
     hearts: 0,
     replies: [],
+    raw: r,
   }));
 };
 
-// Component con hiển thị mỗi review
-function ReviewItem({ review, isReply }) {
+const REPORT_REASONS = [
+  "Nội dung không phù hợp",
+  "Ngôn từ thô tục",
+  "Spam hoặc quảng cáo",
+  "Thông tin sai sự thật",
+  "Khác",
+];
+
+function ReportModal({ open, onClose, onSubmit, reasons, setReasons }) {
+  const handleCheckboxChange = (reason) => {
+    setReasons((prev) =>
+      prev.includes(reason)
+        ? prev.filter((r) => r !== reason)
+        : [...prev, reason]
+    );
+  };
+
+  const handleSubmit = () => {
+    if (reasons.length === 0) {
+      toast.error("Vui lòng chọn ít nhất một lý do!");
+      return;
+    }
+    onSubmit(reasons);
+  };
+
+  if (!open) return null;
+  return (
+    <div className="modal show d-block" tabIndex="-1" style={{ background: "rgba(0,0,0,0.3)" }}>
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Báo cáo đánh giá</h5>
+            <button type="button" className="btn-close" onClick={onClose}></button>
+          </div>
+          <div className="modal-body">
+            <p>Chọn lý do bạn muốn báo cáo (có thể chọn nhiều):</p>
+            {REPORT_REASONS.map((reason, idx) => (
+              <div className="form-check" key={idx}>
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`reason-${idx}`}
+                  checked={reasons.includes(reason)}
+                  onChange={() => handleCheckboxChange(reason)}
+                />
+                <label className="form-check-label" htmlFor={`reason-${idx}`}>
+                  {reason}
+                </label>
+              </div>
+            ))}
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Đóng
+            </button>
+            <button type="button" className="btn btn-danger" onClick={handleSubmit}>
+              Gửi báo cáo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReviewItem({ review, isReply, onEdit, onDelete, canEdit, onReport }) {
   return (
     <div className={`review-info${isReply ? " reply mt-4 p-3" : ""}`}>
       <div className="d-flex align-items-center justify-content-between flex-wrap">
@@ -50,7 +122,35 @@ function ReviewItem({ review, isReply }) {
             </div>
           </div>
         </div>
-        
+        {canEdit ? (
+          <div>
+            <select
+              className="form-select form-select-sm"
+              style={{ width: 120, display: "inline-block" }}
+              onChange={async (e) => {
+                if (e.target.value === "edit") {
+                  try {
+                    const res = await getFeedbackDetail(review.user.ratingId);
+                    onEdit(res);
+                  } catch (error) {
+                    toast.error("Không thể lấy thông tin đánh giá!");
+                  }
+                }
+                if (e.target.value === "delete") onDelete(review);
+                e.target.value = "";
+              }}
+              defaultValue=""
+            >
+              <option value="" disabled>Chọn thao tác</option>
+              <option value="edit">Cập nhật</option>
+              <option value="delete">Xóa</option>
+            </select>
+          </div>
+        ) : (
+          <button className="btn btn-outline-danger btn-sm" onClick={() => onReport(review)}>
+            Báo cáo
+          </button>
+        )}
       </div>
       <p className="mb-2">{review.text}</p>
       {review.images?.length > 0 && (
@@ -83,34 +183,90 @@ function ReviewItem({ review, isReply }) {
 }
 
 function Reviews({ tour }) {
-const reviewList = mapTourRatingsToReviews(tour?.tourRatings);
+  const userId = getUserIdFromCookies();
+  const reviewList = mapTourRatingsToReviews(tour?.tourRatings);
 
-  const [totalRatings,setTotalRatings] = useState(reviewList.length);
+  const [totalRatings, setTotalRatings] = useState(reviewList.length);
   const averageRating = tour?.averageRating?.toFixed(1) || "0.0";
-const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editReview, setEditReview] = useState(null);
+
+  // Report modal state
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportReasons, setReportReasons] = useState([]);
+  const [reportReview, setReportReview] = useState(null);
 
   const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
-
-const handleSubmitReview = async (reviewData) => {
-  try {
-    const result = await createFeedback(reviewData);
-    const res = result?.data.data;
-
-  
-    toast.success("Đánh giá của bạn đã được gửi!");
+  const handleCloseModal = () => {
     setIsModalOpen(false);
-  } catch (error) {
-    console.error("Lỗi khi gửi đánh giá:", error);
-    toast.error("Không thể gửi đánh giá. Vui lòng thử lại sau.");
-  }
-};
+    setEditReview(null);
+  };
 
+  const handleSubmitReview = async (reviewData) => {
+    try {
+      if (editReview) {
+        await updateFeedback(editReview.ratingId, reviewData);
+        toast.success("Cập nhật đánh giá thành công!");
+      } else {
+        await createFeedback(reviewData);
+        toast.success("Đánh giá của bạn đã được gửi!");
+      }
+      setIsModalOpen(false);
+      setEditReview(null);
+    } catch (error) {
+      toast.error("Không thể gửi đánh giá. Vui lòng thử lại sau.");
+    }
+  };
+
+  const handleEditReview = (reviewDetail) => {
+    setEditReview(reviewDetail);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteReview = async (review) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa đánh giá này?")) {
+      try {
+        await deleteFeedback(review.user.ratingId);
+        toast.success("Xóa đánh giá thành công!");
+      } catch (error) {
+        toast.error("Không thể xóa đánh giá. Vui lòng thử lại sau.");
+      }
+    }
+  };
+
+  // Report logic
+  const handleReportReview = (review) => {
+    setReportReview(review);
+    setReportReasons([]);
+    setReportModalOpen(true);
+  };
+
+  const handleSubmitReport = async (reasons) => {
+    if (!reportReview) return;
+    try {
+      await reportFeedback({
+        ratingId: reportReview.user.ratingId,
+        reason: reasons.join(", "),
+      });
+      toast.success("Báo cáo đã được gửi!");
+      setReportModalOpen(false);
+      setReportReview(null);
+      setReportReasons([]);
+    } catch (error) {
+      toast.error("Không thể gửi báo cáo. Vui lòng thử lại sau.");
+    }
+  };
+
+  const handleCloseReportModal = () => {
+    setReportModalOpen(false);
+    setReportReview(null);
+    setReportReasons([]);
+  };
 
   return (
     <div>
       <div className="d-flex align-items-center justify-content-between flex-wrap mb-2" id="reviews">
-        <h6 className="mb-3">Reviews ({tour?.reviews?.length || 0})</h6>
+        <h6 className="mb-3">Đánh giá ({reviewList.length})</h6>
         <button className="btn btn-primary btn-md mb-3" onClick={handleOpenModal}>
           <i className="isax isax-edit-2 me-1"></i>Viết đánh giá
         </button>
@@ -144,7 +300,13 @@ const handleSubmitReview = async (reviewData) => {
       {reviewList.map((review, idx) => (
         <div className="card review-item shadow-none mb-3" key={idx}>
           <div className="card-body p-3">
-            <ReviewItem review={review} />
+            <ReviewItem
+              review={review}
+              canEdit={userId && String(userId) === String(review.user.userId)}
+              onEdit={handleEditReview}
+              onDelete={handleDeleteReview}
+              onReport={handleReportReview}
+            />
             {review.replies &&
               review.replies.map((reply, ridx) => (
                 <ReviewItem review={reply} isReply={true} key={ridx} />
@@ -158,7 +320,20 @@ const handleSubmitReview = async (reviewData) => {
           Xem tất cả đánh giá<i className="isax isax-arrow-right-3 ms-1"></i>
         </a>
       </div>
-      <ReviewModal open={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmitReview} id={tour?.tourId}/>
+      <ReviewModal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitReview}
+        id={tour?.tourId}
+        editData={editReview}
+      />
+      <ReportModal
+        open={reportModalOpen}
+        onClose={handleCloseReportModal}
+        onSubmit={handleSubmitReport}
+        reasons={reportReasons}
+        setReasons={setReportReasons}
+      />
     </div>
   );
 }

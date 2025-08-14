@@ -32,9 +32,7 @@ const [contract, setContract] = useState("");
       setDepartureID(firstDeparture.id || null);
     }
 
-    if (tour?.note) {
-      setNote(tour.note);
-    }
+    
   }, [tour]);
 
   
@@ -210,17 +208,7 @@ console.log("Booking payload:", payload);
             />
           </div>
 
-          {/* Thông tin hợp đồng */}
-          <div className="mb-3">
-            <label className="form-label">Thông tin hợp đồng</label>
-            <input
-              type="text"
-              className="form-control"
-              value={contract}
-              onChange={(e) => setContract(e.target.value)}
-              placeholder="Tên hoặc mã hợp đồng..."
-            />
-          </div>
+         
         </div>
 
         <button type="submit" className="btn btn-primary w-100">

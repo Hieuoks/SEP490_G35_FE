@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { message } from 'antd';
-
-const BASE_URL = 'https://localhost:7012/api'
+import { getHeader } from './api';
+const BASE_URL = 'http://localhost:5298/api'
 export const register = async (userName, email, password, address, phoneNumber) => {
   let data = JSON.stringify({
     "userName": userName,
@@ -49,5 +49,18 @@ export const login = async (email, password) => {
   } catch (error) {
     // Ném lỗi để component gọi xử lý tiếp
     throw error.response?.data || error;
+  }
+};
+
+export const getOperatorID = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/TourOperator/user-operator`, {
+      headers: getHeader(),
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi lấy danh sách tour operator:', error);
+    message.error('Không thể tải danh sách tour operator');
+    throw error;
   }
 };

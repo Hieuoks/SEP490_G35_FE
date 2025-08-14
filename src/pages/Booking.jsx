@@ -1,23 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { FaChevronDown, FaChevronUp, FaUser, FaCalendarAlt, FaMoneyBillWave } from "react-icons/fa"; // Font Awesome
-import { getBookingCustomer } from "../services/bookingService";
+import { FaChevronDown, FaChevronUp, FaUser, FaCalendarAlt, FaMoneyBillWave } from "react-icons/fa";
+import { getBookingCustomer, cancelBooking } from "../services/bookingService";
+
 const BookingList = () => {
   const [expandedId, setExpandedId] = useState(null);
-const [bookings, setBookings] = useState([]);
-useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const data = await getBookingCustomer();
-        setBookings(data.bookings);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
-    };
+  const [bookings, setBookings] = useState([]);
+
+  const fetchBookings = async () => {
+    try {
+      const data = await getBookingCustomer();
+      setBookings(data.bookings || []);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchBookings();
-  }, []); // Chỉ chạy một lần khi component mount
+  }, []);
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
+  };
+
+  const handleCancelBooking = async (bookingId) => {
+    try {
+      await cancelBooking(bookingId);
+      await fetchBookings(); // Lấy lại danh sách booking sau khi hủy
+    } catch (error) {
+      console.error("Cancel booking failed:", error);
+    }
   };
 
   return (
@@ -35,57 +47,79 @@ useEffect(() => {
             style={{ cursor: "pointer" }}
           >
             <div>
-              <strong>{booking.tourTitle}</strong> -{" "}
+              <strong>{booking.tour?.title}</strong> -{" "}
               <span className="badge bg-warning text-dark">
-                {booking.bookingStatus}
+                {booking.paymentInfo?.bookingStatus}
               </span>
             </div>
-            {expandedId === booking.bookingId ? (
-              <FaChevronUp />
-            ) : (
-              <FaChevronDown />
-            )}
+            {expandedId === booking.bookingId ? <FaChevronUp /> : <FaChevronDown />}
           </div>
 
           {expandedId === booking.bookingId && (
             <div className="card-body">
               <p>
                 <FaUser className="me-2" />
-                <strong>Người đặt:</strong> {booking.userName}
+                <strong>Người đặt:</strong> {booking.billingInfo?.username}
               </p>
               <p>
                 <FaCalendarAlt className="me-2" />
                 <strong>Ngày đặt:</strong>{" "}
-                {new Date(booking.bookingDate).toLocaleString()}
+                {booking.booking?.bookingDate ? new Date(booking.booking.bookingDate).toLocaleString() : ""}
               </p>
               <p>
                 <FaMoneyBillWave className="me-2" />
-                <strong>Tổng giá:</strong> {booking.totalPrice.toLocaleString()} VND
+                <strong>Tổng giá:</strong>{" "}
+                {booking.paymentInfo?.totalPrice?.toLocaleString()} VND
               </p>
               <p>
-                <strong>Người lớn:</strong> {booking.numberOfAdults} |{" "}
-                <strong>Trẻ em:</strong> {booking.numberOfChildren} |{" "}
-                <strong>Trẻ sơ sinh:</strong> {booking.numberOfInfants}
+                <strong>Người lớn:</strong> {booking.guest?.numberOfAdults} |{" "}
+                <strong>Trẻ em:</strong> {booking.guest?.numberOfChildren} |{" "}
+                <strong>Trẻ sơ sinh:</strong> {booking.guest?.numberOfInfants}
               </p>
               <p>
-                <strong>Tour:</strong> {booking.tourTitle} <br />
-                <strong>Công ty:</strong> {booking.companyName}
+                <strong>Tour:</strong> {booking.tour?.title} <br />
+                <strong>Khởi hành:</strong>{" "}
+                {booking.tour?.departureDate
+                  ? new Date(booking.tour.departureDate).toLocaleDateString()
+                  : ""}
+                <br />
+                <strong>Điểm xuất phát:</strong> {booking.tour?.startPoint}
+                <br />
+                <strong>Phương tiện:</strong> {booking.tour?.transportation}
+                <br />
+                <strong>Thời lượng:</strong> {booking.tour?.durationInDays} ngày
               </p>
               <p>
-                <strong>Ghi chú:</strong> {booking.noteForTour || "Không có"}
+                <strong>Ghi chú:</strong> {booking.booking?.noteForTour || "Không có"}
+              </p>
+              <p>
+                <strong>Email:</strong> {booking.billingInfo?.email} <br />
+                <strong>Phone:</strong> {booking.billingInfo?.phone} <br />
+                <strong>Địa chỉ:</strong> {booking.billingInfo?.address}
+              </p>
+              <p>
+                <strong>Hạn thanh toán:</strong>{" "}
+                {booking.paymentDeadline ? new Date(booking.paymentDeadline).toLocaleDateString() : "Không có"}
               </p>
               <p>
                 <strong>Thanh toán:</strong>{" "}
                 <span className="badge bg-info text-dark">
-                  {booking.paymentStatus}
+                  {booking.paymentInfo?.paymentStatus}
                 </span>
               </p>
               <p>
                 <strong>Trạng thái:</strong>{" "}
-                <span className={`badge ${booking.isActive ? "bg-success" : "bg-secondary"}`}>
-                  {booking.isActive ? "Hoạt động" : "Không hoạt động"}
+                <span className={`badge ${booking.paymentInfo?.bookingStatus === "Pending" ? "bg-secondary" : "bg-success"}`}>
+                  {booking.paymentInfo?.bookingStatus}
                 </span>
               </p>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleCancelBooking(booking.bookingId)}
+                title="Hủy booking này"
+              >
+                Hủy Booking
+              </button>
             </div>
           )}
         </div>
