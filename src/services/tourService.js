@@ -2,7 +2,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import { getHeader } from './api';
 import Cookies from 'js-cookie';
-const BASE_URL = 'http://localhost:5298/api';
+const BASE_URL = 'https://localhost:7012/api';
 const userId = Cookies.get('userId');
 export const getTour = async (page = 1, pageSize = 6) => {
   try {
@@ -105,6 +105,18 @@ export const getTourByoperator = async (keyword, pageNumber, pageSize) => {
       },
       headers: getHeader(),
     });
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi lấy danh sách tour operator:', error);
+    message.error('Không thể tải danh sách tour operator');
+    throw error;
+  }
+}
+export const getRecentAddTOur = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/Tour/List All Tours For Tour Operator/${userId}`,
+      {headers:getHeader()},
+    );
     return response.data;
   } catch (error) {
     console.error('Lỗi lấy danh sách tour operator:', error);

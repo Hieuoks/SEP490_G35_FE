@@ -27,7 +27,6 @@ const OpeSidebar = () => {
                 })
                 .catch((error) => {
                     setMyPackage([]);
-                    console.error("Error checking package:", error);
                 });   
         };
     useEffect(() => {
@@ -155,7 +154,7 @@ const OpeSidebar = () => {
                                 </a>
             
                             </div>
-                        </li>
+                        
 
                             </div>
                         )}

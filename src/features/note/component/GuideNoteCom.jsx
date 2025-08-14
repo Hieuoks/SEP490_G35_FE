@@ -23,7 +23,8 @@ const GuideNoteCom = () => {
                 const res = await getNoteByTourGuide();
                 if (bookingId) {
                     // Filter notes by bookingId if provided
-                    response = res.filter(item => item.bookingId === bookingId);
+                    console.log("res",bookingId )
+                    response = res.filter(item => item.bookingId == bookingId);
                 }else{
                     response = res;
                 }
@@ -67,6 +68,7 @@ const GuideNoteCom = () => {
             toast.error('Unable to update note');
         } 
     }
+
     const handleDeleteNote = async (noteId) => {
         try {
             const response = await deleteNote(noteId);
@@ -85,6 +87,7 @@ const GuideNoteCom = () => {
                 title: title,
                 content: content,
             };
+            console.log("request",note);
             const response = await createNote(note);
             toast.success('Note created successfully');
             console.log('Note created:', response);
@@ -119,7 +122,7 @@ const GuideNoteCom = () => {
                                 </div>
                                 <div>
                                   {role === 'Tour Guide' && bookingId ? (
-                                    <a className="btn btn-primary d-inline-flex align-items-center me-0" data-bs-toggle="modal" data-bs-target="#AddNoteModal"><FaPlus className="me-1 fs-16" />Add Note</a>
+                                    <a className="btn btn-primary d-inline-flex align-items-center me-0" data-bs-toggle="modal" data-bs-target="#Add"><FaPlus className="me-1 fs-16" />Add Note</a>
                                   ):(
                                     <div></div>
                                   )}
@@ -257,7 +260,7 @@ const GuideNoteCom = () => {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="submit" className="btn btn-md btn-primary" onClick={()=>handleUpdateNote(note.noteId)}>Save Changes</button>
+                                <button type="submit"  className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={()=>handleUpdateNote(note.noteId)}>Save Changes</button>
                             </div>
                         </div>
                     </div>
@@ -267,23 +270,50 @@ const GuideNoteCom = () => {
                 <div className="modal-dialog modal-dialog-centered modal-sm">
                     <div className="modal-content">
                         <div className="modal-body">
-                            <form>
+                            
                                 <div className="text-center">
                                     <h5 className="mb-3">Delete Review</h5>
                                     <p className="mb-3">Are you sure you want to delete this review?</p>
                                     <div className="d-flex align-items-center justify-content-center">
                                         <a href="#" className="btn btn-light me-2" data-bs-dismiss="modal">No</a>
-                                        <button className="btn btn-primary" onClick={()=>{handleDeleteNote(note.noteId)}}>Yes</button>
+                                        <button className="btn btn-primary" data-bs-dismiss="modal"  onClick={()=>{handleDeleteNote(note.noteId)}}>Yes</button>
                                     </div>
                                 </div>
-                            </form>
+                            
                         </div>
                     </div>
                 </div>
             </div>
             </div>
             ))}
-            
+            <div className="modal fade" id="Add">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5>Edit Note</h5>
+                            <a href="javascript:void(0);" onClick={()=>{
+                              setContent('');
+                              setTitle('');
+                            }}  data-bs-dismiss="modal" className="btn-close text-dark"></a>
+                        </div>
+                        <div >
+                            <div className="modal-body pb-0">
+                                <div className="mb-3">
+                                    <label className="form-label">Title <span className="text-danger">*</span></label>
+                                    <input className="form-control" defaultValue={title} onChange={(e)=>{setTitle(e.target.value)}}/>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">Content <span className="text-danger">*</span></label>
+                                    <textarea className="form-control" rows="3" defaultValue={content} onChange={(e)=>{setContent(e.target.value)}}></textarea>
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal"  onClick={()=>handleAddNote()}>Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
             
     );
