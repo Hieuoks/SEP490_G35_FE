@@ -93,3 +93,15 @@ export const getTourByoperator = async (keyword, pageNumber, pageSize) => {
     throw error;
   }
 }
+export const getRecentAddTOur = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/Tour/List All Tours For Tour Operator/${userId}`,
+      {headers:getHeader()},
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi lấy danh sách tour operator:', error);
+    message.error('Không thể tải danh sách tour operator');
+    throw error;
+  }
+}
