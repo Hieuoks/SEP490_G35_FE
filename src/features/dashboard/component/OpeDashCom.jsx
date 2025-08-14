@@ -166,7 +166,7 @@ const OpeDashCom = () => {
                                                     <div className="d-flex align-items-center flex-wrap mb-1">
                                                         <p className="fs-14">Date: {new Date(noti.createdAt).toLocaleString("en-GB")}</p>
                                                     </div>
-                                                    <h6 className="fs-16 fw-medium"><a href="flight-details.html">{noti.title}</a></h6>
+                                                    <h6 className="fs-16 fw-medium"><a onClick={() => !noti.isRead && handleMarkRead(noti.notificationId)}>{noti.title}</a></h6>
                                                     <div className="d-flex align-items-center flex-wrap mb-1">
                                                         <p className="fs-14">{noti.message}</p>
                                                     </div>
