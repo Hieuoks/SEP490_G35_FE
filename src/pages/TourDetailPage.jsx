@@ -60,7 +60,7 @@ function TourDetail() {
           <Itinerary tour={tourDetail}/>
           <IncludesExcludes tour={tourDetail}/>
           <Gallery tour={tourDetail}/>
-         
+         <FAQ/>
           <Reviews tour={tourDetail}/>
         </div>
         {/* Sidebar */}

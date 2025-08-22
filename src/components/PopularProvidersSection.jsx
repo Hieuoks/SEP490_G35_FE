@@ -3,7 +3,6 @@ import { FaArrowRight } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-// filepath: d:\OJT_ASS\SEP490_G35_FE\src\components\PopularProvidersSection.jsx
 export default function PopularProvidersSection({ tourOp }) {
   const operators = tourOp?.tourOperators || [];
   const [startIndex, setStartIndex] = useState(0);
@@ -46,6 +45,14 @@ export default function PopularProvidersSection({ tourOp }) {
   // Xử lý chuyển trang chi tiết
   const handleGoDetail = (id) => {
     navigate(`/tour-operator/detail/${id}`);
+  };
+
+  // Hàm cắt description tối đa 20 từ
+  const truncateDescription = (desc) => {
+    if (!desc) return "";
+    const words = desc.split(" ");
+    if (words.length <= 20) return desc;
+    return words.slice(0, 20).join(" ") + "...";
   };
 
   return (
@@ -127,7 +134,7 @@ export default function PopularProvidersSection({ tourOp }) {
                         <span>{p.companyName}</span>
                       </h5>
                       <div className="d-flex align-items-center seperate-dot justify-content-center">
-                        <span>{p.description}</span>
+                        <span>{truncateDescription(p.description)}</span>
                         <span>{p.address}</span>
                       </div>
                       <div className="d-flex align-items-center justify-content-between mt-3 pt-3 border-top">

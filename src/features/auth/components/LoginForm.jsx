@@ -52,14 +52,20 @@ if (operatorData && operatorData.tourOperatorId) {
 }
 
       toast.success("Login successful!");
-    
-if (roleName === "Customer") {
-  navigate('/home');
-} else if (roleName === "Admin") {
+        if (roleName === "Tour Operator") {
+        if (operatorData && operatorData.tourOperatorId) {
+          navigate('/operator/dashboard');
+        } else {
+          // Nếu chưa có operatorId thì chuyển về trang tạo nhà điều hành
+          navigate('/tour-operator/create');
+        }
+      } else if (roleName === "Admin") {
   navigate('/admin/dashboard');
-} else if (operatorData && operatorData.tourOperatorId) {
-  navigate('/operator/dashboard');
-} else {
+} else if (roleName === "Customer") {
+  navigate('/home');
+} else if (roleName === "Tour Guide"){
+  navigate('/guide/schedule');
+}else{
   navigate('/home');
 }
     } catch (error) {
@@ -71,8 +77,8 @@ if (roleName === "Customer") {
   return (
     <div className="card authentication-card">
       <div className="card-header text-center">
-        <h5 className="mb-1">Sign In</h5>
-        <p>Sign in to Start Manage your DreamsTour Account</p>
+        <h5 className="mb-1">Đăng nhập</h5>
+        <p>Đăng nhập để quản lý tài khoản DreamsTour của bạn</p>
       </div>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
@@ -85,7 +91,7 @@ if (roleName === "Customer") {
               <input
                 type="email"
                 className="form-control form-control-lg"
-                placeholder="Enter Email"
+                placeholder="Nhập email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -93,7 +99,7 @@ if (roleName === "Customer") {
             </div>
           </div>
           <div className="mb-3">
-            <label className="form-label">Password</label>
+            <label className="form-label">Mật khẩu</label>
             <div className="input-icon">
               <span className="input-icon-addon">
                 <i className="fas fa-lock"></i>
@@ -101,7 +107,7 @@ if (roleName === "Customer") {
               <input
                 type="password"
                 className="form-control form-control-lg"
-                placeholder="Enter Password"
+                placeholder="Nhập mật khẩu"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -121,34 +127,34 @@ if (roleName === "Customer") {
                 onChange={(e) => setRememberMe(e.target.checked)}
               />
               <label className="form-check-label" htmlFor="remember_me">
-                Remember Me
+                Ghi nhớ đăng nhập
               </label>
             </div>
             <a href="/forgot-password" className="link-primary fw-medium">
-              Forgot Password?
+              Quên mật khẩu?
             </a>
           </div>
           <div className="mb-3">
             <button type="submit" className="btn btn-xl btn-primary w-100">
-              Login <i className="fas fa-arrow-right ms-2"></i>
+              Đăng nhập <i className="fas fa-arrow-right ms-2"></i>
             </button>
           </div>
           <div className="login-or mb-3 text-center">
-            <span className="span-or">Or</span>
+            <span className="span-or">Hoặc</span>
           </div>
           <SocialLoginButtons />
           <div className="text-center">
             <p>
-              Don't have an account?{" "}
+              Chưa có tài khoản?{" "}
               <a href="/register" className="link-primary fw-medium">
-                Sign up
+                Đăng ký
               </a>
             </p>
           </div>
         </form>
       </div>
     </div>
-  );
+);
 };
 
 export default LoginForm;

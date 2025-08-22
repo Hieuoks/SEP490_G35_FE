@@ -1,49 +1,161 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faImage,
   faTicketAlt,
   faReceipt,
   faMapMarkerAlt,
-  faStar,
   faHeart,
   faShareAlt,
+  faChevronLeft,
+  faChevronRight,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 const TourDetailSlider = ({ tour }) => {
   const [showMore, setShowMore] = useState(false);
-const mediaItems = tour?.media || [];
+  const [fancyOpen, setFancyOpen] = useState(false);
+  const [fancyIndex, setFancyIndex] = useState(0);
+  const mediaItems = tour?.media || [];
+
   const toggleShowMore = () => setShowMore(!showMore);
+
+  const openFancy = (idx) => {
+    setFancyIndex(idx);
+    setFancyOpen(true);
+  };
+
+  const closeFancy = () => setFancyOpen(false);
+
+  const prevFancy = (e) => {
+    e.stopPropagation();
+    setFancyIndex((prev) => (prev === 0 ? mediaItems.length - 1 : prev - 1));
+  };
+
+  const nextFancy = (e) => {
+    e.stopPropagation();
+    setFancyIndex((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
+  };
 
   return (
     <div>
-      <div className="service-wrap mb-4 d-flex">
-      {/* Ảnh lớn chỉ hiện 1 ảnh tại 1 thời điểm */}
-      <div className="flex-grow-1 me-3">
-        <div className="service-img mb-3">
+      {/* Fancybox overlay */}
+      {fancyOpen && (
+        <div
+          className="fancybox-overlay"
+          style={{
+            position: "fixed",
+            zIndex: 9999,
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.85)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onClick={closeFancy}
+        >
+          <button
+            style={{
+              position: "absolute",
+              top: 30,
+              right: 40,
+              background: "transparent",
+              border: "none",
+              color: "#fff",
+              fontSize: 32,
+              cursor: "pointer",
+              zIndex: 10001,
+            }}
+            onClick={closeFancy}
+            aria-label="Đóng"
+            type="button"
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+          <button
+            style={{
+              position: "absolute",
+              left: 30,
+              top: "50%",
+              transform: "translateY(-50%)",
+              background: "transparent",
+              border: "none",
+              color: "#fff",
+              fontSize: 40,
+              cursor: "pointer",
+              zIndex: 10001,
+            }}
+            onClick={prevFancy}
+            aria-label="Trước"
+            type="button"
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
           <img
-            src={mediaItems[0].mediaUrl}
-            className="img-fluid rounded w-100"
-            alt={mediaItems[0].caption || 'Tour Image'}
-            style={{ objectFit: 'cover', height: '400px' }}
+            src={mediaItems[fancyIndex]?.mediaUrl}
+            alt={mediaItems[fancyIndex]?.caption || "Tour Image"}
+            style={{
+              maxHeight: "80vh",
+              maxWidth: "90vw",
+              borderRadius: 12,
+              boxShadow: "0 4px 32px rgba(0,0,0,0.3)",
+              objectFit: "contain",
+            }}
+            onClick={e => e.stopPropagation()}
           />
+          <button
+            style={{
+              position: "absolute",
+              right: 30,
+              top: "50%",
+              transform: "translateY(-50%)",
+              background: "transparent",
+              border: "none",
+              color: "#fff",
+              fontSize: 40,
+              cursor: "pointer",
+              zIndex: 10001,
+            }}
+            onClick={nextFancy}
+            aria-label="Sau"
+            type="button"
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
+          </button>
         </div>
-      </div>
+      )}
 
-      {/* Thumbnail nhỏ bên phải */}
-      <div className="d-flex flex-column" style={{ width: '100px' }}>
-        {mediaItems.slice(1).map((item) => (
-          <div key={item.id} className="mb-2">
+      <div className="service-wrap mb-4 d-flex">
+        {/* Ảnh lớn chỉ hiện 1 ảnh tại 1 thời điểm */}
+        <div className="flex-grow-1 me-3">
+          <div className="service-img mb-3" style={{ cursor: "pointer" }}>
             <img
-              src={item.mediaUrl}
-              className="img-fluid rounded"
-              alt={item.caption || 'Tour Thumbnail'}
-              style={{ height: '80px', objectFit: 'cover', cursor: 'pointer' }}
+              src={mediaItems[0]?.mediaUrl}
+              className="img-fluid rounded w-100"
+              alt={mediaItems[0]?.caption || 'Tour Image'}
+              style={{ objectFit: 'cover', height: '400px' }}
+              onClick={() => openFancy(0)}
             />
           </div>
-        ))}
+        </div>
+
+        {/* Thumbnail nhỏ bên phải */}
+        <div className="d-flex flex-column" style={{ width: '100px' }}>
+          {mediaItems.slice(1).map((item, idx) => (
+            <div key={item.id} className="mb-2" style={{ cursor: "pointer" }}>
+              <img
+                src={item.mediaUrl}
+                className="img-fluid rounded"
+                alt={item.caption || 'Tour Thumbnail'}
+                style={{ height: '80px', objectFit: 'cover' }}
+                onClick={() => openFancy(idx + 1)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
 
       {/* Tour Header Info */}
       <div className="d-flex align-items-center justify-content-between mb-2">
@@ -72,7 +184,6 @@ const mediaItems = tour?.media || [];
                 View Location
               </a>
             </p>
-           
           </div>
         </div>
         <div className="d-flex align-items-center mb-3">

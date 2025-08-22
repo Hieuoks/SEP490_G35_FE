@@ -1,16 +1,18 @@
 import axios from 'axios';
 import { message } from 'antd';
 import { getHeader } from './api';
-const BASE_URL = 'https://localhost:7012/api'
-export const register = async (userName, email, password, address, phoneNumber) => {
+
+const BASE_URL = 'http://localhost:5298/api'
+export const register = async (userName, email, password, address, phoneNumber, avatar, roleName) => {
+
   let data = JSON.stringify({
-    "userName": userName,
-    "email": email,
-    "password": password,
-    "address": address,
-    "phoneNumber": phoneNumber,
-    "avatar": "string",
-    "roleName": "Customer"
+    userName,
+    email,
+    password,
+    address,
+    phoneNumber,
+    avatar: avatar || "string",
+    roleName: roleName || "Customer"
   });
 
   let config = {
@@ -23,14 +25,12 @@ export const register = async (userName, email, password, address, phoneNumber) 
     data: data
   };
 
-  axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
+  try {
+    const response = await axios.request(config);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
 };
 export const login = async (email, password) => {
   try {
@@ -51,7 +51,43 @@ export const login = async (email, password) => {
     throw error.response?.data || error;
   }
 };
+export const forgotPassword = async (email) => {
+  try {
 
+    const response = await axios.post(`${BASE_URL}/Auth/forgot-password`, {
+      email
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Trả về dữ liệu (ví dụ: token)
+    return response.data;
+  } catch (error) {
+    // Ném lỗi để component gọi xử lý tiếp
+    throw error.response?.data || error;
+  }
+};
+export const resetPassword = async (token, password) => {
+  try {
+
+    const response = await axios.post(`${BASE_URL}/Auth/reset-password`, {
+      token,
+      newPassword: password
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Trả về dữ liệu (ví dụ: token)
+    return response.data;
+  } catch (error) {
+    // Ném lỗi để component gọi xử lý tiếp
+    throw error.response?.data || error;
+  }
+};
 export const getOperatorID = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/TourOperator/user-operator`, {

@@ -100,45 +100,46 @@ const GuideNoteCom = () => {
             toast.error('Unable to create note');
         }
     }
-    return (
-            <div className="col-xl-9 col-lg-8">
+   return (
+    <div className="col-xl-9 col-lg-8">
 
-                {/* <!-- Review Title --> */}
-                <div className="card">
-                    <div className="card-body">
-                        <div className="d-flex justify-content-between align-items-center flex-wrap row-gap-3">
-                            <div>
-                                <h6>Notes By Guides</h6>
-                                <p className="fs-14">Total : {Total}</p>
+        {/* <!-- Review Title --> */}
+        <div className="card">
+            <div className="card-body">
+                <div className="d-flex justify-content-between align-items-center flex-wrap row-gap-3">
+                    <div>
+                        <h6>Ghi chú của hướng dẫn viên</h6>
+                        <p className="fs-14">Tổng số: {Total}</p>
+                    </div>
+                    <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+                        <div className="me-3 ">
+                            <div className="input-icon-start  me-2 position-relative">
+                                <span className="icon-addon">
+                                    <FaSearch className="fs-14" />
+                                </span>
+                                <input type="text" className="form-control" placeholder="Tìm kiếm" onChange={(e) => setKeyword(e.target.value)} />
+
                             </div>
-                            <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
-                                <div className="me-3 ">
-                                    <div className="input-icon-start  me-2 position-relative">
-                                        <span className="icon-addon">
-                                            <FaSearch className="fs-14" />
-                                        </span>
-                                        <input type="text" className="form-control" placeholder="Search" onChange={(e) => setKeyword(e.target.value)} />
-                                    </div>
-                                </div>
-                                <div>
-                                  {role === 'Tour Guide' && bookingId ? (
-                                    <a className="btn btn-primary d-inline-flex align-items-center me-0" data-bs-toggle="modal" data-bs-target="#Add"><FaPlus className="me-1 fs-16" />Add Note</a>
-                                  ):(
-                                    <div></div>
-                                  )}
-                                </div>
-                            </div>
+                        </div>
+                        <div>
+                            {role === 'Tour Guide' && bookingId ? (
+                                <a className="btn btn-primary d-inline-flex align-items-center me-0" data-bs-toggle="modal" data-bs-target="#Add"><FaPlus className="me-1 fs-16" />Thêm ghi chú</a>
+                            ) : (
+                                <div></div>
+                            )}
                         </div>
                     </div>
                 </div>
-                {/* <!-- /Review Title --> */}
-                {currentItems.length === 0 ? (
-                    <div className="alert alert-warning" role="alert">
-                        No notes found.
-                    </div>
-                ):(
-                  currentItems.map((note) => (
-                    <div className="card shadow-none" key={note.noteId}>
+            </div>
+        </div>
+        {/* <!-- /Review Title --> */}
+        {currentItems.length === 0 ? (
+            <div className="alert alert-warning" role="alert">
+                Không tìm thấy ghi chú nào.
+            </div>
+        ) : (
+            currentItems.map((note) => (
+                <div className="card shadow-none" key={note.noteId}>
                     <div className="card-body">
                         <div className="border-bottom mb-3">
                             <div className="d-flex justify-content-between align-items-center flex-wrap row-gap-2 mb-2">
@@ -149,173 +150,173 @@ const GuideNoteCom = () => {
                                     <div>
                                         <h6 className="fs-16">{note.tourGuideName}</h6>
                                         <div className="d-flex align-items-center flex-wrap">
-                                            <span className="fs-14 d-flex align-items-center">{new Date(note.createdAt).toLocaleString("en-GB")}<i className="ti ti-point-filled text-gray mx-2"></i></span>
+                                            <span className="fs-14 d-flex align-items-center">{new Date(note.createdAt).toLocaleString("vi-VN")}<i className="ti ti-point-filled text-gray mx-2"></i></span>
                                             <p className="fs-14">{note.title}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-center">
-                                    {role === 'Tour Guide'? (
-                                      <div>
-                                        <a href="javascript:void(0);" className="btn btn-white btn-sm border me-2" data-bs-toggle="modal" data-bs-target={`#Update${note.noteId}`} onClick={()=>{
-                                          setTitle(note.title);
-                                          setContent(note.content);
-                                        }}><FaEdit/>Edit</a>
-                                        <a href="javascript:void(0);" className="btn btn-white btn-sm border" data-bs-toggle="modal" data-bs-target={`#Delete${note.noteId}`}><FaTrash/>Delete</a>
-                                      </div>
-
-                                    ):(
-                                      <div></div>
+                                    {role === 'Tour Guide' ? (
+                                        <div>
+                                            <a href="javascript:void(0);" className="btn btn-white btn-sm border me-2" data-bs-toggle="modal" data-bs-target={`#Update${note.noteId}`} onClick={() => {
+                                                setTitle(note.title);
+                                                setContent(note.content);
+                                            }}><FaEdit />Sửa</a>
+                                            <a href="javascript:void(0);" className="btn btn-white btn-sm border" data-bs-toggle="modal" data-bs-target={`#Delete${note.noteId}`}><FaTrash />Xoá</a>
+                                        </div>
+                                    ) : (
+                                        <div></div>
                                     )}
                                 </div>
                             </div>
                             <p className="fs-16 mb-3">{note.content}</p>
                         </div>
                         <div className="d-flex justify-content-between align-items-center flex-wrap row-gap-2">
-                            <p className="fs-14 d-flex align-items-center mb-0"><FaInfoCircle /> 
-                            <b>Info </b>
-                            : {note.tourTitle}, <b>Departdate</b> : {new Date(note.departureDate).toLocaleDateString("en-GB")}
+                            <p className="fs-14 d-flex align-items-center mb-0"><FaInfoCircle />
+                                <b>Thông tin </b>
+                                : {note.tourTitle}, <b>Ngày khởi hành</b> : {new Date(note.departureDate).toLocaleDateString("vi-VN")}
                             </p>
                         </div>
                     </div>
-                    </div>
-                ))
-                )}
-                {/* <!-- Reviews --> */}
-                
-                {/* <!-- /Reviews --> */}
+                </div>
+            ))
+        )}
+        {/* <!-- Reviews --> */}
 
+        {/* <!-- /Reviews --> */}
 
+        {/* <!-- Pagination --> */}
+        <nav className="pagination-nav">
+            <ul className="pagination justify-content-center">
+                {/* Previous Button */}
+                <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                    <a
+                        className="page-link"
+                        href="javascript:void(0);"
+                        aria-label="Previous"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                        <span aria-hidden="true"><FaChevronLeft /></span>
+                    </a>
+                </li>
 
+                {/* Page Numbers */}
+                {Array.from({ length: totalPages }, (_, index) => {
+                    const pageNum = index + 1;
+                    const isActive = pageNum === currentPage;
 
-                {/* <!-- Pagination --> */}
-                <nav class="pagination-nav">
-                                    <ul class="pagination justify-content-center">
-                                        {/* Previous Button */}
-                                        <li class={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                                            <a
-                                                class="page-link"
-                                                href="javascript:void(0);"
-                                                aria-label="Previous"
-                                                onClick={() => handlePageChange(currentPage - 1)}
-                                            >
-                                                <span aria-hidden="true"><FaChevronLeft /></span>
-                                            </a>
-                                        </li>
-                
-                                        {/* Page Numbers */}
-                                        {Array.from({ length: totalPages }, (_, index) => {
-                                            const pageNum = index + 1;
-                                            const isActive = pageNum === currentPage;
-                
-                                            return (
-                                                <li key={pageNum} class={`page-item ${isActive ? 'active' : ''}`}>
-                                                    <a
-                                                        class="page-link"
-                                                        href="javascript:void(0);"
-                                                        onClick={() => handlePageChange(pageNum)}
-                                                    >
-                                                        {pageNum}
-                                                    </a>
-                                                </li>
-                                            );
-                                        })}
-                
-                                        {/* Next Button */}
-                                        <li class={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-                                            <a
-                                                class="page-link"
-                                                href="javascript:void(0);"
-                                                aria-label="Next"
-                                                onClick={() => handlePageChange(currentPage + 1)}
-                                            >
-                                                <span aria-hidden="true"><FaChevronRight /></span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                {/* <!-- /Pagination --> */}
-            {currentItems.map((note) => (
+                    return (
+                        <li key={pageNum} className={`page-item ${isActive ? 'active' : ''}`}>
+                            <a
+                                className="page-link"
+                                href="javascript:void(0);"
+                                onClick={() => handlePageChange(pageNum)}
+                            >
+                                {pageNum}
+                            </a>
+                        </li>
+                    );
+                })}
+
+                {/* Next Button */}
+                <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                    <a
+                        className="page-link"
+                        href="javascript:void(0);"
+                        aria-label="Next"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                        <span aria-hidden="true"><FaChevronRight /></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        {/* <!-- /Pagination --> */}
+        {currentItems.map((note) => (
 
             <div key={note.noteId}>
-            <div className="modal fade" id={`Update${note.noteId}`}>
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5>Edit Note</h5>
-                            <a href="javascript:void(0);" onClick={()=>{
-                              setContent('');
-                              setTitle('');
-                            }}  data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                        </div>
-                        <div >
-                            <div className="modal-body pb-0">
-                                <div className="mb-3">
-                                    <label className="form-label">Title <span className="text-danger">*</span></label>
-                                    <input className="form-control" defaultValue={title} onChange={(e)=>{setTitle(e.target.value)}}/>
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Content <span className="text-danger">*</span></label>
-                                    <textarea className="form-control" rows="3" defaultValue={content} onChange={(e)=>{setContent(e.target.value)}}></textarea>
-                                </div>
+                <div className="modal fade" id={`Update${note.noteId}`}>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5>Chỉnh sửa ghi chú</h5>
+                                <a href="javascript:void(0);" onClick={() => {
+                                    setContent('');
+                                    setTitle('');
+                                }} data-bs-dismiss="modal" className="btn-close text-dark"></a>
                             </div>
-                            <div className="modal-footer">
-                                <button type="submit"  className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={()=>handleUpdateNote(note.noteId)}>Save Changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="modal fade" id={`Delete${note.noteId}`}>
-                <div className="modal-dialog modal-dialog-centered modal-sm">
-                    <div className="modal-content">
-                        <div className="modal-body">
-                            
-                                <div className="text-center">
-                                    <h5 className="mb-3">Delete Review</h5>
-                                    <p className="mb-3">Are you sure you want to delete this review?</p>
-                                    <div className="d-flex align-items-center justify-content-center">
-                                        <a href="#" className="btn btn-light me-2" data-bs-dismiss="modal">No</a>
-                                        <button className="btn btn-primary" data-bs-dismiss="modal"  onClick={()=>{handleDeleteNote(note.noteId)}}>Yes</button>
+                            <div >
+                                <div className="modal-body pb-0">
+                                    <div className="mb-3">
+                                        <label className="form-label">Tiêu đề <span className="text-danger">*</span></label>
+                                        <input className="form-control" defaultValue={title} onChange={(e) => { setTitle(e.target.value) }} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Nội dung <span className="text-danger">*</span></label>
+                                        <textarea className="form-control" rows="3" defaultValue={content} onChange={(e) => { setContent(e.target.value) }}></textarea>
                                     </div>
                                 </div>
-                            
+                                <div className="modal-footer">
+                                    <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => handleUpdateNote(note.noteId)}>Lưu thay đổi</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div className="modal fade" id={`Delete${note.noteId}`}>
+                    <div className="modal-dialog modal-dialog-centered modal-sm">
+                        <div className="modal-content">
+                            <div className="modal-body">
+
+
+                                <div className="text-center">
+                                    <h5 className="mb-3">Xoá ghi chú</h5>
+                                    <p className="mb-3">Bạn có chắc chắn muốn xoá ghi chú này?</p>
+                                    <div className="d-flex align-items-center justify-content-center">
+                                        <a href="#" className="btn btn-light me-2" data-bs-dismiss="modal">Không</a>
+                                        <button className="btn btn-primary" data-bs-dismiss="modal" onClick={() => { handleDeleteNote(note.noteId) }}>Có</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
-            ))}
-            <div className="modal fade" id="Add">
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5>Edit Note</h5>
-                            <a href="javascript:void(0);" onClick={()=>{
-                              setContent('');
-                              setTitle('');
-                            }}  data-bs-dismiss="modal" className="btn-close text-dark"></a>
+        ))}
+        <div className="modal fade" id="Add">
+            <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5>Thêm ghi chú</h5>
+                        <a href="javascript:void(0);" onClick={() => {
+                            setContent('');
+                            setTitle('');
+                        }} data-bs-dismiss="modal" className="btn-close text-dark"></a>
+                    </div>
+                    <div >
+                        <div className="modal-body pb-0">
+                            <div className="mb-3">
+                                <label className="form-label">Tiêu đề <span className="text-danger">*</span></label>
+                                <input className="form-control" defaultValue={title} onChange={(e) => { setTitle(e.target.value) }} />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Nội dung <span className="text-danger">*</span></label>
+                                <textarea className="form-control" rows="3" defaultValue={content} onChange={(e) => { setContent(e.target.value) }}></textarea>
+                            </div>
                         </div>
-                        <div >
-                            <div className="modal-body pb-0">
-                                <div className="mb-3">
-                                    <label className="form-label">Title <span className="text-danger">*</span></label>
-                                    <input className="form-control" defaultValue={title} onChange={(e)=>{setTitle(e.target.value)}}/>
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Content <span className="text-danger">*</span></label>
-                                    <textarea className="form-control" rows="3" defaultValue={content} onChange={(e)=>{setContent(e.target.value)}}></textarea>
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal"  onClick={()=>handleAddNote()}>Save Changes</button>
-                            </div>
+                        <div className="modal-footer">
+                            <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => handleAddNote()}>Lưu</button>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
-            
-    );
+
+        </div>
+    </div>
+);
+
 }
 export default GuideNoteCom;

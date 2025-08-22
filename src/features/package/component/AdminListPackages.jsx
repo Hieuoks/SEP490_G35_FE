@@ -9,7 +9,7 @@ const AdminListPackages = () => {
     const fetchPackages = async () => {
             try {
                 const data = await getPackages();
-                setPackagesRes(data.items || data);
+                setPackagesRes(data.data || data);
                 console.log("API response:", data);
             } catch (error) {
                 console.error("Error fetching packages:", error);
@@ -112,335 +112,299 @@ const AdminListPackages = () => {
                 setErrors({ api: 'Update package status failed. Please try again.' });
             });
     }
-    return (
-        <div className="col-xl-9 col-lg-8 theiaStickySidebar">
+   return (
+    <div className="col-xl-9 col-lg-8 theiaStickySidebar">
 
-            {/* <!-- Booking Header --> */}
-            <div className="card booking-header">
-                <div className="card-body header-content d-flex align-items-center justify-content-between flex-wrap ">
-                    <div>
-                        <h6>Packages</h6>
-                        <p className="fs-14 text-gray-6 fw-normal ">Total : {packagesRes.length}</p>
-
-                    </div>
-                    <div class="d-flex align-items-center flex-wrap">
-                        <button className="btn btn-primary me-0" data-bs-toggle="modal" data-bs-target="#addPackage">Add Package</button>
-                    </div>
+        {/* <!-- Booking Header --> */}
+        <div className="card booking-header">
+            <div className="card-body header-content d-flex align-items-center justify-content-between flex-wrap ">
+                <div>
+                    <h6>Gói dịch vụ</h6>
+                    <p className="fs-14 text-gray-6 fw-normal ">Tổng số: {packagesRes.length}</p>
+                </div>
+                <div className="d-flex align-items-center flex-wrap">
+                    <button className="btn btn-primary me-0" data-bs-toggle="modal" data-bs-target="#addPackage">Thêm gói</button>
                 </div>
             </div>
-            {/* <!-- /Booking Header --> */}
+        </div>
+        {/* <!-- /Booking Header --> */}
 
-            {/* <!-- Car-Booking List --> */}
-            <div className="card hotel-list">
-                <div className="card-body p-0">
-                    <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
-                        <h6 className="">Packages List</h6>
-
-                    </div>
-
-                    {/* <!-- Hotel List --> */}
-                    <div className="custom-datatable-filter table-responsive">
-                        <table className="table datatable">
-                            <thead className="thead-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {packagesRes.length === 0 ? (
-                                    <tr>No packages available at the moment.</tr>
-                                ) : (
-                                    packagesRes
-                                    .sort((a, b) => (b.isActive === true) - (a.isActive === true))
-                                    .map((pac) => (
-                                        <tr key={pac.packageId}>
-                                            <td><a href="javascript:void(0);" className="link-primary fw-medium" data-bs-toggle="modal" data-bs-target="#upcoming">#{pac.packageId}</a></td>
-                                            <td>
-                                                <h6 className="fs-14 mb-1">{pac.name}</h6>
-                                            </td>
-                                            <td>${pac.price}</td>
-                                            <td>
-                                                { pac.isActive ? (
-                                                        <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
-                                                            <i className="fa-solid fa-circle fs-5 me-1"></i>Active
-                                                        </span>
-                                                    ):(
-                                                        <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
-                                                            <i className="fa-solid fa-circle fs-5 me-1"></i>Inactive
-                                                        </span>
-                                                    )}
-
-                                            </td>
-                                            <td>
-                                                <div className="d-flex align-items-center">
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${pac.packageId}`} className="me-3" onClick={(e) => {
-                                                        setFormData({packageId: pac.packageId, name: pac.name, price: pac.price, maxTour: pac.maxTour, maxImage: pac.maxImage, maxVideo: pac.maxVideo, tourGuideFunction: pac.tourGuideFunction, description: pac.description});
-                                                    }}> 
-                                                        <FaEye />
-                                                    </a>
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${pac.packageId}`} 
-                                                        onClick={(e) => {
-                                                            setFormData({packageId: pac.packageId, name: pac.name, price: pac.price, maxTour: pac.maxTour, maxImage: pac.maxImage, maxVideo: pac.maxVideo, tourGuideFunction: pac.tourGuideFunction, description: pac.description});
-                                                        }}
-                                                        
-                                                    >
-                                                        <FaEdit className="ms-2" />
-                                                    </a>
-                                                </div>
-                                                
-                                                
-                                            </td>
-                                            {/* <td>
-                                                <div className="d-flex align-items-center">
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#upcoming"> <FontAwesomeIcon icon={faEye} /></a>
-                                                </div>
-                                            </td> */}
-
-                                        </tr>
-
-                                    ))
-
-                                )}
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                    {/* <!-- /Hotel List --> */}
-
+        {/* <!-- Car-Booking List --> */}
+        <div className="card hotel-list">
+            <div className="card-body p-0">
+                <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
+                    <h6 className="">Danh sách gói</h6>
                 </div>
-            </div>
-            {/* <!-- /Car-Booking List --> */}
-            {packagesRes.length === 0 ? (
-                <div>No content</div>
-            ) : packagesRes.map((pac) => (
-                <div key={pac.packageId}>
-                    <div className="modal fade" id={`View${pac.packageId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                        <div className="modal-dialog  modal-dialog-centered modal-xl">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5>Package Info <span className="fs-14 fw-medium text-primary">#{pac.packageId}</span></h5>
-                                    <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="upcoming-content">
 
-                                        <div className="upcoming-details ">
-                                            <h6 className="mb-2">General Info</h6>
-                                            <div className="row gy-3">
-                                                <div className="col-lg-3">
-                                                    <h6 className="fs-14">Name</h6>
-                                                    <p className="text-gray-6 fs-16 ">{pac.name}</p>
-                                                </div>
-                                                <div className="col-lg-3">
-                                                    <h6 className="fs-14">Price</h6>
-                                                    <p className="text-gray-6 fs-16 ">${pac.price}</p>
-                                                </div>
-                                                <div className="col-lg-3">
-                                                    <h6 className="fs-14">Status</h6>
-                                                    { pac.isActive ? (
-                                                        <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
-                                                            <i className="fa-solid fa-circle fs-5 me-1"></i>Active
-                                                        </span>
-                                                    ):(
-                                                        <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
-                                                            <i className="fa-solid fa-circle fs-5 me-1"></i>Inactive
-                                                        </span>
-                                                    )}
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="upcoming-details">
-                                            <h6 className="mb-2">Description</h6>
+                {/* <!-- Hotel List --> */}
+                <div className="custom-datatable-filter table-responsive">
+                    <table className="table datatable">
+                        <thead className="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên gói</th>
+                                <th>Giá</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {packagesRes.length === 0 ? (
+                                <tr><td colSpan={5}>Hiện chưa có gói dịch vụ nào.</td></tr>
+                            ) : (
+                                packagesRes
+                                .sort((a, b) => (b.isActive === true) - (a.isActive === true))
+                                .map((pac) => (
+                                    <tr key={pac.packageId}>
+                                        <td><a href="javascript:void(0);" className="link-primary fw-medium" data-bs-toggle="modal" data-bs-target="#upcoming">#{pac.packageId}</a></td>
+                                        <td>
+                                            <h6 className="fs-14 mb-1">{pac.name}</h6>
+                                        </td>
+                                        <td>{pac.price}₫</td>
+                                        <td>
+                                            { pac.isActive ? (
+                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
+                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Đang hoạt động
+                                                    </span>
+                                                ):(
+                                                    <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
+                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Ngừng hoạt động
+                                                    </span>
+                                                )}
+                                        </td>
+                                        <td>
                                             <div className="d-flex align-items-center">
-                                                <p className="text-gray-6 fs-16 ">{pac.description}</p>
-                                                {/* <span className="bg-light rounded-pill py-1 px-2 text-gray-6 fs-14 me-2">Blankets & Pillows</span> */}
+                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${pac.packageId}`} className="me-3" onClick={(e) => {
+                                                    setFormData({packageId: pac.packageId, name: pac.name, price: pac.price, maxTour: pac.maxTour, maxImage: pac.maxImage, maxVideo: pac.maxVideo, tourGuideFunction: pac.tourGuideFunction, description: pac.description});
+                                                }}> 
+                                                    <FaEye />
+                                                </a>
+                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${pac.packageId}`} 
+                                                    onClick={(e) => {
+                                                        setFormData({packageId: pac.packageId, name: pac.name, price: pac.price, maxTour: pac.maxTour, maxImage: pac.maxImage, maxVideo: pac.maxVideo, tourGuideFunction: pac.tourGuideFunction, description: pac.description});
+                                                    }}
+                                                >
+                                                    <FaEdit className="ms-2" />
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+                {/* <!-- /Hotel List --> */}
+
+            </div>
+        </div>
+        {/* <!-- /Car-Booking List --> */}
+        {packagesRes.length === 0 ? (
+            <div>Không có nội dung</div>
+        ) : packagesRes.map((pac) => (
+            <div key={pac.packageId}>
+                <div className="modal fade" id={`View${pac.packageId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-hidden="true">
+                    <div className="modal-dialog  modal-dialog-centered modal-xl">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5>Thông tin gói <span className="fs-14 fw-medium text-primary">#{pac.packageId}</span></h5>
+                                <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
+                            </div>
+                            <div className="modal-body">
+                                <div className="upcoming-content">
+
+                                    <div className="upcoming-details ">
+                                        <h6 className="mb-2">Thông tin chung</h6>
+                                        <div className="row gy-3">
+                                            <div className="col-lg-3">
+                                                <h6 className="fs-14">Tên gói</h6>
+                                                <p className="text-gray-6 fs-16 ">{pac.name}</p>
+                                            </div>
+                                            <div className="col-lg-3">
+                                                <h6 className="fs-14">Giá</h6>
+                                                <p className="text-gray-6 fs-16 ">{pac.price}₫</p>
+                                            </div>
+                                            <div className="col-lg-3">
+                                                <h6 className="fs-14">Trạng thái</h6>
+                                                { pac.isActive ? (
+                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
+                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Đang hoạt động
+                                                    </span>
+                                                ):(
+                                                    <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
+                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Ngừng hoạt động
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="upcoming-details">
+                                        <h6 className="mb-2">Mô tả</h6>
+                                        <div className="d-flex align-items-center">
+                                            <p className="text-gray-6 fs-16 ">{pac.description}</p>
+                                        </div>
+                                    </div>
 
-                                        <div className="upcoming-details">
-                                            <h6 className="mb-2">Feature Info</h6>
-                                            <div className="row gy-3">
-                                                <div className="col-lg-12">
-                                                    {/* <h6 className="fs-14">Name</h6> */}
-                                                    <p className="text-gray-6 fs-16 "> - Have {pac.maxTour} tours per year </p>
-                                                    <p className="text-gray-6 fs-16 "> - Have {pac.maxImage} image per tour create </p>
-                                                    <p className="text-gray-6 fs-16 "> - {pac.maxVideo?"Each tour can have video for introducing about this tour":"You cannot upload video for tour"} </p>
-                                                    <p className="text-gray-6 fs-16 "> - {pac.tourGuideFunction?"You can manage your tourguide include (create,delete,add tour guide in daparture date)":"You cannot manage tour guide"} </p>
-                                                </div>
-                                                
+                                    <div className="upcoming-details">
+                                        <h6 className="mb-2">Tính năng</h6>
+                                        <div className="row gy-3">
+                                            <div className="col-lg-12">
+                                                <p className="text-gray-6 fs-16 "> - Có {pac.maxTour} tour mỗi năm</p>
+                                                <p className="text-gray-6 fs-16 "> - Có {pac.maxImage} ảnh cho mỗi tour</p>
+                                                <p className="text-gray-6 fs-16 "> - {pac.maxVideo ? "Mỗi tour có thể có video giới thiệu" : "Không thể tải video cho tour"}</p>
+                                                <p className="text-gray-6 fs-16 "> - {pac.tourGuideFunction ? "Quản lý hướng dẫn viên (tạo, xoá, thêm hướng dẫn viên vào ngày khởi hành)" : "Không thể quản lý hướng dẫn viên"}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="modal-footer">
-                                    <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn btn-md btn-primary" onClick={hanldeUpdateStatus}>{pac.isActive?"Inactive":"Active"}</a>
-                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="modal fade" id={`Update${pac.packageId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                        <div className="modal-dialog  modal-dialog-centered modal-xl">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5>Update package <span className="fs-14 fw-medium text-primary">#{pac.packageId}</span></h5>
-                                    <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                                </div>
-                                <div className="modal-body">
-                                        <div className="upcoming-content">
-
-                                            <div className="upcoming-details ">
-                                                <h6 className="mb-2">General Info</h6>
-                                                <div className="row gy-3">
-                                                    <div className="col-lg-6">
-                                                        <h6 className="fs-14">Name</h6>
-                                                        <input type="text" name="name" className="form-control" value={formData.name} onChange={handleChange} />
-                                                    </div>
-                                                    <div className="col-lg-6">
-                                                        <h6 className="fs-14">Price</h6>
-                                                        <div className="input-group">
-                                                            <input type="number" name="price" min={0} className="form-control" value={formData.price} onChange={handleChange} />
-                                                            <span className="input-group-text">$</span>
-                                                            {errors.price && <div className="text-danger fs-14 mt-1">{errors.price}</div>}
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-lg-4">
-                                                        <h6 className="fs-14">Max Tour</h6>
-                                                        <div className="input-group">
-                                                            <input type="number" name="maxTour" min={0} className="form-control" value={formData.maxTour} onChange={handleChange} />
-                                                            {errors.maxTour && <div className="text-danger fs-14 mt-1">{errors.maxTour}</div>}
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-lg-4">
-                                                        <h6 className="fs-14">Max Image</h6>
-                                                        <div className="input-group">
-                                                            <input type="number" name="maxImage" min={0} className="form-control" value={formData.maxImage} onChange={handleChange} />
-                                                            {errors.maxImage && <div className="text-danger fs-14 mt-1">{errors.maxImage}</div>}
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-lg-6">
-                                                        <h6 className="fs-14">Allow Video</h6>
-                                                        <select name="maxVideo" className="form-select" value={formData.maxVideo} onChange={handleChange}>
-                                                            <option value={true}>Yes</option>
-                                                            <option value={false}>No</option>
-                                                        </select>
-                                                        {errors.maxVideo && <div className="text-danger fs-14 mt-1">{errors.maxVideo}</div>}
-                                                    </div>
-                                                    <div className="col-lg-6">
-                                                        <h6 className="fs-14"> Manage TourGuide Function</h6>
-                                                        <select name="tourGuideFunction" className="form-select" value={formData.tourGuideFunction} onChange={handleChange}>
-                                                            <option value={true}>Yes</option>
-                                                            <option value={false}>No</option>
-                                                        </select>
-                                                        {errors.tourGuideFunction && <div className="text-danger fs-14 mt-1">{errors.tourGuideFunction}</div>}
-                                                            
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="upcoming-details">
-                                                <h6 className="mb-2">Description</h6>
-                                                <div className="d-flex align-items-center">
-                                                    <textarea name="description" className="form-control" rows="4" value={formData.description} onChange={handleChange}></textarea>
-
-                                                    {/* <span className="bg-light rounded-pill py-1 px-2 text-gray-6 fs-14 me-2">Blankets & Pillows</span> */}
-                                                </div>
-                                            </div>
-
-                                            
-                                        </div>
-                                        <div className="modal-footer">
-                                            <button data-bs-dismiss="modal" className="btn btn-md btn-primary" onClick={handleUpdateSubmit}>Save</button>
-                                        </div>
-                                </div>
-
+                            <div className="modal-footer">
+                                <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn btn-md btn-primary" onClick={hanldeUpdateStatus}>{pac.isActive ? "Ngừng hoạt động" : "Kích hoạt"}</a>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div className="modal fade" id={`Update${pac.packageId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-hidden="true">
+                    <div className="modal-dialog  modal-dialog-centered modal-xl">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5>Cập nhật gói <span className="fs-14 fw-medium text-primary">#{pac.packageId}</span></h5>
+                                <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
+                            </div>
+                            <div className="modal-body">
+                                <div className="upcoming-content">
 
-            ))
-
-            }
-
-            <div className="modal fade" id="addPackage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                        <div className="modal-dialog  modal-dialog-centered modal-xl">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5>Create package</h5>
-                                    <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                                </div>
-                                <div className="modal-body">
-                                        <div className="upcoming-content">
-
-                                            <div className="upcoming-details ">
-                                                <h6 className="mb-2">General Info</h6>
-                                                <div className="row gy-3">
-                                                    <div className="col-lg-6">
-                                                        <h6 className="fs-14">Name</h6>
-                                                        <input type="text" name="name" className="form-control" value={formData.name} onChange={handleChange} />
-                                                    </div>
-                                                    <div className="col-lg-6">
-                                                        <h6 className="fs-14">Price</h6>
-                                                        <div className="input-group">
-                                                            <input type="number" name="price" min={0} value={formData.price} className="form-control" onChange={handleChange} />
-                                                            <span className="input-group-text">$</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-lg-4">
-                                                        <h6 className="fs-14">Max Tour</h6>
-                                                        <div className="input-group">
-                                                            <input type="number" name="maxTour" min={0} value={formData.maxTour} className="form-control" onChange={handleChange} />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-lg-4">
-                                                        <h6 className="fs-14">Max Image</h6>
-                                                        <div className="input-group">
-                                                            <input type="number" name="maxImage" min={0} value={formData.maxImage} className="form-control" onChange={handleChange} />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-lg-6">
-                                                        <h6 className="fs-14">Allow Video</h6>
-                                                        <select name="maxVideo" className="form-select" value={formData.maxVideo} onChange={handleChange}>
-                                                            <option value={true}>Yes</option>
-                                                            <option value={false}>No</option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-lg-6">
-                                                        <h6 className="fs-14"> Manage TourGuide Function</h6>
-                                                        <select name="tourGuideFunction" className="form-select" value={formData.tourGuideFunction}  onChange={handleChange}>
-                                                            <option value={true}>Yes</option>
-                                                            <option value={false}>No</option>
-                                                        </select>
-                                                            
-                                                    </div>
+                                    <div className="upcoming-details ">
+                                        <h6 className="mb-2">Thông tin chung</h6>
+                                        <div className="row gy-3">
+                                            <div className="col-lg-6">
+                                                <h6 className="fs-14">Tên gói</h6>
+                                                <input type="text" name="name" className="form-control" value={formData.name} onChange={handleChange} />
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <h6 className="fs-14">Giá</h6>
+                                                <div className="input-group">
+                                                    <input type="number" name="price" min={0} className="form-control" value={formData.price} onChange={handleChange} />
+                                                    <span className="input-group-text">₫</span>
+                                                    {errors.price && <div className="text-danger fs-14 mt-1">{errors.price}</div>}
                                                 </div>
                                             </div>
-                                            <div className="upcoming-details">
-                                                <h6 className="mb-2">Description</h6>
-                                                <div className="d-flex align-items-center">
-                                                    <textarea name="description" className="form-control" rows="4" value={formData.description} onChange={handleChange}></textarea>
-
-                                                    {/* <span className="bg-light rounded-pill py-1 px-2 text-gray-6 fs-14 me-2">Blankets & Pillows</span> */}
+                                            <div className="col-lg-4">
+                                                <h6 className="fs-14">Số tour tối đa</h6>
+                                                <div className="input-group">
+                                                    <input type="number" name="maxTour" min={0} className="form-control" value={formData.maxTour} onChange={handleChange} />
+                                                    {errors.maxTour && <div className="text-danger fs-14 mt-1">{errors.maxTour}</div>}
                                                 </div>
                                             </div>
-
-                                            
+                                            <div className="col-lg-4">
+                                                <h6 className="fs-14">Số ảnh tối đa</h6>
+                                                <div className="input-group">
+                                                    <input type="number" name="maxImage" min={0} className="form-control" value={formData.maxImage} onChange={handleChange} />
+                                                    {errors.maxImage && <div className="text-danger fs-14 mt-1">{errors.maxImage}</div>}
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <h6 className="fs-14">Cho phép video</h6>
+                                                <select name="maxVideo" className="form-select" value={formData.maxVideo} onChange={handleChange}>
+                                                    <option value={true}>Có</option>
+                                                    <option value={false}>Không</option>
+                                                </select>
+                                                {errors.maxVideo && <div className="text-danger fs-14 mt-1">{errors.maxVideo}</div>}
+                                            </div>
+                                            <div className="col-lg-6">
+                                                <h6 className="fs-14">Quản lý hướng dẫn viên</h6>
+                                                <select name="tourGuideFunction" className="form-select" value={formData.tourGuideFunction} onChange={handleChange}>
+                                                    <option value={true}>Có</option>
+                                                    <option value={false}>Không</option>
+                                                </select>
+                                                {errors.tourGuideFunction && <div className="text-danger fs-14 mt-1">{errors.tourGuideFunction}</div>}
+                                            </div>
                                         </div>
-                                        <div className="modal-footer">
-                                            <button data-bs-dismiss="modal"  onClick={handleCreatePackage} className="btn btn-md btn-primary">Add</button>
+                                    </div>
+                                    <div className="upcoming-details">
+                                        <h6 className="mb-2">Mô tả</h6>
+                                        <div className="d-flex align-items-center">
+                                            <textarea name="description" className="form-control" rows="4" value={formData.description} onChange={handleChange}></textarea>
                                         </div>
+                                    </div>
                                 </div>
-
+                                <div className="modal-footer">
+                                    <button data-bs-dismiss="modal" className="btn btn-md btn-primary" onClick={handleUpdateSubmit}>Lưu</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-        </div>
+                </div>
+            </div>
+        ))}
 
-    );
+        <div className="modal fade" id="addPackage" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog  modal-dialog-centered modal-xl">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5>Tạo gói mới</h5>
+                        <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
+                    </div>
+                    <div className="modal-body">
+                        <div className="upcoming-content">
+
+                            <div className="upcoming-details ">
+                                <h6 className="mb-2">Thông tin chung</h6>
+                                <div className="row gy-3">
+                                    <div className="col-lg-6">
+                                        <h6 className="fs-14">Tên gói</h6>
+                                        <input type="text" name="name" className="form-control" value={formData.name} onChange={handleChange} />
+                                    </div>
+                                    <div className="col-lg-6">
+                                        <h6 className="fs-14">Giá</h6>
+                                        <div className="input-group">
+                                            <input type="number" name="price" min={0} value={formData.price} className="form-control" onChange={handleChange} />
+                                            <span className="input-group-text">₫</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <h6 className="fs-14">Số tour tối đa</h6>
+                                        <div className="input-group">
+                                            <input type="number" name="maxTour" min={0} value={formData.maxTour} className="form-control" onChange={handleChange} />
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <h6 className="fs-14">Số ảnh tối đa</h6>
+                                        <div className="input-group">
+                                            <input type="number" name="maxImage" min={0} value={formData.maxImage} className="form-control" onChange={handleChange} />
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-6">
+                                        <h6 className="fs-14">Cho phép video</h6>
+                                        <select name="maxVideo" className="form-select" value={formData.maxVideo} onChange={handleChange}>
+                                            <option value={true}>Có</option>
+                                            <option value={false}>Không</option>
+                                        </select>
+                                    </div>
+                                    <div className="col-lg-6">
+                                        <h6 className="fs-14">Quản lý hướng dẫn viên</h6>
+                                        <select name="tourGuideFunction" className="form-select" value={formData.tourGuideFunction}  onChange={handleChange}>
+                                            <option value={true}>Có</option>
+                                            <option value={false}>Không</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="upcoming-details">
+                                <h6 className="mb-2">Mô tả</h6>
+                                <div className="d-flex align-items-center">
+                                    <textarea name="description" className="form-control" rows="4" value={formData.description} onChange={handleChange}></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button data-bs-dismiss="modal"  onClick={handleCreatePackage} className="btn btn-md btn-primary">Thêm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+);
 }
 export default AdminListPackages;

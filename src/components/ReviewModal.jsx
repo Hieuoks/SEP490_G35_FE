@@ -31,21 +31,14 @@ const ReviewModal = ({ open, onClose, onSubmit, id, editData }) => {
     setPreviewUrl(tempUrl);
   };
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.append("TourId", id);
-    formData.append("Rating", rating);
-    formData.append("Comment", comment);
-    // Nếu có file, truyền file vào ImageFile
-    if (imageFile) {
-      formData.append("ImageFile", imageFile);
-    }
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ':', pair[1]);
-    }
-    onSubmit(formData);
-    onClose();
-  };
+const handleSubmit = () => {
+  onSubmit({
+    rating,
+    comment,
+    mediaFile: imageFile, // Có thể là null nếu không chọn ảnh
+  });
+  onClose();
+};
 
   return (
     <Modal

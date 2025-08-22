@@ -7,7 +7,7 @@ import RecentlyAdded from "../components/RecentlyAdded";
 import LatestInvoices from "../components/LatestInvoices";
 import AddLists from "../components/AddLists";
 import RecentHotelBookings from "../components/RecentHotelBookings";
-import { getAccount, getTourAdmin, getTourOpPaymentHistory,getBookingAdmin } from "../services/adminService";
+import { getAccount, getTourAdmin, getTourOpPaymentHistory,getBookingAdmin,getFeedbackAdmin } from "../services/adminService";
 
 import RecentTourBookings from "../components/RecentTourBookings";
 const AgentDashboard = () => {
@@ -15,6 +15,7 @@ const [tourOpPaymentHistory, setTourOpPaymentHistory] = useState([]);
 const [accounts, setAccounts] = useState([]);
 const [tours, setTours] = useState([]);
 const [bookings, setBookings] = useState([]);
+const [feedback, setFeedback] = useState([]);
 useEffect(() => {
   const fetchTourOpPaymentHistory = async () => {
     try {
@@ -51,7 +52,16 @@ const fetchBookings = async () => {
       console.error('Error fetching bookings:', error);
     }
   };
-
+  const fetchAllFeedback = async () => {
+    try {
+      const data = await getFeedbackAdmin();
+      console.log("Feedback Data:", data?.data?.feedbacks);
+      setFeedback(data?.data?.feedbacks);
+    } catch (error) {
+      console.error('Error fetching feedback:', error);
+    }
+  };
+  fetchAllFeedback();
   fetchTourOpPaymentHistory();
   fetchAccounts();
   fetchTours();
@@ -72,7 +82,7 @@ return (
             totalBookings={bookings?.bookings?.length}
             totalListings={tours?.data?.length}
             totalIncome={tourOpPaymentHistory?.data?.reduce((sum, inv) => sum + (inv.amount || 0), 0) || 0}
-            totalReviews={tours?.data?.reduce((sum, t) => sum + (t.averageRating ? 1 : 0), 0) || 0}
+            totalReviews={feedback?.length}
           />
         </div>
 

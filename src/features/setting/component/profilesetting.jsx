@@ -85,34 +85,32 @@ const ProfileSetting = () => {
 }, [userResponse]);
     
     return(
-        
-            <div className="col-xl-9 col-lg-8">
-            <div className="card settings mb-0">
-                <div className="card-header">
-                    <h6>Settings</h6>
-                </div>
-                <form onSubmit={handleSubmit}>
-                    <div className="card-body pb-3">
+    <div className="col-xl-9 col-lg-8">
+        <div className="card settings mb-0">
+            <div className="card-header">
+                <h6>Cài đặt</h6>
+            </div>
+            <form onSubmit={handleSubmit}>
+                <div className="card-body pb-3">
                     <div className="settings-link d-flex align-items-center flex-wrap">
-                        <a href="profile-settings.html" className="active ps-3"><i className="isax isax-user-octagon me-2"></i>Profile Settings</a>
-                        <a href="notification-settings.html"><i className="isax isax-notification me-2"></i>Notifications</a>
+                        <a href="profile-settings.html" className="active ps-3"><i className="isax isax-user-octagon me-2"></i>Cài đặt hồ sơ</a>
+                        <a href="notification-settings.html"><i className="isax isax-notification me-2"></i>Thông báo</a>
                     </div>
-                    
-                        {/* Settings Content */}
+                    {/* Settings Content */}
                     <div className="settings-content mb-3">
-                        <h6 className="fs-16 mb-3">Basic Information</h6>
+                        <h6 className="fs-16 mb-3">Thông tin cơ bản</h6>
                         <div className="row gy-2">
                             <div className="col-lg-12">
                                 <div className="d-flex align-items-center">
                                     <img src={formData.AvatarPreview || formData?.AvatarFile} alt="image" className="img-fluid avatar avatar-xxl br-10 flex-shrink-0 me-3" />
                                     <div>
-                                        <p className="fs-14 text-gray-6 fw-normal mb-2">Recommended dimensions are typically 400 x 400 pixels.</p>
+                                        <p className="fs-14 text-gray-6 fw-normal mb-2">Kích thước đề xuất là 400 x 400 pixel.</p>
                                         <div className="d-flex align-items-center">
                                             <div className="me-2">
-                                                <label className="upload-btn" htmlFor="fileUpload">Upload</label>
+                                                <label className="upload-btn" htmlFor="fileUpload">Tải lên</label>
                                                 <input type="file" id="fileUpload" style={{display: "none"}} name="AvatarFile" onChange={handleChange}/>
                                             </div>
-                                            <button type="button" className="btn btn-light btn-md">Remove</button>
+                                            <button type="button" className="btn btn-light btn-md">Xóa</button>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +118,7 @@ const ProfileSetting = () => {
                             </div>
                             <div className="col-lg-6">
                                 <div>
-                                    <label className="form-label">Full Name</label>
+                                    <label className="form-label">Họ và tên</label>
                                     <input type="text" name="UserName" className="form-control" value={formData?.UserName} onChange={handleChange}/>
                                     {errors.UserName && <div className="text-danger fs-14 mt-1">{errors.UserName}</div>}
                                 </div>
@@ -133,7 +131,7 @@ const ProfileSetting = () => {
                             </div>
                             <div className="col-lg-6">
                                 <div>
-                                    <label className="form-label">Phone</label>
+                                    <label className="form-label">Số điện thoại</label>
                                     <input type="phone" name="PhoneNumber" className="form-control" value={formData?.PhoneNumber} onChange={handleChange}/>
                                     {errors.PhoneNumber && <div className="text-danger fs-14 mt-1">{errors.PhoneNumber}</div>}
                                 </div>
@@ -141,32 +139,28 @@ const ProfileSetting = () => {
                         </div>
                     </div>
                     <div className="settings-content">
-                        <h6 className="fs-16 mb-3">Address Information</h6>
+                        <h6 className="fs-16 mb-3">Thông tin địa chỉ</h6>
                         <div className="row gy-2">
                             <div className="col-lg-12">
                                 <div>
-                                    <label className="form-label">Address</label>
+                                    <label className="form-label">Địa chỉ</label>
                                     <input type="text" name="Address" className="form-control" value={formData?.Address} onChange={handleChange}/>
                                     {errors.Address && <div className="text-danger fs-14 mt-1">{errors.Address}</div>}
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                     {/* /Settings Content*/}
-                    
-                    
+                </div>
+                <div className="card-footer">
+                    <div className="d-flex align-items-center justify-content-end">
+                        <button type="submit" className="btn btn-primary">Lưu</button>
                     </div>
-                    <div className="card-footer">
-                        <div className="d-flex align-items-center justify-content-end">
-                            <button type="submit" className="btn btn-primary">Save</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            </div>
-        
-    );
+                </div>
+            </form>
+        </div>
+    </div>
+);
 }
 
 export default ProfileSetting;
