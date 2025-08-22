@@ -88,6 +88,7 @@ const OpeDashCom = () => {
                     </div>
                 </div>
             </div>
+
             <div className="col-xl-3 col-sm-6 d-flex">
                 <div className="card shadow-none flex-fill">
                     <div className="card-body text-center">
@@ -175,6 +176,7 @@ const OpeDashCom = () => {
                 </div>
             </div>
             {/* <!-- /Recent Invoices --> */}
+
         </div>
     </div>
 );

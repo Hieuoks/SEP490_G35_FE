@@ -118,6 +118,7 @@ const GuideNoteCom = () => {
                                     <FaSearch className="fs-14" />
                                 </span>
                                 <input type="text" className="form-control" placeholder="Tìm kiếm" onChange={(e) => setKeyword(e.target.value)} />
+
                             </div>
                         </div>
                         <div>
@@ -259,6 +260,7 @@ const GuideNoteCom = () => {
                                     <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => handleUpdateNote(note.noteId)}>Lưu thay đổi</button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -266,6 +268,7 @@ const GuideNoteCom = () => {
                     <div className="modal-dialog modal-dialog-centered modal-sm">
                         <div className="modal-content">
                             <div className="modal-body">
+
 
                                 <div className="text-center">
                                     <h5 className="mb-3">Xoá ghi chú</h5>
@@ -277,6 +280,7 @@ const GuideNoteCom = () => {
                                 </div>
 
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -309,8 +313,10 @@ const GuideNoteCom = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 );
+
 }
 export default GuideNoteCom;

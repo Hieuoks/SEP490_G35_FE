@@ -25,6 +25,7 @@ const OpeSidebar = () => {
 
     const [mypackage, setMyPackage] = useState([]);
     const getMyPackages = async () => {
+
         await checkpackage(userId)
             .then((res) => {
                 setMyPackage(res);
@@ -34,6 +35,7 @@ const OpeSidebar = () => {
                 console.error("Lỗi khi kiểm tra gói:", error);
             });
     };
+
     useEffect(() => {
         getMyPackages();
     }, []);
@@ -153,7 +155,9 @@ const OpeSidebar = () => {
                                         </a>
                                     </div>
                                 </li>
+
                                 <li></li>
+
                             </div>
                         )}
 

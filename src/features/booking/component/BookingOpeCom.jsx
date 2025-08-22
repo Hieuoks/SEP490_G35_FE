@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { getOperatorBooking, updateContract, updateBookingStatus, updatePaymentStatus } from "../../../services/bookingService";
+import { getOperatorBooking, updateContract, updatePaymentStatus } from "../../../services/bookingService";
 import { FaEye, FaChevronLeft, FaChevronRight, FaEdit, FaPencilAlt } from "react-icons/fa";
 const BookingOpeCom = () => {
     const [BookingRes, setBookingRes] = useState([]);

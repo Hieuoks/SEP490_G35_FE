@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { message } from 'antd';
 import { getHeader } from './api';
+
 const BASE_URL = 'http://localhost:5298/api'
 export const register = async (userName, email, password, address, phoneNumber, avatar, roleName) => {
+
   let data = JSON.stringify({
     userName,
     email,

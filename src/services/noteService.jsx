@@ -37,7 +37,12 @@ export const createNote = async (note) => {
         Content : note.content,
         ExtraCost : 0,
         Attachments: note.medias,
-    }, getHeader());
+    }, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+      },
+    });
     message.success('Note created successfully');
     return response.data;
   } catch (error) {
@@ -51,7 +56,7 @@ export const updateNote = async (noteId, title,content,medias) => {
         const response = await axios.put(`${BASE_URL}/GuideNote/notes/${noteId}`, {
             title: title,
             content: content,
-            medias: medias
+            mediaUrls: medias
         }, {
             headers: getHeader(),
         });
