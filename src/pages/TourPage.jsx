@@ -4,8 +4,11 @@ import TourCard from '../components/TourCard';
 import { getTour } from '../services/tourService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from 'react-router-dom'; // Thêm dòng này
 
 const TourPage = () => {
+    const location = useLocation(); // Thêm dòng này
+
   const [filters, setFilters] = useState({
     title: '',
     type: '',
@@ -20,6 +23,14 @@ const TourPage = () => {
   const [tourList, setTourList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
+ useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const title = params.get('title') || '';
+    if (title) {
+      setFilters((prev) => ({ ...prev, title, page: 1 }));
+    }
+    // eslint-disable-next-line
+  }, [location.search]);
 
   // Lấy tất cả tour
   const fetchTours = async () => {
@@ -75,25 +86,44 @@ const TourPage = () => {
 
   return (
     <>
-      <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 col-12">
-              <h2 className="breadcrumb-title mb-2">Gói du lịch</h2>
-              <nav aria-label="breadcrumb">
-                <ol className="breadcrumb justify-content-center mb-0">
-                  <li className="breadcrumb-item">
-                    <a href="home">
-                      <FontAwesomeIcon icon={faHome} />
-                    </a>
-                  </li>
-                  <li className="breadcrumb-item">Danh sách gói du lịch</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
+     <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
+  <div className="container">
+    <div className="row">
+      <div className="col-md-12 col-12">
+        <h2 className="breadcrumb-title mb-2">Gói du lịch</h2>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb justify-content-center mb-0">
+            <li className="breadcrumb-item">
+              <a href="home">
+                <FontAwesomeIcon icon={faHome} />
+              </a>
+            </li>
+            <li className="breadcrumb-item">Danh sách gói du lịch</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    {/* Search input ngay dưới breadcrumb */}
+    <div className="row justify-content-center mt-3">
+      <div className="col-md-6">
+        <div className="input-icon">
+          <span className="input-icon-addon">
+            <i className="isax isax-search-normal"></i>
+          </span>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Tìm kiếm theo tên tour"
+            value={filters.title}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, title: e.target.value, page: 1 }))
+            }
+          />
         </div>
       </div>
+    </div>
+  </div>
+</div>
       <div className="container mt-4">
         <div className="row">
           <div className="col-xl-3 col-lg-4">

@@ -63,7 +63,7 @@ function Gallery({ tour }) {
 
   return (
     <div className="bg-light-200 card-bg-light mb-4">
-      <h5 className="fs-18 mb-3">Gallery</h5>
+      <h5 className="fs-18 mb-3">Thư viện ảnh</h5>
 
       <div id="galleryCarousel" className="carousel slide" data-bs-ride="carousel">
         <div className="carousel-inner">
@@ -109,7 +109,7 @@ function Gallery({ tour }) {
               data-bs-slide="prev"
             >
               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Previous</span>
+              <span className="visually-hidden">Trước</span>
             </button>
             <button
               className="carousel-control-next"
@@ -118,7 +118,7 @@ function Gallery({ tour }) {
               data-bs-slide="next"
             >
               <span className="carousel-control-next-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Next</span>
+              <span className="visually-hidden">Tiếp</span>
             </button>
           </>
         )}

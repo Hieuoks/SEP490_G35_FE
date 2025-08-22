@@ -36,37 +36,13 @@ const FilterSidebar = ({ onFilterChange }) => {
         </div>
         <div className="card-body p-0">
           <form>
-            <div className="p-3 border-bottom">
-              <label className="form-label fs-16">Search by Tour Title</label>
-              <div className="input-icon">
-                <span className="input-icon-addon">
-                  <i className="isax isax-search-normal"></i>
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search by Tour Title"
-                  value={filters.title}
-                  onChange={(e) => handleChange('title', e.target.value)}
-                />
-              </div>
-            </div>
+            
 
             <div className="accordion accordion-list">
-              <AccordionItem title="Tour Type" id="type" icon="isax isax-buildings">
-                {["Ecotourism", "Adventure Tour", "Group Tours", "Beach Tours"].map((type) => (
-                  <Checkbox
-                    key={type}
-                    name={type}
-                    label={type}
-                    checked={filters.type === type}
-                    onChange={() => handleChange('type', filters.type === type ? '' : type)}
-                  />
-                ))}
-              </AccordionItem>
+              
 
               <AccordionItem title="Transportation" id="transport" icon="isax isax-vehicle">
-                {["Bus", "Car", "Boat", "Plane"].map((transport) => (
+                {["Xe Khách", "Ô Tô", "Thuyền", "Máy Bay", "Tàu Hỏa"].map((transport) => (
                   <Checkbox
                     key={transport}
                     name={transport}
@@ -77,17 +53,36 @@ const FilterSidebar = ({ onFilterChange }) => {
                 ))}
               </AccordionItem>
 
-              <AccordionItem title="Start Point" id="start" icon="isax isax-location">
-                {["Hanoi", "Da Nang", "Ho Chi Minh", "Hue"].map((start) => (
-                  <Checkbox
-                    key={start}
-                    name={start}
-                    label={start}
-                    checked={filters.startPoint === start}
-                    onChange={() => handleChange('startPoint', filters.startPoint === start ? '' : start)}
-                  />
-                ))}
-              </AccordionItem>
+<AccordionItem title="Điểm khởi hành" id="startPoint" icon="isax isax-location">
+  <div className="row">
+    {[
+      "Tuyên Quang", "Lào Cai", "Thái Nguyên", "Phú Thọ", "Bắc Ninh", "Lâm Đồng", "Cà Mau", "Cần Thơ",
+      "Khánh Hòa", "Đắk Lắk", "TP. Hồ Chí Minh", "Vĩnh Long", "Sơn La", "Quảng Ninh", "TP. Hải Phòng", "TP. Huế",
+      "TP. Đà Nẵng", "Hà Tĩnh", "Cao Bằng", "Lai Châu", "Điện Biên", "Lạng Sơn", "Bắc Giang", "Quảng Bình",
+      "Quảng Trị", "Thừa Thiên Huế", "Quảng Nam", "Quảng Ngãi", "Bình Định", "Gia Lai", "Kon Tum", "Ninh Thuận", "Bình Thuận","TP. Hà Nội"
+    ].reduce((rows, province, idx, arr) => {
+      // Chia thành 2 cột, mỗi cột nửa danh sách
+      const half = Math.ceil(arr.length / 2);
+      if (idx % half === 0) rows.push([]);
+      rows[rows.length - 1].push(province);
+      return rows;
+    }, []).map((col, colIdx) => (
+      <div className="col-6" key={colIdx}>
+        {col.map((province) => (
+          <Checkbox
+            key={province}
+            name={province}
+            label={province}
+            checked={filters.startPoint === province}
+            onChange={() =>
+              handleChange("startPoint", filters.startPoint === province ? "" : province)
+            }
+          />
+        ))}
+      </div>
+    ))}
+  </div>
+</AccordionItem>    
 
               <AccordionItem title="Price Range" id="price" icon="isax isax-coin">
                 <div className="d-flex flex-column">

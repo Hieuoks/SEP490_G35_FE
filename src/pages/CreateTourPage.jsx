@@ -29,6 +29,12 @@ const initialState = {
 };
 
 function CreateTourPage() {
+  const startPoints = [
+  "Tuyên Quang", "Lào Cai", "Thái Nguyên", "Phú Thọ", "Bắc Ninh", "Lâm Đồng", "Cà Mau", "Cần Thơ",
+  "Khánh Hòa", "Đắk Lắk", "TP. Hồ Chí Minh", "Vĩnh Long", "Sơn La", "Quảng Ninh", "TP. Hải Phòng", "TP. Huế",
+  "TP. Đà Nẵng", "Hà Tĩnh", "Cao Bằng", "Lai Châu", "Điện Biên", "Lạng Sơn", "Bắc Giang", "Quảng Bình",
+  "Quảng Trị", "Thừa Thiên Huế", "Quảng Nam", "Quảng Ngãi", "Bình Định", "Gia Lai", "Kon Tum", "Ninh Thuận", "Bình Thuận","TP. Hà Nội"
+];
   const [form, setForm] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [showItineraryModal, setShowItineraryModal] = useState(false);
@@ -358,16 +364,38 @@ function CreateTourPage() {
             </div>
             {/* Start Point */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Start Point *</label>
-              <input type="text" className={`form-control ${errors.startPoint ? "is-invalid" : ""}`} name="startPoint" value={form.startPoint} onChange={handleChange} />
-              {errors.startPoint && <div className="invalid-feedback">{errors.startPoint}</div>}
-            </div>
+      <label className="form-label">Start Point *</label>
+      <select
+        className={`form-control ${errors.startPoint ? "is-invalid" : ""}`}
+        name="startPoint"
+        value={form.startPoint}
+        onChange={handleChange}
+      >
+        <option value="">Chọn điểm khởi hành</option>
+        {startPoints.map((point) => (
+          <option key={point} value={point}>{point}</option>
+        ))}
+      </select>
+      {errors.startPoint && <div className="invalid-feedback">{errors.startPoint}</div>}
+    </div>
             {/* Transportation */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Transportation *</label>
-              <input type="text" className={`form-control ${errors.transportation ? "is-invalid" : ""}`} name="transportation" value={form.transportation} onChange={handleChange} />
-              {errors.transportation && <div className="invalid-feedback">{errors.transportation}</div>}
-            </div>
+  <label className="form-label">Transportation *</label>
+  <select
+    className={`form-control ${errors.transportation ? "is-invalid" : ""}`}
+    name="transportation"
+    value={form.transportation}
+    onChange={handleChange}
+  >
+    <option value="">Chọn phương tiện</option>
+    <option value="Xe Khách">Xe Khách</option>
+    <option value="Ô Tô">Ô Tô</option>
+    <option value="Thuyền">Thuyền</option>
+    <option value="Máy Bay">Máy Bay</option>
+    <option value="Tàu Hỏa">Tàu Hỏa</option>
+  </select>
+  {errors.transportation && <div className="invalid-feedback">{errors.transportation}</div>}
+</div>
             {/* Duration */}
             <div className="col-md-6 mb-3">
               <label className="form-label">Duration (days)</label>

@@ -10,7 +10,7 @@ function IncludesExcludes({ tour }) {
 
   return (
     <div className="bg-light-200 card-bg-light mb-4">
-      <h5 className="fs-18 mb-3">Trải nghiệm Tour</h5>
+      <h5 className="fs-18 mb-3">Trải nghiệm tour</h5>
       <div className="row gy-2">
         <div className="col-md-6">
           {leftCol.length > 0 ? leftCol.map((item, idx) => (
@@ -20,7 +20,7 @@ function IncludesExcludes({ tour }) {
             >
               <i className="fas fa-check-square text-success me-2"></i> {item}
             </p>
-          )) : <span className="text-muted">Không có trải nghiệm</span>}
+          )) : <span className="text-muted">Chưa có trải nghiệm nào</span>}
         </div>
         <div className="col-md-6">
           {rightCol.length > 0 ? rightCol.map((item, idx) => (

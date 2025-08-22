@@ -3,13 +3,13 @@ import { message } from 'antd';
 import { getHeader,getHeader2 } from './api';
 const BASE_URL = 'http://localhost:5298/api';
 
-export const getTour = async (page=1, pageSize=6) => {
+export const getAllFeedBack = async (page=1, pageSize=6) => {
   try {
-    const response = await axios.get(`${BASE_URL}/Tour/listAllToursForUserPaging?pageNumber=${page}&pageSize=${pageSize}`);
+    const response = await axios.get(`${BASE_URL}/Feedback/all`);
     return response.data;
   } catch (error) {
-    console.error('Lỗi lấy danh sách tour operator:', error);
-    message.error('Không thể tải danh sách tour operator');
+    console.error('Lỗi lấy danh sách feedback:', error);
+    message.error('Không thể tải danh sách feedback');
     throw error;
   }
 };
@@ -24,6 +24,8 @@ export const getFeedbackDetail = async (id) => {
     throw error;
   }
 };
+
+
 export const createFeedback = async (data) => {
   try {
     // Nếu data là object, chuyển sang FormData
@@ -58,7 +60,7 @@ export const updateFeedback = async (id,data) => {
   try {
 
     const response = await axios.put(`${BASE_URL}/Feedback/${id}`, data, {
-      headers: getHeader2(),
+      headers: getHeader(),
       maxBodyLength: Infinity,
     });
     return response.data;

@@ -42,7 +42,7 @@ const MyPackageCom = () => {
             const fetchPackages = async () => {
                 try {
                     const data = await getPackages();
-                    setPackagesRes(data.items || data);
+                    setPackagesRes(data.data || data);
                     console.log("API response:", data);
                 } catch (error) {
                     console.error("Error fetching packages:", error);
@@ -54,116 +54,114 @@ const MyPackageCom = () => {
   return (
     <div className="col-xl-9 col-lg-8">
 
-                    <div className="card mb-4">
-                        <div className="card-body">
-                            <div className="d-flex justify-content-between align-items-center flex-wrap row-gap-3">
-                                <div>
-                                    <h6>My Package</h6>
-                                </div>
-                                {/* <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
-                                    <span class="fs-14 text-gray-9 fw-medium">Current package : </span>
-                                    <div className="input-icon-end position-relative">
-                                        <select className="form-select form-select-sm">
-                                            {packagesRes.length === 0 ? (
-                                                <option value="">No packages available</option>
-                                            ) : (
-                                                packagesRes.map((pac) => (
-                                                    <option key={pac.packageId} value={pac.packageId}>{pac.name}</option>
-                                                ))
-                                            )}    
-                                            
-                                        </select>
-                                    </div>
-                                </div> */}
-                            </div>
-                        </div>
+        <div className="card mb-4">
+            <div className="card-body">
+                <div className="d-flex justify-content-between align-items-center flex-wrap row-gap-3">
+                    <div>
+                        <h6>Gói của tôi</h6>
                     </div>
-                    
-                    <div className="card hotel-list mb-3">
-                        <div className="card-body p-0">
-                            <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
-                                <h6>Transactions List</h6>
-                                <div className="d-flex align-items-center flex-wrap">
-                                    
-                                </div>
-                            </div>
-                            <div className="table-responsive">
-                                <table className="table">
-                                    <thead className="thead-light">
-                                        <tr>
-                                            <th>Package</th>
-                                            <th>PaymentMethod</th>
-                                            <th>CreatedAt</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {Transactions.map((tran) => (
-                                        <tr>
-                                            <td className="text-gray-9 fw-medium">{tran.packageName}</td>
-                                            <td>{tran.paymentMethod}</td>
-                                            <td>{new Date(tran.createdAt).toLocaleString('en-GB')}</td>
-                                            <td><span className="text-danger">{tran.amount}  VND</span></td>
-                                            <td>
-                                                {!tran.isActive ? (
-                                                    <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Unpaid</span>
-                                                ) : (
-                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Complete</span>
-                                                ) }
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            
+                    {/* <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+                        <span class="fs-14 text-gray-9 fw-medium">Gói hiện tại: </span>
+                        <div className="input-icon-end position-relative">
+                            <select className="form-select form-select-sm">
+                                {packagesRes.length === 0 ? (
+                                    <option value="">Không có gói nào</option>
+                                ) : (
+                                    packagesRes.map((pac) => (
+                                        <option key={pac.packageId} value={pac.packageId}>{pac.name}</option>
+                                    ))
+                                )}    
+                            </select>
                         </div>
-                    </div>
-                  <div className="table-paginate d-flex justify-content-between align-items-center flex-wrap row-gap-3">
-                                  <div className="value d-flex align-items-center">
-                                      <span>Show</span>
-                                      <select value={pageSize} onChange={handlePageSizeChange}>
-                                          <option>1</option>
-                                          <option>2</option>
-                                          <option>3</option>
-                                      </select>
-                                      <span>entries</span>
-                                  </div>
-                  
-                  
-                                  <div className="d-flex align-items-center justify-content-center">
-                                      <button
-                                          className="btn btn-link p-0 me-3"
-                                          onClick={() => handlePageChange(pageNumber - 1)}
-                                          disabled={pageNumber === 1}
-                                      >
-                                          <FaChevronLeft />
-                                      </button>
-                                      <nav aria-label="Page navigation">
-                                          <ul className="paginations d-flex justify-content-center align-items-center">
-                                              {Array.from({ length: totalPages }, (_, index) => (
-                                                  <li key={index + 1} className="page-item me-2">
-                                                      <button
-                                                          className={`page-link-1  ${pageNumber === index + 1 ? 'active' : ''} d-flex justify-content-center align-items-center`}
-                                                          onClick={() => handlePageChange(index + 1)}
-                                                      >
-                                                          {index + 1}
-                                                      </button>
-                                                  </li>
-                                              ))}
-                                          </ul>
-                                      </nav>
-                                      <button
-                                          className="btn btn-link p-0 ms-3"
-                                          onClick={() => handlePageChange(pageNumber + 1)}
-                                          disabled={pageNumber === totalPages}
-                                      >
-                                          <FaChevronRight />
-                                      </button>
-                                  </div>
-                              </div>
+                    </div> */}
                 </div>
-  );
+            </div>
+        </div>
+        
+        <div className="card hotel-list mb-3">
+            <div className="card-body p-0">
+                <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
+                    <h6>Danh sách giao dịch</h6>
+                    <div className="d-flex align-items-center flex-wrap">
+                        
+                    </div>
+                </div>
+                <div className="table-responsive">
+                    <table className="table">
+                        <thead className="thead-light">
+                            <tr>
+                                <th>Gói</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Ngày tạo</th>
+                                <th>Số tiền</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {Transactions.map((tran) => (
+                            <tr>
+                                <td className="text-gray-9 fw-medium">{tran.packageName}</td>
+                                <td>{tran.paymentMethod}</td>
+                                <td>{new Date(tran.createdAt).toLocaleString('vi-VN')}</td>
+                                <td><span className="text-danger">{tran.amount}  VND</span></td>
+                                <td>
+                                    {!tran.isActive ? (
+                                        <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Chưa thanh toán</span>
+                                    ) : (
+                                        <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10"><i className="fa-solid fa-circle fs-5 me-1"></i>Hoàn thành</span>
+                                    ) }
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+        <div className="table-paginate d-flex justify-content-between align-items-center flex-wrap row-gap-3">
+            <div className="value d-flex align-items-center">
+                <span>Hiển thị</span>
+                <select value={pageSize} onChange={handlePageSizeChange}>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                </select>
+                <span>dòng</span>
+            </div>
+
+            <div className="d-flex align-items-center justify-content-center">
+                <button
+                    className="btn btn-link p-0 me-3"
+                    onClick={() => handlePageChange(pageNumber - 1)}
+                    disabled={pageNumber === 1}
+                >
+                    <FaChevronLeft />
+                </button>
+                <nav aria-label="Page navigation">
+                    <ul className="paginations d-flex justify-content-center align-items-center">
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <li key={index + 1} className="page-item me-2">
+                                <button
+                                    className={`page-link-1  ${pageNumber === index + 1 ? 'active' : ''} d-flex justify-content-center align-items-center`}
+                                    onClick={() => handlePageChange(index + 1)}
+                                >
+                                    {index + 1}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+                <button
+                    className="btn btn-link p-0 ms-3"
+                    onClick={() => handlePageChange(pageNumber + 1)}
+                    disabled={pageNumber === totalPages}
+                >
+                    <FaChevronRight />
+                </button>
+            </div>
+        </div>
+    </div>
+);
 }
 export default MyPackageCom;

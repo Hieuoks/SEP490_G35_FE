@@ -114,361 +114,397 @@ const BookingDepartCom = () => {
             navigate("/operator/booking");
         };
 
-    return (
-        <div className="col-xl-9 col-lg-8">
-            {/* <!-- Booking Header --> */}
-            <div className="card booking-header border-0">
-                <div className="card-body header-content d-flex align-items-center justify-content-between flex-wrap ">
-                    <div>
-                        <h6 className="mb-1">{Cookies.get("tourTitle") || "No titlte"}</h6>
-                        <p className="fs-14 text-gray-6 fw-normal ">Depart Date: {new Date(Cookies.get("Depart")).toLocaleDateString('en-GB')}</p>
-                    </div>
+    // ...existing code...
+return (
+    <div className="col-xl-9 col-lg-8">
+        {/* <!-- Booking Header --> */}
+        <div className="card booking-header border-0">
+            <div className="card-body header-content d-flex align-items-center justify-content-between flex-wrap ">
+                <div>
+                    <h6 className="mb-1">{Cookies.get("tourTitle") || "Không có tiêu đề"}</h6>
+                    <p className="fs-14 text-gray-6 fw-normal ">Ngày khởi hành: {new Date(Cookies.get("Depart")).toLocaleDateString('vi-VN')}</p>
                 </div>
             </div>
-            {/* <!-- /Booking Header --> */}
+        </div>
+        {/* <!-- /Booking Header --> */}
 
-            {/* <!-- Hotel-Booking List --> */}
-            <div className="card hotel-list">
-                <div className="card-body p-0">
-                    <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
-                        <h6 className="">Booking List</h6>
-                        <div className="d-flex align-items-center flex-wrap">
-                            <div className="input-icon-start  me-2 position-relative">
-                                <span className="icon-addon">
-                                    <i className="isax isax-search-normal-1 fs-14"></i>
-                                </span>
-                                <input type="text" className="form-control" placeholder="Search" value={keyword} onChange={(e) => {
-                                    setKeyword(e.target.value);
-                                    // Reset to page 1 when searching
-                                }} />
-                            </div>
-
-
-
+        {/* <!-- Hotel-Booking List --> */}
+        <div className="card hotel-list">
+            <div className="card-body p-0">
+                <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
+                    <h6 className="">Danh sách đặt tour</h6>
+                    <div className="d-flex align-items-center flex-wrap">
+                        <div className="input-icon-start  me-2 position-relative">
+                            <span className="icon-addon">
+                                <i className="isax isax-search-normal-1 fs-14"></i>
+                            </span>
+                            <input type="text" className="form-control" placeholder="Tìm kiếm" value={keyword} onChange={(e) => {
+                                setKeyword(e.target.value);
+                            }} />
                         </div>
                     </div>
+                </div>
 
-                    {/* <!-- Hotel List --> */}
-                    <div className="custom-datatable-filter table-responsive">
-                        <table className="table datatable">
-                            <thead className="thead-light">
+                {/* <!-- Hotel List --> */}
+                <div className="custom-datatable-filter table-responsive">
+                    <table className="table datatable">
+                        <thead className="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Người đặt</th>
+                                <th>Khách</th>
+                                <th>Giá</th>
+                                <th>Ngày đặt</th>
+                                <th>Trạng thái thanh toán</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentItems.length === 0 ? (
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Booked By</th>
-                                    <th>Guest</th>
-                                    <th>Pricing</th>
-                                    <th>Booked on</th>
-                                    <th>Payment Status</th>
-                                    <th>Action</th>
+                                    <td colSpan={6}>Không có đơn đặt nào.</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {currentItems.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={6}>No bookings found.</td>
-                                    </tr>
-                                ) : (
-                                    currentItems.map((booking) => (
-                                        <tr key={booking.bookingId}>
-                                            <td><a href="javascript:void(0);" className="link-primary fw-medium" data-bs-toggle="modal" data-bs-target="#upcoming">{booking.bookingId}</a></td>
-
-                                            <td>
-                                                <h6 className="fs-14 mb-1">{booking.billingInfo.email}</h6>
-                                                {/* <span className="fs-14 fw-normal text-gray-6"></span> */}
-                                            </td>
-                                            <td>
-                                                <span className="fs-14 fw-normal text-gray-6">{booking.guest.numberOfAdults} adults, {booking.guest.numberOfChildren} children, {booking.guest.numberOfInfants} infants</span>
-                                            </td>
-                                            <td>
-                                                <h6 className="fs-14 mb-1">{booking.paymentInfo.totalPrice}</h6>
-                                                {/* <span className="fs-14 fw-normal text-gray-6">2 Adults, 1 Child</span> */}
-                                            </td>
-                                            <td>{new Date(booking.booking.bookingDate).toLocaleString('en-GB')}</td>
-                                            <td>
-                                                {booking.paymentInfo.paymentStatus === "Paid" ? (
-                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
-                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Paid
-                                                    </span>
-                                                ) : (
-                                                    <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
-                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>UnPaid
-                                                    </span>
-                                                )}
-                                            </td>
-                                            <td>
-                                                <div className="d-flex align-items-center">
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${booking.bookingId}`} className="me-4">
-                                                        <FaEye />
+                            ) : (
+                                currentItems.map((booking) => (
+                                    <tr key={booking.bookingId}>
+                                        <td><a href="javascript:void(0);" className="link-primary fw-medium" data-bs-toggle="modal" data-bs-target="#upcoming">{booking.bookingId}</a></td>
+                                        <td>
+                                            <h6 className="fs-14 mb-1">{booking.billingInfo.email}</h6>
+                                        </td>
+                                        <td>
+                                            <span className="fs-14 fw-normal text-gray-6">{booking.guest.numberOfAdults} người lớn, {booking.guest.numberOfChildren} trẻ em, {booking.guest.numberOfInfants} em bé</span>
+                                        </td>
+                                        <td>
+                                            <h6 className="fs-14 mb-1">{booking.paymentInfo.totalPrice}</h6>
+                                        </td>
+                                        <td>{new Date(booking.booking.bookingDate).toLocaleString('vi-VN')}</td>
+                                        <td>
+                                            {booking.paymentInfo.paymentStatus === "Paid" ? (
+                                                <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
+                                                    <i className="fa-solid fa-circle fs-5 me-1"></i>Đã thanh toán
+                                                </span>
+                                            ) : (
+                                                <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
+                                                    <i className="fa-solid fa-circle fs-5 me-1"></i>Chưa thanh toán
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td>
+                                            <div className="d-flex align-items-center">
+                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${booking.bookingId}`} className="me-4">
+                                                    <FaEye />
+                                                </a>
+                                                {new Date(booking.tour.departureDate) > tomorrow && role === "Tour Operator" ? (
+                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${booking.bookingId}`} className="me-4" onClick={() => {
+                                                        setBookingId(booking.bookingId);
+                                                    }}>
+                                                        <FaEdit />
                                                     </a>
-                                                    {new Date(booking.tour.departureDate) > tomorrow && role ==="Tour Operator" ? (
-                                                                                                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${booking.bookingId}`} className="me-4" onClick={() => {
-                                                                                                            setBookingId(booking.bookingId);
-                                                                                                            }}>
-                                                                                                                <FaEdit />
-                                                                                                            </a>
-                                                                                                        ):(
-                                                                                                            <div></div>
-                                                                                                        )}
-                                                    {role === "Tour Guide" ? (
-                                                        <a href= {`/Note/booking/${booking.bookingId}`} className="me-4" title="Note">
-                                                            <FaList />
-                                                        </a>
-                                                    ):(<div></div>)}
-                                                </div>
-
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                    {/* <!-- /Hotel List --> */}
-
+                                                ) : (
+                                                    <div></div>
+                                                )}
+                                                {role === "Tour Guide" ? (
+                                                    <a href={`/Note/booking/${booking.bookingId}`} className="me-4" title="Ghi chú">
+                                                        <FaList />
+                                                    </a>
+                                                ) : (<div></div>)}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
                 </div>
+                {/* <!-- /Hotel List --> */}
             </div>
-            {/* <!-- /Hotel-Booking List --> */}
+        </div>
+        {/* <!-- /Hotel-Booking List --> */}
 
-            {/* <!-- Pagination --> */}
-            <div className="table-paginate d-flex justify-content-between align-items-center flex-wrap row-gap-3">
-                <div className="value d-flex align-items-center">
-                    <span>Show</span>
-                    <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                    </select>
-                    <span>entries</span>
-                </div>
-                <div className="d-flex align-items-center justify-content-center">
-                    <button
-                        className="btn btn-link p-0 me-3"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                    >
-                        <FaChevronLeft />
-                    </button>
-                    <nav aria-label="Page navigation">
-                        <ul className="paginations d-flex justify-content-center align-items-center">
-                            {Array.from({ length: totalPages }, (_, index) => (
-                                <li key={index + 1} className="page-item me-2">
-                                    <button
-                                        className={`page-link-1 d-flex justify-content-center align-items-center ${currentPage === index + 1 ? 'active' : ''}`}
-                                        onClick={() => handlePageChange(index + 1)}
-                                    >
-                                        {index + 1}
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
-                    <button
-                        className="btn btn-link p-0 ms-3"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                    >
-                        <FaChevronRight />
-                    </button>
-                </div>
+        {/* <!-- Pagination --> */}
+        <div className="table-paginate d-flex justify-content-between align-items-center flex-wrap row-gap-3">
+            <div className="value d-flex align-items-center">
+                <span>Hiển thị</span>
+                <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                </select>
+                <span>dòng</span>
             </div>
-            {/* <!-- /Pagination --> */}
-            {currentItems.length === 0 ? (
-                <div>No content</div>
-            ) : (
-                currentItems.map((booking) => (
-                    <div key={booking.bookingId}>
-                        <div className="modal fade" id={`View${booking.bookingId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" >
-                            <div className="modal-dialog  modal-dialog-centered modal-xl">
-                                <div className="modal-content">
-                                    <div className="modal-header">
-                                        <h5>Booking Info <span className="fs-14 fw-medium text-primary">#{booking.bookingId}</span></h5>
-                                        <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                                    </div>
-                                    <div className="modal-body">
-                                        <div className="upcoming-content">
-                                            <div className="upcoming-title mb-4 d-flex align-items-center justify-content-between p-3 rounded">
-                                                <div className="d-flex align-items-center flex-wrap">
-                                                    {/* <div className="me-2">
-                                                    <img src="assets/img/hotels/hotel-13.jpg" alt="image" className="avatar avartar-md avatar-rounded" />
-                                                    </div> */}
-                                                    <div>
-                                                        <h6 className="mb-1">{booking.tour.title}</h6>
-                                                        <div className="title-list">
-                                                            <p className="d-flex align-items-center pe-2 me-2 border-end border-light fw-normal"><i className="isax isax-building me-2"></i>{booking.companyName}</p>
-                                                            {/* <p className="d-flex align-items-center pe-2 me-2 border-end border-light fw-normal"><i className="isax isax-location5 me-2"></i>15/C Prince Dareen Road, New York</p> */}
-                                                            {/* <p className="d-flex align-items-center pe-2 me-2  fw-normal"><span className="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">5.0</span>(400 Reviews)</p> */}
-                                                        </div>
+            <div className="d-flex align-items-center justify-content-center">
+                <button
+                    className="btn btn-link p-0 me-3"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                >
+                    <FaChevronLeft />
+                </button>
+                <nav aria-label="Page navigation">
+                    <ul className="paginations d-flex justify-content-center align-items-center">
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <li key={index + 1} className="page-item me-2">
+                                <button
+                                    className={`page-link-1 d-flex justify-content-center align-items-center ${currentPage === index + 1 ? 'active' : ''}`}
+                                    onClick={() => handlePageChange(index + 1)}
+                                >
+                                    {index + 1}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+                <button
+                    className="btn btn-link p-0 ms-3"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                >
+                    <FaChevronRight />
+                </button>
+            </div>
+        </div>
+        {/* <!-- /Pagination --> */}
+        {currentItems.length === 0 ? (
+            <div>Không có nội dung</div>
+        ) : (
+            currentItems.map((booking) => (
+                <div key={booking.bookingId}>
+                    <div className="modal fade" id={`View${booking.bookingId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-hidden="true" >
+                        <div className="modal-dialog  modal-dialog-centered modal-xl">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5>Thông tin đặt tour <span className="fs-14 fw-medium text-primary">#{booking.bookingId}</span></h5>
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="upcoming-content">
+                                        <div className="upcoming-title mb-4 d-flex align-items-center justify-content-between p-3 rounded">
+                                            <div className="d-flex align-items-center flex-wrap">
+                                                <div>
+                                                    <h6 className="mb-1">{booking.tour.title}</h6>
+                                                    <div className="title-list">
+                                                        <p className="d-flex align-items-center pe-2 me-2 border-end border-light fw-normal"><i className="isax isax-building me-2"></i>{booking.companyName}</p>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    {booking.paymentInfo.bookingStatus === "Completed" ? (
-                                                        <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
-                                                            <i className="fa-solid fa-circle fs-5 me-1"></i>Completed
-                                                        </span>
-                                                    ) : booking.paymentInfo.bookingStatus === "Canceled" ? (
-                                                        <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
-                                                            <i className="fa-solid fa-circle fs-5 me-1"></i>Canceled
-                                                        </span>
+                                            </div>
+                                            <div>
+                                                {booking.paymentInfo.bookingStatus === "Completed" ? (
+                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
+                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Hoàn thành
+                                                    </span>
+                                                ) : booking.paymentInfo.bookingStatus === "Canceled" ? (
+                                                    <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
+                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Đã huỷ
+                                                    </span>
+                                                ) : (
+                                                    <span className="badge badge-info rounded-pill d-inline-flex align-items-center fs-10">
+                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Chờ xử lý
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="upcoming-details">
+                                            <h6 className="mb-2">Chi tiết tour</h6>
+                                            <div className="row">
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Số chỗ tối đa</h6>
+                                                    <p className="text-gray-6 fs-16 ">{booking.tour.maxSlots}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Phương tiện</h6>
+                                                    <p className="text-gray-6 fs-16 ">{booking.tour.transportation}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Điểm khởi hành</h6>
+                                                    <p className="text-gray-6 fs-16 ">{booking.tour.startPoint}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Khách</h6>
+                                                    <p className="text-gray-6 fs-16 ">{booking.guest.numberOfAdults} người lớn, {booking.guest.numberOfChildren} trẻ em, {booking.guest.numberOfInfants} em bé.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="upcoming-details">
+                                            <h6 className="mb-2">Thông tin đặt tour</h6>
+                                            <div className="row">
+                                                <div className="col-lg-4">
+                                                    <h6 className="fs-14">Ngày đặt</h6>
+                                                    <p className="text-gray-6 fs-16 ">{new Date(booking.booking.bookingDate).toLocaleString('vi-VN')}</p>
+                                                </div>
+                                                <div className="col-lg-4">
+                                                    <h6 className="fs-14">Hợp đồng</h6>
+                                                    <p className="text-gray-6 fs-16 ">
+                                                        <a className="text-primary" href={booking.booking.contract} target="_blank" rel="noopener noreferrer">Xem hợp đồng</a>
+                                                    </p>
+                                                </div>
+                                                <div className="col-lg-4">
+                                                    <h6 className="fs-14">Số ngày lưu trú</h6>
+                                                    <p className="text-gray-6 fs-16 ">4 ngày, 5 đêm</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="upcoming-details">
+                                            <h6 className="mb-2">Ghi chú khách hàng</h6>
+                                            <div className="d-flex align-items-center">
+                                                <div className="col-lg">
+                                                    <p className="text-gray-6 fs-16 ">{booking.booking.noteForTour}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="upcoming-details">
+                                            <h6 className="mb-2">Thông tin thanh toán</h6>
+                                            <div className="row gy-3">
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Tổng tiền</h6>
+                                                    <p className="text-primary fs-16 ">{booking.paymentInfo.totalPrice}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Trạng thái thanh toán</h6>
+                                                    {booking.paymentInfo.paymentStatus === "Paid" ? (
+                                                        <p className="text-success fs-16 ">Đã thanh toán</p>
                                                     ) : (
-                                                        <span className="badge badge-info rounded-pill d-inline-flex align-items-center fs-10">
-                                                            <i className="fa-solid fa-circle fs-5 me-1"></i>Pending
-                                                        </span>
+                                                        <p className="text-danger fs-16 ">Chưa thanh toán</p>
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="upcoming-details">
-                                                <h6 className="mb-2">Tour Details</h6>
-                                                <div className="row">
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">Max slot</h6>
-                                                        <p className="text-gray-6 fs-16 ">{booking.tour.maxSlots}</p>
-                                                    </div>
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">Transportation</h6>
-                                                        <p className="text-gray-6 fs-16 ">{booking.tour.transportation}</p>
-                                                    </div>
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">StartPoint</h6>
-                                                        <p className="text-gray-6 fs-16 ">{booking.tour.startPoint}</p>
-                                                    </div>
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">Guests</h6>
-                                                        <p className="text-gray-6 fs-16 ">{booking.guest.numberOfAdults} adults, {booking.guest.numberOfChildren} children, {booking.guest.numberOfInfants} infants.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="upcoming-details">
-                                                <h6 className="mb-2">Booking Info</h6>
-                                                <div className="row">
-                                                    <div className="col-lg-4">
-                                                        <h6 className="fs-14">Booked On</h6>
-                                                        <p className="text-gray-6 fs-16 ">{new Date(booking.booking.bookingDate).toLocaleString('en-GB')}</p>
-                                                    </div>
-                                                    <div className="col-lg-4">
-                                                        <h6 className="fs-14">Contract</h6>
-                                                        <p className="text-gray-6 fs-16 ">
-                                                            <a className="text-primary" href={booking.booking.contract} target="_blank">View Contract</a>
-                                                        </p>
-                                                    </div>
-
-                                                    <div className="col-lg-4">
-                                                        <h6 className="fs-14">No of Days Stay</h6>
-                                                        <p className="text-gray-6 fs-16 ">4 Days, 5 Nights</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="upcoming-details">
-                                                <h6 className="mb-2">Customer Note </h6>
-                                                <div className="d-flex align-items-center">
-                                                    <div className="col-lg">
-                                                        <p className="text-gray-6 fs-16 ">{booking.booking.noteForTour}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="upcoming-details">
-                                                <h6 className="mb-2">Billing Info</h6>
-                                                <div className="row gy-3">
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">Name</h6>
-                                                        <p className="text-gray-6 fs-16 ">{booking.billingInfo.username}</p>
-                                                    </div>
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">Email</h6>
-                                                        <p className="text-gray-6 fs-16 ">{booking.billingInfo.email}</p>
-                                                    </div>
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">Phone</h6>
-                                                        <p className="text-gray-6 fs-16 ">{booking.billingInfo.phone}</p>
-                                                    </div>
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">Address</h6>
-                                                        <p className="text-gray-6 fs-16 ">{booking.billingInfo.address}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {/* <div className="upcoming-details">
-                                            <h6 className="mb-2">Extra Charge</h6>
+                                        </div>
+                                        <div className="upcoming-details">
+                                            <h6 className="mb-2">Thông tin thanh toán</h6>
                                             <div className="row gy-3">
-                                                <div className="col-lg">
-                                                    <h6 className="fs-14">Fee Change Departure Ha Noi into Da Nang </h6>
-                                                    <p className="text-success fs-16 ">100$</p>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Tổng tiền</h6>
+                                                    <p className="text-primary fs-16 ">{booking.paymentInfo.totalPrice}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Trạng thái thanh toán</h6>
+                                                    {booking.paymentInfo.paymentStatus === "Paid" ? (
+                                                        <p className="text-success fs-16 ">Đã thanh toán</p>
+                                                    ) : (
+                                                        <p className="text-danger fs-16 ">Chưa thanh toán</p>
+                                                    )}
                                                 </div>
                                             </div>
-                                        </div> */}
-                                            <div className="upcoming-details">
-                                                <h6 className="mb-2">Payment Info</h6>
-                                                <div className="row gy-3">
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">Total Price</h6>
-                                                        <p className="text-primary fs-16 ">{booking.paymentInfo.totalPrice}</p>
-                                                    </div>
-                                                    <div className="col-lg-3">
-                                                        <h6 className="fs-14">Payment Status</h6>
-                                                        {booking.paymentInfo.paymentStatus === "Paid" ? (
-                                                            <p className="text-success fs-16 ">Paid</p>
-                                                        ) : (
-                                                            <p className="text-danger fs-16 ">Unpaid</p>
-                                                        )}
-                                                    </div>
+                                        </div>
+                                        <div className="upcoming-details">
+                                            <h6 className="mb-2">Thông tin thanh toán</h6>
+                                            <div className="row gy-3">
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Tổng tiền</h6>
+                                                    <p className="text-primary fs-16 ">{booking.paymentInfo.totalPrice}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Trạng thái thanh toán</h6>
+                                                    {booking.paymentInfo.paymentStatus === "Paid" ? (
+                                                        <p className="text-success fs-16 ">Đã thanh toán</p>
+                                                    ) : (
+                                                        <p className="text-danger fs-16 ">Chưa thanh toán</p>
+                                                    )}
                                                 </div>
                                             </div>
-
+                                        </div>
+                                        <div className="upcoming-details">
+                                            <h6 className="mb-2">Thông tin thanh toán</h6>
+                                            <div className="row gy-3">
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Tổng tiền</h6>
+                                                    <p className="text-primary fs-16 ">{booking.paymentInfo.totalPrice}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Trạng thái thanh toán</h6>
+                                                    {booking.paymentInfo.paymentStatus === "Paid" ? (
+                                                        <p className="text-success fs-16 ">Đã thanh toán</p>
+                                                    ) : (
+                                                        <p className="text-danger fs-16 ">Chưa thanh toán</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="upcoming-details">
+                                            <h6 className="mb-2">Thông tin thanh toán</h6>
+                                            <div className="row gy-3">
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Tổng tiền</h6>
+                                                    <p className="text-primary fs-16 ">{booking.paymentInfo.totalPrice}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Trạng thái thanh toán</h6>
+                                                    {booking.paymentInfo.paymentStatus === "Paid" ? (
+                                                        <p className="text-success fs-16 ">Đã thanh toán</p>
+                                                    ) : (
+                                                        <p className="text-danger fs-16 ">Chưa thanh toán</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="upcoming-details">
+                                            <h6 className="mb-2">Thông tin khách hàng</h6>
+                                            <div className="row gy-3">
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Tên</h6>
+                                                    <p className="text-gray-6 fs-16 ">{booking.billingInfo.username}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Email</h6>
+                                                    <p className="text-gray-6 fs-16 ">{booking.billingInfo.email}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Số điện thoại</h6>
+                                                    <p className="text-gray-6 fs-16 ">{booking.billingInfo.phone}</p>
+                                                </div>
+                                                <div className="col-lg-3">
+                                                    <h6 className="fs-14">Địa chỉ</h6>
+                                                    <p className="text-gray-6 fs-16 ">{booking.billingInfo.address}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div className="modal-footer">
-                                        <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal">Close</a>
-                                    </div>
-
                                 </div>
-                            </div>
-                        </div>
-                        <div className="modal fade" id={`Update${booking.bookingId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true" >
-                            <div className="modal-dialog  modal-dialog-centered modal-lg">
-                                <div className="modal-content">
-                                    <div className="modal-header">
-                                        <h5>Booking Update <span className="fs-14 fw-medium text-primary">#{booking.bookingId}</span></h5>
-                                        <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                                    </div>
 
-                                    <div className="modal-body">
-                                        <div className="upcoming-content">
-                                            <div className="form-group mb-3">
-                                                <label className="form-label">Contract</label>
-                                                <input type="file" className="form-control" onChange={(e) => { setContract(e.target.files[0]); }} placeholder="Enter contract" />
-                                            </div>
-                                            <div className="row gy-3">
-
-
-                                                <div className="col-lg-12">
-                                                    <label className="form-label">Payment Status</label>
-                                                    <select className="form-select" onChange={(e) => { setPaymentStatus(e.target.value); }}>
-                                                        <option value="Paid" selected={booking.paymentInfo.paymentStatus === "Paid"}>Paid</option>
-                                                        <option value="Pending" selected={booking.paymentInfo.paymentStatus === "Pending"}>Unpaid</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div className="modal-footer">
-                                        <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={handleUpdate}>Save</button>
-                                        <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal">Close</a>
-                                    </div>
-
-
+                                <div className="modal-footer">
+                                    <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal">Đóng</a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div className="modal fade" id={`Update${booking.bookingId}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-hidden="true" >
+                        <div className="modal-dialog  modal-dialog-centered modal-lg">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5>Cập nhật đặt tour <span className="fs-14 fw-medium text-primary">#{booking.bookingId}</span></h5>
+                                    <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
+                                </div>
 
-                ))
-            )}
-        </div>
-    );
+                                <div className="modal-body">
+                                    <div className="upcoming-content">
+                                        <div className="form-group mb-3">
+                                            <label className="form-label">Hợp đồng</label>
+                                            <input type="file" className="form-control" onChange={(e) => { setContract(e.target.files[0]); }} placeholder="Nhập hợp đồng" />
+                                        </div>
+                                        <div className="row gy-3">
+                                            <div className="col-lg-12">
+                                                <label className="form-label">Trạng thái thanh toán</label>
+                                                <select className="form-select" onChange={(e) => { setPaymentStatus(e.target.value); }}>
+                                                    <option value="Paid" selected={booking.paymentInfo.paymentStatus === "Paid"}>Đã thanh toán</option>
+                                                    <option value="Pending" selected={booking.paymentInfo.paymentStatus === "Pending"}>Chưa thanh toán</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="modal-footer">
+                                    <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={handleUpdate}>Lưu</button>
+                                    <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal">Đóng</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))
+        )}
+    </div>
+);
+// ...existing code...
 }
 export default BookingDepartCom;
 

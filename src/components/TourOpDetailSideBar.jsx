@@ -25,22 +25,22 @@ const TourDetailSidebar = ({ tour }) => {
             <span className="avatar avatar-md rounded-circle bg-primary me-2">
               <FontAwesomeIcon icon={faMapSigns} />
             </span>
-            Tour Operator Info
+            Thông tin nhà điều hành
           </h5>
           <div>
             {[
-              ['Company Name', companyName],
-              ['License No.', licenseNumber],
-              ['License Issue Date', licenseIssuedDate ? moment(licenseIssuedDate).format('DD MMM YYYY') : 'N/A'],
-              ['Tax Code', taxCode],
-              ['Established Year', establishedYear],
+              ['Tên công ty', companyName],
+              ['Số giấy phép', licenseNumber],
+              ['Ngày cấp phép', licenseIssuedDate ? moment(licenseIssuedDate).format('DD/MM/YYYY') : 'Chưa có'],
+              ['Mã số thuế', taxCode],
+              ['Năm thành lập', establishedYear],
               ['Hotline', hotline],
-              ['Address', address],
-              ['Working Hours', workingHours]
+              ['Địa chỉ', address],
+              ['Giờ làm việc', workingHours]
             ].map(([label, value]) => (
               <div key={label} className="d-flex align-items-center justify-content-between details-info">
                 <h6 className="fw-medium mb-0">{label}</h6>
-                <p className="flex-fill mb-0 text-end">{value || 'N/A'}</p>
+                <p className="flex-fill mb-0 text-end">{value || 'Chưa có'}</p>
               </div>
             ))}
           </div>

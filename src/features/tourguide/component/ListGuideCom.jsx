@@ -98,201 +98,197 @@ const ListGuideCom = () => {
     };
 
     return (
-        <div className="col-xl-9 col-lg-8 theiaStickySidebar">
+    <div className="col-xl-9 col-lg-8 theiaStickySidebar">
 
-            {/* <!-- Booking Header --> */}
-            <div className="card booking-header">
-                <div className="card-body header-content d-flex align-items-center justify-content-between flex-wrap ">
-                    <div>
-                        <h6>TourGuides</h6>
-                        <p className="fs-14 text-gray-6 fw-normal ">Total : {totalItems}</p>
-                    </div>
+        {/* <!-- Booking Header --> */}
+        <div className="card booking-header">
+            <div className="card-body header-content d-flex align-items-center justify-content-between flex-wrap ">
+                <div>
+                    <h6>Hướng dẫn viên</h6>
+                    <p className="fs-14 text-gray-6 fw-normal ">Tổng số: {totalItems}</p>
+                </div>
+                <div className="d-flex align-items-center flex-wrap">
+                    <a className="btn btn-md btn-primary me-2" data-bs-toggle="modal" data-bs-target="#upcoming" href="javascript:void(0);">
+                        <FaPlus className="me-1" /> Thêm hướng dẫn viên
+                    </a>
+                </div>
+            </div>
+        </div>
+        {/* <!-- /Booking Header --> */}
+
+        {/* <!-- Account List --> */}
+        <div className="card hotel-list">
+            <div className="card-body p-0">
+
+                <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
+                    <h6 className="">Danh sách tài khoản</h6>
                     <div className="d-flex align-items-center flex-wrap">
-                        <a className="btn btn-md btn-primary me-2" data-bs-toggle="modal" data-bs-target="#upcoming" href="javascript:void(0);">
-                            <FaPlus className="me-1" /> Add Tour Guide
-                        </a>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- /Booking Header --> */}
-
-            {/* <!-- Account List --> */}
-            <div className="card hotel-list">
-                <div className="card-body p-0">
-
-                    <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
-                        <h6 className="">Account List</h6>
-                        <div className="d-flex align-items-center flex-wrap">
-                            <div className="input-icon-start  me-2 position-relative">
-                                <span className="icon-addon">
-                                    <i className="isax isax-search-normal-1 fs-14"></i>
-                                </span>
-                                <input type="text" className="form-control" placeholder="Search" value={searchString} onChange={(e) => {
-                                    setSearchString(e.target.value);
-                                    setPageNumber(1); // reset về trang 1 khi search
-                                }} />
-                            </div>
-
+                        <div className="input-icon-start  me-2 position-relative">
+                            <span className="icon-addon">
+                                <i className="isax isax-search-normal-1 fs-14"></i>
+                            </span>
+                            <input type="text" className="form-control" placeholder="Tìm kiếm" value={searchString} onChange={(e) => {
+                                setSearchString(e.target.value);
+                                setPageNumber(1); // reset về trang 1 khi search
+                            }} />
                         </div>
                     </div>
+                </div>
 
-
-                    <div className="custom-datatable-filter table-responsive">
-                        <table className="table datatable">
-                            <thead className="thead-light">
+                <div className="custom-datatable-filter table-responsive">
+                    <table className="table datatable">
+                        <thead className="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loading ? (
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Address</th>
-                                    <th>Action</th>
+                                    <td colSpan="6" className="text-center">Đang tải...</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {loading ? (
-                                    <tr>
-                                        <td colSpan="6" className="text-center">Loading...</td>
-                                    </tr>
-                                ) : guides.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={6}>No accounts found.</td>
-                                    </tr>
-                                ) : (
-                                    guides.map((guide) => (
-                                        <tr key={guide.userId}>
-                                            <td><a className="link-primary fw-medium" >#{guide.userId}</a></td>
-                                            <td>
-                                                <div className="d-flex align-items-center">
-                                                    <a className="avatar avatar-lg"><img src={guide.avatar} className="img-fluid rounded-circle" onError={(e) => {
-                                                        e.target.onerror = null;
-                                                        e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
-                                                    }} /></a>
-                                                    <div className="ms-2">
-                                                        <p className="text-dark mb-0 fw-medium fs-14"><a href="flight-details.html">{guide.email}</a></p>
-                                                        <span className="fs-14 fw-normal text-gray-6">{guide.userName}</span>
-                                                    </div>
+                            ) : guides.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6}>Không tìm thấy tài khoản nào.</td>
+                                </tr>
+                            ) : (
+                                guides.map((guide) => (
+                                    <tr key={guide.userId}>
+                                        <td><a className="link-primary fw-medium" >#{guide.userId}</a></td>
+                                        <td>
+                                            <div className="d-flex align-items-center">
+                                                <a className="avatar avatar-lg"><img src={guide.avatar} className="img-fluid rounded-circle" onError={(e) => {
+                                                    e.target.onerror = null;
+                                                    e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
+                                                }} /></a>
+                                                <div className="ms-2">
+                                                    <p className="text-dark mb-0 fw-medium fs-14"><a href="flight-details.html">{guide.email}</a></p>
+                                                    <span className="fs-14 fw-normal text-gray-6">{guide.userName}</span>
                                                 </div>
-                                            </td>
-                                            <td>{guide.phoneNumber}</td>
-                                            <td>{guide.address}</td>
-                                            <td>
-                                                <a href="javascript:void(0);" onClick={() => handleDelete(guide.tourGuideId)} >
-                                                    <FaTrash></FaTrash>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
+                                            </div>
+                                        </td>
+                                        <td>{guide.phoneNumber}</td>
+                                        <td>{guide.address}</td>
+                                        <td>
+                                            <a href="javascript:void(0);" onClick={() => handleDelete(guide.tourGuideId)} >
+                                                <FaTrash></FaTrash>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
 
-                            </tbody>
-                        </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {/* paging */}
+        <div className="table-paginate d-flex justify-content-between align-items-center flex-wrap row-gap-3">
+            <div className="value d-flex align-items-center">
+                <span>Hiển thị</span>
+                <select value={pageSize} onChange={handlePageSizeChange} className="form-select form-select-sm ms-2 me-2">
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                </select>
+                <span>dòng</span>
+            </div>
+            <nav className="pagination-nav">
+                <ul className="pagination justify-content-center">
+                    {/* Previous Button */}
+                    <li className={`page-item ${pageNumber === 1 ? 'disabled' : ''}`}>
+                        <a
+                            className="page-link"
+                            href="javascript:void(0);"
+                            aria-label="Trước"
+                            onClick={() => handlePageChange(pageNumber - 1)}
+                        >
+                            <span aria-hidden="true"><FaChevronLeft /></span>
+                        </a>
+                    </li>
+
+                    {/* Page Numbers */}
+                    {Array.from({ length: totalPages }, (_, index) => {
+                        const pageNum = index + 1;
+                        const isActive = pageNum === pageNumber;
+
+                        return (
+                            <li key={pageNum} className={`page-item ${isActive ? 'active' : ''}`}>
+                                <a
+                                    className="page-link"
+                                    href="javascript:void(0);"
+                                    onClick={() => handlePageChange(pageNum)}
+                                >
+                                    {pageNum}
+                                </a>
+                            </li>
+                        );
+                    })}
+
+                    {/* Next Button */}
+                    <li className={`page-item ${pageNumber === totalPages ? 'disabled' : ''}`}>
+                        <a
+                            className="page-link"
+                            href="javascript:void(0);"
+                            aria-label="Sau"
+                            onClick={() => handlePageChange(pageNumber + 1)}
+                        >
+                            <span aria-hidden="true"><FaChevronRight /></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div className="modal fade" id="upcoming" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog  modal-dialog-centered modal-lg">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5>Thêm hướng dẫn viên</h5>
+                        <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
                     </div>
+                    <div className="modal-body">
+                        <div className="upcoming-content">
 
+                            <div className="upcoming-details ">
+                                <h6 className="mb-2">Thông tin</h6>
+                                <div className="row">
+                                    <div className="col-lg-12 me-3 mb-2">
+                                        <h6 className="fs-14">Email</h6>
+                                        <input type="text" name="email" className="form-control" placeholder="Nhập email" onChange={handleChange} />
+                                        {errors.email && <div className="text-danger fs-14 mt-1">{errors.email}</div>}
+                                    </div>
 
-                </div>
-            </div>
-            {/* paging */}
-            <div className="table-paginate d-flex justify-content-between align-items-center flex-wrap row-gap-3">
-                <div className="value d-flex align-items-center">
-                    <span>Show</span>
-                    <select value={pageSize} onChange={handlePageSizeChange} className="form-select form-select-sm ms-2 me-2">
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                    </select>
-                    <span>entries</span>
-                </div>
-                <nav class="pagination-nav">
-                    <ul class="pagination justify-content-center">
-                        {/* Previous Button */}
-                        <li class={`page-item ${pageNumber === 1 ? 'disabled' : ''}`}>
-                            <a
-                                class="page-link"
-                                href="javascript:void(0);"
-                                aria-label="Previous"
-                                onClick={() => handlePageChange(pageNumber - 1)}
-                            >
-                                <span aria-hidden="true"><FaChevronLeft /></span>
-                            </a>
-                        </li>
-
-                        {/* Page Numbers */}
-                        {Array.from({ length: totalPages }, (_, index) => {
-                            const pageNum = index + 1;
-                            const isActive = pageNum === pageNumber;
-
-                            return (
-                                <li key={pageNum} class={`page-item ${isActive ? 'active' : ''}`}>
-                                    <a
-                                        class="page-link"
-                                        href="javascript:void(0);"
-                                        onClick={() => handlePageChange(pageNum)}
-                                    >
-                                        {pageNum}
-                                    </a>
-                                </li>
-                            );
-                        })}
-
-                        {/* Next Button */}
-                        <li class={`page-item ${pageNumber === totalPages ? 'disabled' : ''}`}>
-                            <a
-                                class="page-link"
-                                href="javascript:void(0);"
-                                aria-label="Next"
-                                onClick={() => handlePageChange(pageNumber + 1)}
-                            >
-                                <span aria-hidden="true"><FaChevronRight /></span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div className="modal fade" id="upcoming" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                <div className="modal-dialog  modal-dialog-centered modal-lg">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5>Create Tour Guide</h5>
-                            <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                        </div>
-                        <div className="modal-body">
-                            <div className="upcoming-content">
-
-                                <div className="upcoming-details ">
-                                    <h6 className="mb-2">Info</h6>
-                                    <div className="row">
-                                        <div className="col-lg-12 me-3 mb-2">
-                                            <h6 className="fs-14">Email</h6>
-                                            <input type="text" name="email" className="form-control" placeholder="Enter Name" onChange={handleChange} />
-                                            {errors.email && <div className="text-danger fs-14 mt-1">{errors.email}</div>}
-                                        </div>
-
-                                        <div className="col-lg-6 mb-2">
-                                            <h6 className="fs-14">Username</h6>
-                                            <input type="text" name="userName" className="form-control" placeholder="Enter Username" onChange={handleChange} />
-                                        </div>
-                                        <div className="col-lg-6 mb-2">
-                                            <h6 className="fs-14">Phone </h6>
-                                            <input type="text" name="phoneNumber" className="form-control" placeholder="Enter Phone Number" onChange={handleChange} />
-                                            {errors.phoneNumber && <div className="text-danger fs-14 mt-1">{errors.phoneNumber}</div>}
-                                        </div>
-                                        <div className="col-lg-12 mb-2">
-                                            <h6 className="fs-14">Address</h6>
-                                            <input type="text" name="address" className="form-control" placeholder="Enter Address" onChange={handleChange} />
-                                            {errors.UserName && <div className="text-danger fs-14 mt-1">{errors.UserName}</div>}
-                                        </div>
+                                    <div className="col-lg-6 mb-2">
+                                        <h6 className="fs-14">Tên người dùng</h6>
+                                        <input type="text" name="userName" className="form-control" placeholder="Nhập tên người dùng" onChange={handleChange} />
+                                    </div>
+                                    <div className="col-lg-6 mb-2">
+                                        <h6 className="fs-14">Số điện thoại</h6>
+                                        <input type="text" name="phoneNumber" className="form-control" placeholder="Nhập số điện thoại" onChange={handleChange} />
+                                        {errors.phoneNumber && <div className="text-danger fs-14 mt-1">{errors.phoneNumber}</div>}
+                                    </div>
+                                    <div className="col-lg-12 mb-2">
+                                        <h6 className="fs-14">Địa chỉ</h6>
+                                        <input type="text" name="address" className="form-control" placeholder="Nhập địa chỉ" onChange={handleChange} />
+                                        {errors.UserName && <div className="text-danger fs-14 mt-1">{errors.UserName}</div>}
                                     </div>
                                 </div>
-
                             </div>
+
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-md btn-primary" onClick={handleAdd}>Add</button>
-                        </div>
+                    </div>
+                    <div className="modal-footer">
+                        <button className="btn btn-md btn-primary" onClick={handleAdd}>Thêm</button>
                     </div>
                 </div>
             </div>
         </div>
-    );
+    </div>
+);
 }
 export default ListGuideCom;

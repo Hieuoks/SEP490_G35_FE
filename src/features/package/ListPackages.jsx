@@ -3,6 +3,7 @@ import Breadcrumb from "../../components/breadcrumb";
 import OpeSidebar from "../../components/OpeSidebar";
 import Footer from "../../components/Footer";
 import AdminListPackages from "./component/AdminListPackages";
+import AgentSidebar from "../../components/AgentSidebar";
 const ListPackages = () => {
     return(
         <div>
@@ -11,7 +12,7 @@ const ListPackages = () => {
             <div className="content">
                 <div className="container">
                     <div className="row">
-                        <OpeSidebar />
+                        <AgentSidebar />
                         <AdminListPackages />
                     </div>
                 </div>

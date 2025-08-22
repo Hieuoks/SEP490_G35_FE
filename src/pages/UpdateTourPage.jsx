@@ -7,6 +7,13 @@ import { toast } from "react-toastify";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 
+const START_POINT_OPTIONS = [
+  "Tuyên Quang", "Lào Cai", "Thái Nguyên", "Phú Thọ", "Bắc Ninh", "Lâm Đồng", "Cà Mau", "Cần Thơ",
+  "Khánh Hòa", "Đắk Lắk", "TP. Hồ Chí Minh", "Vĩnh Long", "Sơn La", "Quảng Ninh", "TP. Hải Phòng", "TP. Huế",
+  "TP. Đà Nẵng", "Hà Tĩnh", "Cao Bằng", "Lai Châu", "Điện Biên", "Lạng Sơn", "Bắc Giang", "Quảng Bình",
+  "Quảng Trị", "Thừa Thiên Huế", "Quảng Nam", "Quảng Ngãi", "Bình Định", "Gia Lai", "Kon Tum", "Ninh Thuận", "Bình Thuận", "TP. Hà Nội"
+];
+
 const initialState = {
   title: "",
   description: "",
@@ -48,72 +55,72 @@ function UpdateTourPage() {
   const pageSize = 10;
   const navigate = useNavigate();
   const { id } = useParams();
-const [loading, setLoading] = useState(false); // loading cho update
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await getTourDetailForOperatorUpdate(id);
-console.log("Fetched tour data:", data);
         setForm({
-  ...initialState,
-  title: data.title || "",
-  description: data.description || "",
-  priceOfAdults: data.priceOfAdults?.toString() || "",
-  priceOfChildren: data.priceOfChildren?.toString() || "",
-  priceOfInfants: data.priceOfInfants?.toString() || "",
-  durationInDays: data.durationInDays?.toString() || "",
-  startPoint: data.startPoint || "",
-  transportation: data.transportation || "",
-  maxSlots: data.maxSlots?.toString() || "",
-  minSlots: data.minSlots?.toString() || "",
-  note: data.note || "",
-  isActive: data.isActive ?? true,
-  tourOperatorId: data.tourOperatorId || 1,
-  tourId: id,
-  tourStatus: data.tourStatus || "Active",
-  departureDates: data.departureDates?.length
-    ? data.departureDates.map(d => ({
-        id: d.id ?? 0,
-        departureDate1: d.departureDate1 || "",
-        isActive: d.isActive
-      }))
-    : [],
-  tourExperiences: data.tourExperiences?.length
-    ? data.tourExperiences.map(e => ({
-        id: e.id ?? 0,
-        content: e.content || "",
-        isActive: e.isActive
-      }))
-    : [],
-  tourItineraries: data.tourItineraries?.length
-    ? data.tourItineraries.map(i => ({
-        itineraryId: i.itineraryId ?? 0,
-        dayNumber: i.dayNumber,
-        title: i.title || "",
-        description: i.description || "",
-        isActive: i.isActive,
-        itineraryMedia: i.itineraryMedia?.length
-          ? i.itineraryMedia.map(m => ({
-              mediaId: m.mediaId ?? 0,
-              mediaUrl: m.mediaUrl,
-              mediaType: m.mediaType,
-              caption: m.caption,
-              isActive: m.isActive,
-              mediaFile: null
-            }))
-          : []
-      }))
-    : [],
-  tourMedia: data.tourMedia?.length
-    ? data.tourMedia.map(m => ({
-        id: m.id ?? 0,
-        mediaUrl: m.mediaUrl,
-        mediaType: m.mediaType,
-        isActive: m.isActive,
-        mediaFile: null
-      }))
-    : [],
-});
+          ...initialState,
+          title: data.title || "",
+          description: data.description || "",
+          priceOfAdults: data.priceOfAdults?.toString() || "",
+          priceOfChildren: data.priceOfChildren?.toString() || "",
+          priceOfInfants: data.priceOfInfants?.toString() || "",
+          durationInDays: data.durationInDays?.toString() || "",
+          startPoint: data.startPoint || "",
+          transportation: data.transportation || "",
+          maxSlots: data.maxSlots?.toString() || "",
+          minSlots: data.minSlots?.toString() || "",
+          note: data.note || "",
+          isActive: data.isActive ?? true,
+          tourOperatorId: data.tourOperatorId || 1,
+          tourId: id,
+          tourStatus: data.tourStatus || "Active",
+          departureDates: data.departureDates?.length
+            ? data.departureDates.map(d => ({
+                id: d.id ?? 0,
+                departureDate1: d.departureDate1 || "",
+                isActive: d.isActive
+              }))
+            : [],
+          tourExperiences: data.tourExperiences?.length
+            ? data.tourExperiences.map(e => ({
+                id: e.id ?? 0,
+                content: e.content || "",
+                isActive: e.isActive
+              }))
+            : [],
+          tourItineraries: data.tourItineraries?.length
+            ? data.tourItineraries.map(i => ({
+                itineraryId: i.itineraryId ?? 0,
+                dayNumber: i.dayNumber,
+                title: i.title || "",
+                description: i.description || "",
+                isActive: i.isActive,
+                itineraryMedia: i.itineraryMedia?.length
+                  ? i.itineraryMedia.map(m => ({
+                      mediaId: m.mediaId ?? 0,
+                      mediaUrl: m.mediaUrl,
+                      mediaType: m.mediaType,
+                      caption: m.caption,
+                      isActive: m.isActive,
+                      mediaFile: null
+                    }))
+                  : []
+              }))
+            : [],
+          tourMedia: data.tourMedia?.length
+            ? data.tourMedia.map(m => ({
+                id: m.id ?? 0,
+                mediaUrl: m.mediaUrl,
+                mediaType: m.mediaType,
+                isActive: m.isActive,
+                mediaFile: null
+              }))
+            : [],
+        });
       } catch (error) {
         toast.error("Không tìm thấy tour!");
         navigate("/listpage");
@@ -158,26 +165,23 @@ console.log("Fetched tour data:", data);
   };
 
   const addArrayField = (field, newItem) => {
-  // Đảm bảo id = 0 khi thêm mới
-  let itemWithId = { ...newItem };
-  if (field === "departureDates") itemWithId = { ...itemWithId, id: 0 };
-  if (field === "tourExperiences") itemWithId = { ...itemWithId, id: 0 };
-  if (field === "tourMedia") itemWithId = { ...itemWithId, id: 0 };
-  setForm((prev) => {
-    // DepartureDates: thêm mới lên đầu
-    if (field === "departureDates") {
+    let itemWithId = { ...newItem };
+    if (field === "departureDates") itemWithId = { ...itemWithId, id: 0 };
+    if (field === "tourExperiences") itemWithId = { ...itemWithId, id: 0 };
+    if (field === "tourMedia") itemWithId = { ...itemWithId, id: 0 };
+    setForm((prev) => {
+      if (field === "departureDates") {
+        return {
+          ...prev,
+          [field]: [itemWithId, ...prev[field]],
+        };
+      }
       return {
         ...prev,
-        [field]: [itemWithId, ...prev[field]],
+        [field]: [...prev[field], itemWithId],
       };
-    }
-    // Các field khác: thêm mới vào cuối
-    return {
-      ...prev,
-      [field]: [...prev[field], itemWithId],
-    };
-  });
-};
+    });
+  };
   const removeArrayField = (field, idx) => {
     setForm((prev) => ({
       ...prev,
@@ -200,15 +204,15 @@ console.log("Fetched tour data:", data);
     }
     setShowItineraryModal(true);
   };
-const addItineraryMedia = () => {
-  setItineraryForm((prev) => ({
-    ...prev,
-    itineraryMedia: [
-      ...prev.itineraryMedia,
-      { mediaFile: null, mediaType: "", caption: "", mediaId: 0 }
-    ]
-  }));
-};
+  const addItineraryMedia = () => {
+    setItineraryForm((prev) => ({
+      ...prev,
+      itineraryMedia: [
+        ...prev.itineraryMedia,
+        { mediaFile: null, mediaType: "", caption: "", mediaId: 0 }
+      ]
+    }));
+  };
   const closeItineraryModal = () => {
     setShowItineraryModal(false);
     setItineraryEditIdx(null);
@@ -245,22 +249,22 @@ const addItineraryMedia = () => {
       ),
     }));
   };
-const addItinerary = () => {
-  setForm((prev) => ({
-    ...prev,
-    tourItineraries: [
-      ...prev.tourItineraries,
-      {
-        itineraryId: 0,
-        dayNumber: "",
-        title: "",
-        description: "",
-        isActive: true,
-        itineraryMedia: [],
-      },
-    ],
-  }));
-};
+  const addItinerary = () => {
+    setForm((prev) => ({
+      ...prev,
+      tourItineraries: [
+        ...prev.tourItineraries,
+        {
+          itineraryId: 0,
+          dayNumber: "",
+          title: "",
+          description: "",
+          isActive: true,
+          itineraryMedia: [],
+        },
+      ],
+    }));
+  };
 
   const removeItineraryMedia = (mediaIdx) => {
     setItineraryForm((prev) => ({
@@ -295,14 +299,14 @@ const addItinerary = () => {
 
     // Validate
     const newErrors = {};
-    if (!form.title) newErrors.title = "Title is required";
-    if (!form.priceOfAdults) newErrors.priceOfAdults = "Price for adults is required";
-    if (!form.startPoint) newErrors.startPoint = "Start Point is required";
-    if (!form.transportation) newErrors.transportation = "Transportation is required";
-    if (!form.maxSlots) newErrors.maxSlots = "Max Slots is required";
-    if (!form.minSlots) newErrors.minSlots = "Min Slots is required";
-    if (!form.TourAvartarFile) newErrors.TourAvartarFile = "Tour avatar is required";
- if (!form.tourStatus) newErrors.tourStatus = "Tour status is required";
+    if (!form.title) newErrors.title = "Tên gói du lịch là bắt buộc";
+    if (!form.priceOfAdults) newErrors.priceOfAdults = "Giá người lớn là bắt buộc";
+    if (!form.startPoint) newErrors.startPoint = "Điểm khởi hành là bắt buộc";
+    if (!form.transportation) newErrors.transportation = "Phương tiện là bắt buộc";
+    if (!form.maxSlots) newErrors.maxSlots = "Số lượng tối đa là bắt buộc";
+    if (!form.minSlots) newErrors.minSlots = "Số lượng tối thiểu là bắt buộc";
+    if (!form.TourAvartarFile) newErrors.TourAvartarFile = "Ảnh đại diện tour là bắt buộc";
+    if (!form.tourStatus) newErrors.tourStatus = "Trạng thái tour là bắt buộc";
     setErrors(newErrors);
     setApiErrors({});
     setApiErrorMessage("");
@@ -369,7 +373,7 @@ const addItinerary = () => {
     try {
       await updateTour(data);
       message.success("Cập nhật tour thành công!");
-      toast.success("Tour updated successfully!");
+      toast.success("Cập nhật tour thành công!");
       setApiErrors({});
       setApiErrorMessage("");
       navigate("/tour/detail/" + form.tourId);
@@ -395,12 +399,11 @@ const addItinerary = () => {
         message.error("Không thể cập nhật tour");
       }
     }
-        setLoading(false); // Kết thúc loading sau khi xử lý xong
+    setLoading(false);
   };
 
   return (
     <>
-    
       <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
         <div className="container">
           <div className="row">
@@ -421,7 +424,7 @@ const addItinerary = () => {
         </div>
       </div>
       <div className="container py-5">
-        <h2 className="mb-4 text-center">Update Tour</h2>
+        <h2 className="mb-4 text-center">Cập nhật gói du lịch</h2>
         {(apiErrorMessage || Object.keys(apiErrors).length > 0) && (
           <div className="alert alert-danger">
             {apiErrorMessage && <div>{apiErrorMessage}</div>}
@@ -451,7 +454,7 @@ const addItinerary = () => {
           <div className="row">
             {/* Tour Avatar */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Tour Avatar</label>
+              <label className="form-label">Ảnh đại diện tour *</label>
               <input
                 type="file"
                 className="form-control"
@@ -462,286 +465,290 @@ const addItinerary = () => {
             </div>
             {/* Title */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Title *</label>
+              <label className="form-label">Tên gói du lịch *</label>
               <input type="text" className={`form-control ${errors.title ? "is-invalid" : ""}`} name="title" value={form.title} onChange={handleChange} />
               {errors.title && <div className="invalid-feedback">{errors.title}</div>}
             </div>
             <div className="col-md-6 mb-3">
-              <label className="form-label">Tour Status *</label>
+              <label className="form-label">Trạng thái tour *</label>
               <select className={`form-select ${errors.tourStatus ? "is-invalid" : ""}`} name="tourStatus" value={form.tourStatus} onChange={handleChange}>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
+                <option value="Active">Hoạt động</option>
+                <option value="Inactive">Không hoạt động</option>
               </select>
               {errors.tourStatus && <div className="invalid-feedback">{errors.tourStatus}</div>}
             </div>
             {/* Start Point */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Start Point *</label>
-              <input type="text" className={`form-control ${errors.startPoint ? "is-invalid" : ""}`} name="startPoint" value={form.startPoint} onChange={handleChange} />
+              <label className="form-label">Điểm khởi hành *</label>
+              <select
+                className={`form-select ${errors.startPoint ? "is-invalid" : ""}`}
+                name="startPoint"
+                value={form.startPoint}
+                onChange={handleChange}
+              >
+                <option value="">Chọn điểm khởi hành</option>
+                {START_POINT_OPTIONS.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
               {errors.startPoint && <div className="invalid-feedback">{errors.startPoint}</div>}
             </div>
             {/* Transportation */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Transportation *</label>
+              <label className="form-label">Phương tiện *</label>
               <input type="text" className={`form-control ${errors.transportation ? "is-invalid" : ""}`} name="transportation" value={form.transportation} onChange={handleChange} />
               {errors.transportation && <div className="invalid-feedback">{errors.transportation}</div>}
             </div>
             {/* Duration */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Duration (days)</label>
+              <label className="form-label">Thời lượng (ngày)</label>
               <input type="number" min={1} className="form-control" name="durationInDays" value={form.durationInDays} onChange={handleChange} />
             </div>
             {/* Max Slots */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Max Slots *</label>
+              <label className="form-label">Số lượng tối đa *</label>
               <input type="number" className={`form-control ${errors.maxSlots ? "is-invalid" : ""}`} name="maxSlots" value={form.maxSlots} onChange={handleChange} />
               {errors.maxSlots && <div className="invalid-feedback">{errors.maxSlots}</div>}
             </div>
             {/* Min Slots */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Min Slots *</label>
+              <label className="form-label">Số lượng tối thiểu *</label>
               <input type="number" className={`form-control ${errors.minSlots ? "is-invalid" : ""}`} name="minSlots" value={form.minSlots} onChange={handleChange} />
               {errors.minSlots && <div className="invalid-feedback">{errors.minSlots}</div>}
             </div>
             {/* Price of Adults */}
             <div className="col-md-4 mb-3">
-              <label className="form-label">Price of Adults</label>
+              <label className="form-label">Giá người lớn *</label>
               <input type="number" className="form-control" name="priceOfAdults" value={form.priceOfAdults} onChange={handleChange} />
             </div>
             {/* Price of Children */}
             <div className="col-md-4 mb-3">
-              <label className="form-label">Price of Children</label>
+              <label className="form-label">Giá trẻ em</label>
               <input type="number" className="form-control" name="priceOfChildren" value={form.priceOfChildren} onChange={handleChange} />
             </div>
             {/* Price of Infants */}
             <div className="col-md-4 mb-3">
-              <label className="form-label">Price of Infants</label>
+              <label className="form-label">Giá trẻ nhỏ</label>
               <input type="number" className="form-control" name="priceOfInfants" value={form.priceOfInfants} onChange={handleChange} />
             </div>
             {/* Description */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Description</label>
+              <label className="form-label">Mô tả</label>
               <textarea className="form-control" name="description" value={form.description} onChange={handleChange} rows={2} />
             </div>
             {/* Note */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Note</label>
+              <label className="form-label">Ghi chú</label>
               <textarea className="form-control" name="note" value={form.note || ""} onChange={handleChange} rows={2} />
             </div>
-          
-           
-            {/* Departure Dates - Ẩn/hiện và phân trang */}
-         <div className="col-md-12 mb-3">
-  <label className="form-label">Departure Dates</label>
-  <button
-    type="button"
-    className="btn btn-info ms-2"
-    onClick={() => setShowDepartureDates((prev) => !prev)}
-  >
-    {showDepartureDates ? "Ẩn" : "Hiển thị"}
-  </button>
-  {showDepartureDates && (
-    <div className="mt-3">
-      {form.departureDates.length === 0 ? (
-        <button
-          type="button"
-          className="btn btn-secondary mb-2"
-          onClick={() => addArrayField("departureDates", { id: 0, departureDate1: "" })}
-        >
-          Add Departure Date
-        </button>
-      ) : (
-        <>
-          <button
-            type="button"
-            className="btn btn-secondary mb-2"
-            onClick={() => addArrayField("departureDates", { id: 0, departureDate1: "" })}
-          >
-            Add Departure Date
-          </button>
-          {form.departureDates
-            .slice((departurePage - 1) * pageSize, departurePage * pageSize)
-            .map((item, idx) => (
-              <div key={idx + (departurePage - 1) * pageSize} className="input-group mb-2">
-                <input
-                  type="date"
-                  className="form-control"
-                  value={
-                    item.departureDate1
-                      ? new Date(item.departureDate1).toISOString().split("T")[0]
-                      : ""
-                  }
-                  onChange={e =>
-                    handleArrayChange(
-                      "departureDates",
-                      idx + (departurePage - 1) * pageSize,
-                      "departureDate1",
-                      e.target.value
-                    )
-                  }
-                />
+            {/* Departure Dates */}
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Ngày khởi hành</label>
+              <button
+                type="button"
+                className="btn btn-info ms-2"
+                onClick={() => setShowDepartureDates((prev) => !prev)}
+              >
+                {showDepartureDates ? "Ẩn" : "Hiển thị"}
+              </button>
+              {showDepartureDates && (
+                <div className="mt-3">
+                  {form.departureDates.length === 0 ? (
+                    <button
+                      type="button"
+                      className="btn btn-secondary mb-2"
+                      onClick={() => addArrayField("departureDates", { id: 0, departureDate1: "" })}
+                    >
+                      Thêm ngày khởi hành
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        className="btn btn-secondary mb-2"
+                        onClick={() => addArrayField("departureDates", { id: 0, departureDate1: "" })}
+                      >
+                        Thêm ngày khởi hành
+                      </button>
+                      {form.departureDates
+                        .slice((departurePage - 1) * pageSize, departurePage * pageSize)
+                        .map((item, idx) => (
+                          <div key={idx + (departurePage - 1) * pageSize} className="input-group mb-2">
+                            <input
+                              type="date"
+                              className="form-control"
+                              value={
+                                item.departureDate1
+                                  ? new Date(item.departureDate1).toISOString().split("T")[0]
+                                  : ""
+                              }
+                              onChange={e =>
+                                handleArrayChange(
+                                  "departureDates",
+                                  idx + (departurePage - 1) * pageSize,
+                                  "departureDate1",
+                                  e.target.value
+                                )
+                              }
+                            />
+                            <button
+                              type="button"
+                              className="btn btn-danger"
+                              onClick={() => removeArrayField("departureDates", idx + (departurePage - 1) * pageSize)}
+                              disabled={form.departureDates.length === 1}
+                            >
+                              Xóa
+                            </button>
+                          </div>
+                        ))}
+                      {totalPages > 1 && (
+                        <div className="d-flex justify-content-center align-items-center mt-2">
+                          <button
+                            type="button"
+                            className="btn btn-outline-primary me-2"
+                            onClick={() => setDeparturePage((prev) => Math.max(prev - 1, 1))}
+                            disabled={departurePage === 1}
+                          >
+                            &lt;
+                          </button>
+                          <span>
+                            Trang {departurePage}/{totalPages}
+                          </span>
+                          <button
+                            type="button"
+                            className="btn btn-outline-primary ms-2"
+                            onClick={() => setDeparturePage((prev) => Math.min(prev + 1, totalPages))}
+                            disabled={departurePage === totalPages}
+                          >
+                            &gt;
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+            {/* Tour Experiences */}
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Trải nghiệm tour</label>
+              {form.tourExperiences.length === 0 ? (
                 <button
                   type="button"
-                  className="btn btn-danger"
-                  onClick={() => removeArrayField("departureDates", idx + (departurePage - 1) * pageSize)}
-                  disabled={form.departureDates.length === 1}
+                  className="btn btn-secondary"
+                  onClick={() => addArrayField("tourExperiences", { id: 0, content: "" })}
                 >
-                  Remove
+                  Thêm trải nghiệm
                 </button>
-              </div>
-            ))}
-          {totalPages > 1 && (
-            <div className="d-flex justify-content-center align-items-center mt-2">
-              <button
-                type="button"
-                className="btn btn-outline-primary me-2"
-                onClick={() => setDeparturePage((prev) => Math.max(prev - 1, 1))}
-                disabled={departurePage === 1}
-              >
-                &lt;
-              </button>
-              <span>
-                Trang {departurePage}/{totalPages}
-              </span>
-              <button
-                type="button"
-                className="btn btn-outline-primary ms-2"
-                onClick={() => setDeparturePage((prev) => Math.min(prev + 1, totalPages))}
-                disabled={departurePage === totalPages}
-              >
-                &gt;
-              </button>
+              ) : (
+                <>
+                  {form.tourExperiences.map((item, idx) => (
+                    <div key={idx} className="input-group mb-2">
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={item.content}
+                        onChange={e => handleArrayChange("tourExperiences", idx, "content", e.target.value)}
+                        placeholder="Nội dung trải nghiệm"
+                      />
+                      <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourExperiences", idx)} disabled={form.tourExperiences.length === 1}>Xóa</button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => addArrayField("tourExperiences", { id: 0, content: "" })}
+                  >
+                    Thêm trải nghiệm
+                  </button>
+                </>
+              )}
             </div>
-          )}
-        </>
-      )}
-    </div>
-  )}
-</div>
-
-            {/* Tour Experiences */}
-          <div className="col-md-12 mb-3">
-  <label className="form-label">Tour Experiences</label>
-  {form.tourExperiences.length === 0 ? (
-    <button
-      type="button"
-      className="btn btn-secondary"
-      onClick={() => addArrayField("tourExperiences", { id: 0, content: "" })}
-    >
-      Add Experience
-    </button>
-  ) : (
-    <>
-      {form.tourExperiences.map((item, idx) => (
-        <div key={idx} className="input-group mb-2">
-          <input
-            type="text"
-            className="form-control"
-            value={item.content}
-            onChange={e => handleArrayChange("tourExperiences", idx, "content", e.target.value)}
-            placeholder="Experience Content"
-          />
-          <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourExperiences", idx)} disabled={form.tourExperiences.length === 1}>Remove</button>
-        </div>
-      ))}
-      <button
-        type="button"
-        className="btn btn-secondary"
-        onClick={() => addArrayField("tourExperiences", { id: 0, content: "" })}
-      >
-        Add Experience
-      </button>
-    </>
-  )}
-</div>
-
-
-            {/* Tour Itineraries - Modal Trigger */}
+            {/* Tour Itineraries */}
             <div className="col-md-12 mb-3">
-  <label className="form-label">Tour Itineraries</label>
-  <div>
-    {form.tourItineraries.length === 0 ? (
-      <button type="button" className="btn btn-secondary" onClick={addItinerary}>Add Itinerary</button>
-    ) : (
-      <>
-        {form.tourItineraries.map((item, idx) => (
-          <div key={idx} className="border p-3 mb-2 d-flex justify-content-between align-items-center">
-            <div>
-              <b>Day {item.dayNumber}:</b> {item.title}
+              <label className="form-label">Lịch trình tour</label>
+              <div>
+                {form.tourItineraries.length === 0 ? (
+                  <button type="button" className="btn btn-secondary" onClick={addItinerary}>Thêm lịch trình</button>
+                ) : (
+                  <>
+                    {form.tourItineraries.map((item, idx) => (
+                      <div key={idx} className="border p-3 mb-2 d-flex justify-content-between align-items-center">
+                        <div>
+                          <b>Ngày {item.dayNumber}:</b> {item.title}
+                        </div>
+                        <div>
+                          <button type="button" className="btn btn-sm btn-warning me-2" onClick={() => openItineraryModal(idx)}>Sửa</button>
+                          <button type="button" className="btn btn-sm btn-danger" onClick={() => removeArrayField("tourItineraries", idx)} disabled={form.tourItineraries.length === 1}>Xóa</button>
+                        </div>
+                      </div>
+                    ))}
+                    <button type="button" className="btn btn-secondary" onClick={addItinerary}>Thêm lịch trình</button>
+                  </>
+                )}
+              </div>
             </div>
-            <div>
-              <button type="button" className="btn btn-sm btn-warning me-2" onClick={() => openItineraryModal(idx)}>Edit</button>
-              <button type="button" className="btn btn-sm btn-danger" onClick={() => removeArrayField("tourItineraries", idx)} disabled={form.tourItineraries.length === 1}>Remove</button>
-            </div>
-          </div>
-        ))}
-        <button type="button" className="btn btn-secondary" onClick={addItinerary}>Add Itinerary</button>
-      </>
-    )}
-  </div>
-</div>
-
             {/* Tour Media */}
-           <div className="col-md-12 mb-3">
-  <label className="form-label">Tour Media</label>
-  {form.tourMedia.length === 0 ? (
-    <button
-      type="button"
-      className="btn btn-secondary"
-      onClick={() => addArrayField("tourMedia", { id: 0, mediaFile: null, mediaType: "", mediaUrl: "" })}
-    >
-      Add Media
-    </button>
-  ) : (
-    <>
-      {form.tourMedia.map((item, idx) => (
-        <div key={idx} className="input-group mb-2 align-items-center">
-          <input
-            type="file"
-            className="form-control"
-            onChange={e => handleTourMediaFileChange(idx, e.target.files[0])}
-          />
-          <select
-                          className="form-select"
-                          value={item.mediaType}
-                          onChange={e => handleArrayChange("tourMedia", idx, "mediaType", e.target.value)}
-                        >
-                          <option value="">Select Type</option>
-                          <option value="Image">Image</option>
-                          <option value="Video">Video</option>
-                        </select>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Media URL"
-            value={item.mediaUrl}
-            onChange={e =>
-              handleArrayChange("tourMedia", idx, "mediaUrl", e.target.value)
-            }
-          />
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={() => removeArrayField("tourMedia", idx)}
-            disabled={form.tourMedia.length === 1}
-          >
-            Remove
-          </button>
-        </div>
-      ))}
-      <button
-        type="button"
-        className="btn btn-secondary"
-        onClick={() => addArrayField("tourMedia", { id: 0, mediaFile: null, mediaType: "", mediaUrl: "" })}
-      >
-        Add Media
-      </button>
-    </>
-  )}
-</div>
+            <div className="col-md-12 mb-3">
+              <label className="form-label">Hình ảnh/Video tour</label>
+              {form.tourMedia.length === 0 ? (
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => addArrayField("tourMedia", { id: 0, mediaFile: null, mediaType: "", mediaUrl: "" })}
+                >
+                  Thêm media
+                </button>
+              ) : (
+                <>
+                  {form.tourMedia.map((item, idx) => (
+                    <div key={idx} className="input-group mb-2 align-items-center">
+                      <input
+                        type="file"
+                        className="form-control"
+                        onChange={e => handleTourMediaFileChange(idx, e.target.files[0])}
+                      />
+                      <select
+                        className="form-select"
+                        value={item.mediaType}
+                        onChange={e => handleArrayChange("tourMedia", idx, "mediaType", e.target.value)}
+                      >
+                        <option value="">Chọn loại</option>
+                        <option value="Image">Hình ảnh</option>
+                        <option value="Video">Video</option>
+                      </select>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Media URL"
+                        value={item.mediaUrl}
+                        onChange={e =>
+                          handleArrayChange("tourMedia", idx, "mediaUrl", e.target.value)
+                        }
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => removeArrayField("tourMedia", idx)}
+                        disabled={form.tourMedia.length === 1}
+                      >
+                        Xóa
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => addArrayField("tourMedia", { id: 0, mediaFile: null, mediaType: "", mediaUrl: "" })}
+                  >
+                    Thêm media
+                  </button>
+                </>
+              )}
+            </div>
             {form.tourMedia.length > 0 && (
               <div className="col-md-12 mb-3">
-                <label className="form-label">Preview All Uploaded Images</label>
+                <label className="form-label">Xem trước tất cả hình ảnh đã tải lên</label>
                 <div className="d-flex flex-wrap gap-2">
                   {form.tourMedia.map((item, idx) =>
                     item.mediaUrl ? (
@@ -758,7 +765,7 @@ const addItinerary = () => {
                           }}
                         />
                         <div className="small text-center mt-1">
-                          <strong>{item.mediaType || "Unknown"}</strong>
+                          <strong>{item.mediaType || "Không xác định"}</strong>
                         </div>
                       </div>
                     ) : null
@@ -769,37 +776,35 @@ const addItinerary = () => {
           </div>
           <div className="text-center mt-4">
             <button type="submit" className="btn btn-primary px-5">
-              Update Tour
+              Cập nhật gói du lịch
             </button>
           </div>
         </form>
-      )
-}
-   
+        )}
         {/* Itinerary Modal giữ nguyên như cũ */}
         <Modal
-          title={itineraryEditIdx !== null ? "Edit Itinerary" : "Add Itinerary"}
+          title={itineraryEditIdx !== null ? "Sửa lịch trình" : "Thêm lịch trình"}
           open={showItineraryModal}
           onCancel={closeItineraryModal}
           footer={[
-            <Button key="cancel" onClick={closeItineraryModal}>Cancel</Button>,
-            <Button key="save" type="primary" onClick={saveItinerary}>Save</Button>
+            <Button key="cancel" onClick={closeItineraryModal}>Hủy</Button>,
+            <Button key="save" type="primary" onClick={saveItinerary}>Lưu</Button>
           ]}
         >
           <div className="mb-2">
-            <label>Day Number</label>
+            <label>Ngày</label>
             <input type="number" className="form-control" name="dayNumber" value={itineraryForm.dayNumber} onChange={handleItineraryFormChange} />
           </div>
           <div className="mb-2">
-            <label>Title</label>
+            <label>Tiêu đề</label>
             <input type="text" className="form-control" name="title" value={itineraryForm.title} onChange={handleItineraryFormChange} />
           </div>
           <div className="mb-2">
-            <label>Description</label>
+            <label>Mô tả</label>
             <input type="text" className="form-control" name="description" value={itineraryForm.description} onChange={handleItineraryFormChange} />
           </div>
           <div className="mb-2">
-            <label>Itinerary Media</label>
+            <label>Media lịch trình</label>
             {itineraryForm.itineraryMedia.map((media, mediaIdx) => (
               <div key={mediaIdx} className="input-group mb-2">
                 <input
@@ -808,29 +813,29 @@ const addItinerary = () => {
                   onChange={e => handleItineraryMediaFileChange(mediaIdx, e.target.files[0])}
                 />
                 <select
-                    className="form-select"
-                    value={media.mediaType}
-                    onChange={e => handleItineraryMediaChange(mediaIdx, "mediaType", e.target.value)}
-                  >
-                    <option value="">Select Type</option>
-                    <option value="Image">Image</option>
-                    <option value="Video">Video</option>
-                  </select>
+                  className="form-select"
+                  value={media.mediaType}
+                  onChange={e => handleItineraryMediaChange(mediaIdx, "mediaType", e.target.value)}
+                >
+                  <option value="">Chọn loại</option>
+                  <option value="Image">Hình ảnh</option>
+                  <option value="Video">Video</option>
+                </select>
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Caption"
+                  placeholder="Chú thích"
                   value={media.caption}
                   onChange={e => handleItineraryMediaChange(mediaIdx, "caption", e.target.value)}
                 />
-                <button type="button" className="btn btn-danger" onClick={() => removeItineraryMedia(mediaIdx)} disabled={itineraryForm.itineraryMedia.length === 1}>Remove</button>
+                <button type="button" className="btn btn-danger" onClick={() => removeItineraryMedia(mediaIdx)} disabled={itineraryForm.itineraryMedia.length === 1}>Xóa</button>
               </div>
             ))}
-            <button type="button" className="btn btn-secondary" onClick={addItineraryMedia}>Add Itinerary Media</button>
+            <button type="button" className="btn btn-secondary" onClick={addItineraryMedia}>Thêm media lịch trình</button>
           </div>
           {itineraryForm.itineraryMedia.length > 0 && (
             <div className="mb-3">
-              <label>Preview All Itinerary Media</label>
+              <label>Xem trước tất cả media lịch trình</label>
               <div className="d-flex flex-wrap gap-2">
                 {itineraryForm.itineraryMedia.map((media, idx) =>
                   media.mediaUrl ? (
@@ -847,7 +852,7 @@ const addItinerary = () => {
                         }}
                       />
                       <div className="small text-center mt-1">
-                        <strong>{media.caption || "No Caption"}</strong>
+                        <strong>{media.caption || "Không chú thích"}</strong>
                       </div>
                     </div>
                   ) : null
@@ -857,9 +862,7 @@ const addItinerary = () => {
           )}
         </Modal>
       </div>
-           
     </>
-    
   );
 }
 

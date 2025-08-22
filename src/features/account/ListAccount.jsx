@@ -4,7 +4,8 @@ import Breadcrumb from "../../components/breadcrumb";
 import Footer from "../../components/Footer";
 import OpeSidebar from "../../components/OpeSidebar";
 import ListAccCom from "./component/ListAccCom";
-
+import AgentDashboard from "../../pages/AgentDashboard";
+import AgentSidebar from "../../components/AgentSidebar";
 const ListAccount = () => {
     return(
         <div>
@@ -13,7 +14,7 @@ const ListAccount = () => {
             <div className="content">
                 <div className="container">
                     <div className="row">
-                        <OpeSidebar />
+                        <AgentSidebar />
                         <ListAccCom />
                     </div>
                 </div>
