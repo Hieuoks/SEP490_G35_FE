@@ -14,7 +14,7 @@ const Content = () => {
 
   return (
     <>
-      
+
 
       <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
         <div className="container">
@@ -43,7 +43,7 @@ const Content = () => {
         </div>
       </div>
 
-     
+
     </>
   );
 };

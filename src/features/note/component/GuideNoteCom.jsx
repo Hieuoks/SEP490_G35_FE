@@ -123,7 +123,10 @@ const GuideNoteCom = () => {
                         </div>
                         <div>
                             {role === 'Tour Guide' && bookingId ? (
-                                <a className="btn btn-primary d-inline-flex align-items-center me-0" data-bs-toggle="modal" data-bs-target="#Add"><FaPlus className="me-1 fs-16" />Thêm ghi chú</a>
+                                <a className="btn btn-primary d-inline-flex align-items-center me-0" data-bs-toggle="modal" data-bs-target="#Add" onClick={()=>{
+                                    setContent("");
+                                    setTitle("");
+                                }}><FaPlus className="me-1 fs-16" />Thêm ghi chú</a>
                             ) : (
                                 <div></div>
                             )}
@@ -300,11 +303,11 @@ const GuideNoteCom = () => {
                         <div className="modal-body pb-0">
                             <div className="mb-3">
                                 <label className="form-label">Tiêu đề <span className="text-danger">*</span></label>
-                                <input className="form-control" defaultValue={title} onChange={(e) => { setTitle(e.target.value) }} />
+                                <input className="form-control"  onChange={(e) => { setTitle(e.target.value) }} />
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Nội dung <span className="text-danger">*</span></label>
-                                <textarea className="form-control" rows="3" defaultValue={content} onChange={(e) => { setContent(e.target.value) }}></textarea>
+                                <textarea className="form-control" rows="3" onChange={(e) => { setContent(e.target.value) }}></textarea>
                             </div>
                         </div>
                         <div className="modal-footer">

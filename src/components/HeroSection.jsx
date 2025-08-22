@@ -49,19 +49,19 @@ const HeroSection = () => {
                   <h5 className="mb-0 text-center">Tìm kiếm tour theo tên</h5>
                 </div>
                 <div className="card-body">
-                      <form onSubmit={handleSubmit} className="d-flex justify-content-center">
-        <input
-          type="text"
-          className="form-control me-2"
-          placeholder="Nhập tên tour..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{ maxWidth: 400 }}
-        />
-        <button type="submit" className="btn btn-primary">
-          Tìm kiếm
-        </button>
-      </form>
+                  <form onSubmit={handleSubmit} className="d-flex justify-content-center">
+                    <input
+                      type="text"
+                      className="form-control me-2"
+                      placeholder="Nhập tên tour..."
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      style={{ maxWidth: 400 }}
+                    />
+                    <button type="submit" className="btn btn-primary">
+                      Tìm kiếm
+                    </button>
+                  </form>
                 </div>
               </div>
               {/* Nếu muốn hiển thị các tab khác, có thể bổ sung ở đây */}
