@@ -1,6 +1,8 @@
 import logo from "../assets/img/logo.svg";
 import Cookies from 'js-cookie';
 import { getNotification, marksAllRead, marksRead } from '../services/notificationService';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { getProfile } from "../services/profileService";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
@@ -122,6 +124,9 @@ const HeaderTest = () => {
                   </li>
                   <li class="has-submenu megamenu">
                     <a href="/tour-operator">Chính sách</a>
+                  </li>
+                  <li class="has-submenu megamenu">
+                    <a href="/chat-bot">Chat Bot</a>
                   </li>
                   {operatorId && (
                     <li class="has-submenu megamenu">

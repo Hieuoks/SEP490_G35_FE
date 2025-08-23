@@ -3,11 +3,10 @@ import Breadcrumb from "../../components/breadcrumb";
 import Footer from "../../components/Footer";
 import OpeSidebar from "../../components/OpeSidebar";
 import OpeDashCom from "./component/OpeDashCom";
-import HeaderTest from "../../components/HeaderTest";
 const OperatorDashBoard = () => {
     return (
         <div>
-            <HeaderTest />
+            <Header />
             <Breadcrumb />
             <div className="content">
                 <div className="container">

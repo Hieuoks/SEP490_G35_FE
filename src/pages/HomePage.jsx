@@ -9,7 +9,6 @@ import { getTourOp } from "../services/tourOperatorService";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 import HeroSection from "../components/HeroSection";
-import Section from "../components/HeroSection2";
 import DestinationSection from "../components/Category";
 import BenefitSection from "../components/BenefitSection";
 import TestimonialSection from "../components/TestimonialSection";
