@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { uploadToCloudinary } from '../../../services/imgUploadService';
+import SocialLoginButtons from "./SocialLoginButtons";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -288,14 +289,7 @@ const RegisterForm = () => {
 
       <div className="login-or mb-3"><span className="span-or">Hoặc</span></div>
 
-      <div className="d-flex align-items-center mb-3">
-        <a href="#" className="btn btn-light flex-fill d-flex align-items-center justify-content-center me-2">
-          <img src={logoGG} className="me-2" alt="Google" /> Google
-        </a>
-        <a href="#" className="btn btn-light flex-fill d-flex align-items-center justify-content-center">
-          <img src={logoFB} className="me-2" alt="Facebook" /> Facebook
-        </a>
-      </div>
+      <SocialLoginButtons />
 
       <div className="d-flex justify-content-center">
         <p className="fs-14">Đã có tài khoản? <a href="/login" className="link-primary fw-medium">Đăng nhập</a></p>

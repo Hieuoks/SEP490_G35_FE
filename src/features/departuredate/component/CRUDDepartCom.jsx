@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { FaEye, FaChevronLeft, FaChevronRight, FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { checkpackage } from "../../../services/packageService";
+const userId = Cookies.get('userId');
 const CRUDDepartCom = () => {
     const [departureDates, setDepartureDates] = useState([]);
     const [filterList, setFilterList] = useState([]);
@@ -36,7 +38,6 @@ const CRUDDepartCom = () => {
                 // tăng dần
             } else if (status === '3') {
                 filtered = filtered.filter(item => new Date(item.departureDate) < today);
-
             } else {
                 // default: giảm dần
             }
@@ -61,6 +62,7 @@ const CRUDDepartCom = () => {
     }, [keyword, status]);
     const handleFilterChange = (e) => {
         setStatus(e.target.value);
+        setCurrentPage(1);
     }
     const fetchGuides = async () => {
         try {
@@ -169,7 +171,7 @@ const CRUDDepartCom = () => {
         Cookies.set("Depart", departureDate);
         navigate(`/departure/booking/${id}`);
     }
-
+    
 
     const handleUpdateDepart = async (departureDateId, oldGuides) => {
         try {
@@ -221,6 +223,20 @@ const CRUDDepartCom = () => {
             toast.error("Lỗi khi cập nhật hướng dẫn viên");
         }
     }
+    const [mypackage,setMyPackage] = useState(null);
+        const getMyPackages = async () => {
+    
+                await checkpackage(userId).then((res) => {
+                    setMyPackage(res);
+                })
+                .catch((error) => {
+                    setMyPackage([]);
+                    console.error("Error checking package:", error);
+                });   
+        };
+        useEffect(() => {
+            getMyPackages();
+        }, []);
     return (
     <div className="col-xl-9 col-lg-8 theiaStickySidebar">
 
@@ -540,6 +556,8 @@ const CRUDDepartCom = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                        {mypackage !== null && mypackage.tourGuideFunction ? (
+                                        <div>
                                         <div className="upcoming-details">
                                             <h6 className="mb-2">Hướng dẫn viên</h6>
                                             <div className="custom-datatable-filter table-responsive">
@@ -600,6 +618,10 @@ const CRUDDepartCom = () => {
                                                 )}
                                             </select>
                                         </div>
+                                        </div>
+                                        ):(
+                                            <div></div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -644,6 +666,8 @@ const CRUDDepartCom = () => {
                                     </div>
                                 </div>
                             </div>
+                            {mypackage !== null && mypackage.tourGuideFunction ? (
+                            <div>
                             <div className="upcoming-details">
                                 <h6 className="mb-2">Hướng dẫn viên</h6>
                                 <div className="custom-datatable-filter table-responsive">
@@ -704,6 +728,10 @@ const CRUDDepartCom = () => {
                                     )}
                                 </select>
                             </div>
+                            </div>
+                            ):(
+                                <div></div>
+                            )}
                         </div>
                     </div>
                     <div className="modal-footer">
