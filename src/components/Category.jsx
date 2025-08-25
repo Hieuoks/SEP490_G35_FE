@@ -111,47 +111,11 @@ const DestinationSection = () => {
                 <div className="destination-info text-center">
                   <div className="destination-content">
                     <h5 className="mb-1 text-white" style={{ fontSize: 40 }}>{d.name}</h5>
-                    <div className="d-flex align-items-center justify-content-center">
-                      <div className="rating d-flex align-items-center me-2">
-                        {[...Array(d.rating)].map((_, i) => (
-                          <i className="fa-solid fa-star filled me-1" key={i} style={{ fontSize: 30 }}></i>
-                        ))}
-                      </div>
-                      <p className="fs-14 text-white mb-0" style={{ fontSize: 30 }}>{d.reviews} Đánh giá</p>
-                    </div>
+                    
                   </div>
-                  <div className="destination-overlay bg-white mt-2">
-                    <div className="d-flex">
-                      <div className="col">
-                        <div className="count-info text-center">
-                          <span className="d-block mb-1 text-indigo">
-                            <i className="isax isax-airplane" style={{ fontSize: 28 }}></i>
-                          </span>
-                          <h6 className="fs-13 fw-medium" style={{ fontSize: 28 }}>{d.flights} Chuyến bay</h6>
-                        </div>
-                      </div>
-                      <div className="col">
-                        <div className="count-info text-center">
-                          <span className="d-block mb-1 text-cyan">
-                            <i className="isax isax-buildings" style={{ fontSize: 28 }}></i>
-                          </span>
-                          <h6 className="fs-13 fw-medium" style={{ fontSize: 28 }}>{d.hotels} Khách sạn</h6>
-                        </div>
-                      </div>
-                      <div className="col">
-                        <div className="count-info text-center">
-                          <span className="d-block mb-1 text-success">
-                            <i className="isax isax-ship" style={{ fontSize: 28 }}></i>
-                          </span>
-                          <h6 className="fs-13 fw-medium" style={{ fontSize: 28 }}>{d.cruises.toString().padStart(2, "0")} Du thuyền</h6>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  
                 </div>
-                <a href={d.link} className="overlay-circle-link">
-                  <i className="isax isax-arrow-right-1" style={{ fontSize: 32 }}></i>
-                </a>
+                
               </div>
             ))}
           </div>

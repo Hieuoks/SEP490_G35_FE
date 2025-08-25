@@ -86,6 +86,42 @@ export const resetPassword = async (token, password) => {
     throw error.response?.data || error;
   }
 };
+export const verifyAccount = async (token) => {
+  try {
+
+    const response = await axios.post(`${BASE_URL}/Auth/verify-email`, {
+      token
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Trả về dữ liệu (ví dụ: token)
+    return response.data;
+  } catch (error) {
+    // Ném lỗi để component gọi xử lý tiếp
+    throw error.response?.data || error;
+  }
+};
+export const resendVerification = async (email) => {
+  try {
+
+    const response = await axios.post(`${BASE_URL}/Auth/resend-verification`, {
+      email
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Trả về dữ liệu (ví dụ: token)
+    return response.data;
+  } catch (error) {
+    // Ném lỗi để component gọi xử lý tiếp
+    throw error.response?.data || error;
+  }
+};
 export const getOperatorID = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/TourOperator/user-operator`, {

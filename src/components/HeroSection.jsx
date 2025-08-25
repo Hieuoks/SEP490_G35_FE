@@ -11,14 +11,20 @@ const bannerImages = [
 
 const HeroSection = () => {
   const [search, setSearch] = useState("");
+  const [searchType, setSearchType] = useState("tour"); // "tour" hoặc "operator"
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (search.trim()) {
-      navigate(`/tour-list?title=${encodeURIComponent(search.trim())}`);
+      if (searchType === "tour") {
+        navigate(`/tour-list?title=${encodeURIComponent(search.trim())}`);
+      } else {
+        navigate(`/tour-operator?name=${encodeURIComponent(search.trim())}`);
+      }
     }
   };
+
   return (
     <section className="hero-section">
       <div className="banner-slider banner-sec">
@@ -46,22 +52,31 @@ const HeroSection = () => {
               </div>
               <div className="banner-form card mb-0">
                 <div className="card-header">
-                  <h5 className="mb-0 text-center">Tìm kiếm tour theo tên</h5>
+                  <h5 className="mb-0 text-center">Tìm kiếm tour hoặc nhà điều hành</h5>
                 </div>
                 <div className="card-body">
-                      <form onSubmit={handleSubmit} className="d-flex justify-content-center">
-        <input
-          type="text"
-          className="form-control me-2"
-          placeholder="Nhập tên tour..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{ maxWidth: 400 }}
-        />
-        <button type="submit" className="btn btn-primary">
-          Tìm kiếm
-        </button>
-      </form>
+                  <form onSubmit={handleSubmit} className="d-flex justify-content-center gap-2">
+                    <select
+                      className="form-select"
+                      style={{ maxWidth: 180 }}
+                      value={searchType}
+                      onChange={e => setSearchType(e.target.value)}
+                    >
+                      <option value="tour">Tìm tour</option>
+                      <option value="operator">Tìm nhà điều hành</option>
+                    </select>
+                    <input
+                      type="text"
+                      className="form-control me-2"
+                      placeholder={searchType === "tour" ? "Nhập tên tour..." : "Nhập tên nhà điều hành..."}
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      style={{ maxWidth: 400 }}
+                    />
+                    <button type="submit" className="btn btn-primary">
+                      Tìm kiếm
+                    </button>
+                  </form>
                 </div>
               </div>
               {/* Nếu muốn hiển thị các tab khác, có thể bổ sung ở đây */}

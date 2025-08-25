@@ -97,17 +97,7 @@ return (
   </div>
 </div>
 
-        {/* Add Lists */}
-        <AddLists />
-
-        {/* Recent Hotel Bookings */}
-        <div id="recent-hotel-bookings">
-          <RecentHotelBookings bookings={bookings?.bookings || []} />
-        </div>
-
-        <div id="recent-tour-bookings">
-          <RecentTourBookings tours={tours} />
-        </div>
+      
       </div>
     </div>
   </div>

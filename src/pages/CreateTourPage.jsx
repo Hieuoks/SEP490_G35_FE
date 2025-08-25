@@ -234,7 +234,7 @@ function CreateTourPage() {
     data.append('MinSlots', form.minSlots);
     data.append('Note', form.note);
     data.append('IsActive', form.isActive);
-    data.append('TourOperatorId', 1);
+    data.append('TourOperatorId', Cookies.get("operatorId"));
   
       data.append('TourAvartarFile', form.TourAvatarFile);
     
@@ -280,7 +280,7 @@ function CreateTourPage() {
       setApiErrors({});
       setApiErrorMessage("");
       toast.success("Tour created successfully!");
-      navigate("/tour-list");
+      navigate("/operator/tours");
     } catch (error) {
       if (error.response && error.response.data) {
         if (error.response.data.errors) {
@@ -307,27 +307,29 @@ function CreateTourPage() {
 
   return (
     <>
-      <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 col-12">
-              <h2 className="breadcrumb-title mb-2">Tour</h2>
-              <nav aria-label="breadcrumb">
-                <ol className="breadcrumb justify-content-center mb-0">
-                  <li className="breadcrumb-item">
-                    <a href="home">
-                      <FontAwesomeIcon icon={faHome} />
-                    </a>
-                  </li>
-                  <li className="breadcrumb-item">Tạo tour</li>
-                </ol>
-              </nav>
+     <div className="breadcrumb-bar breadcrumb-bg-01 text-center">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-12 col-12">
+                        {/* <h2 className="breadcrumb-title mb-2">Hồ sơ của tôi</h2> */}
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb justify-content-center mb-0">
+                                <li className="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i className="isax isax-home5"></i>
+                                    </a>
+                                </li>
+                                {/* <li className="breadcrumb-item active" aria-current="page">
+                                    Hồ sơ của tôi
+                                </li> */}
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
       <div className="container py-5">
-        <h2 className="mb-4 text-center">Create New Tour</h2>
+        <h2 className="mb-4 text-center">Tạo Tour Mới</h2>
          {(apiErrorMessage || Object.keys(apiErrors).length > 0) && (
           <div className="alert alert-danger">
             {apiErrorMessage && <div>{apiErrorMessage}</div>}
@@ -348,7 +350,7 @@ function CreateTourPage() {
           <div className="row">
             {/* Tour Avatar */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Tour Avatar</label>
+              <label className="form-label">Ảnh đại diện tour</label>
               <input
                 type="file"
                 className="form-control"
@@ -358,13 +360,13 @@ function CreateTourPage() {
             </div>
             {/* Title */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Title *</label>
+              <label className="form-label">Tiêu đề *</label>
               <input type="text" className={`form-control ${errors.title ? "is-invalid" : ""}`} name="title" value={form.title} onChange={handleChange} />
               {errors.title && <div className="invalid-feedback">{errors.title}</div>}
             </div>
             {/* Start Point */}
             <div className="col-md-6 mb-3">
-      <label className="form-label">Start Point *</label>
+      <label className="form-label">Điểm khởi hành *</label>
       <select
         className={`form-control ${errors.startPoint ? "is-invalid" : ""}`}
         name="startPoint"
@@ -380,7 +382,7 @@ function CreateTourPage() {
     </div>
             {/* Transportation */}
             <div className="col-md-6 mb-3">
-  <label className="form-label">Transportation *</label>
+  <label className="form-label">Phương tiện *</label>
   <select
     className={`form-control ${errors.transportation ? "is-invalid" : ""}`}
     name="transportation"
@@ -398,49 +400,49 @@ function CreateTourPage() {
 </div>
             {/* Duration */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Duration (days)</label>
+              <label className="form-label">Thời lượng (ngày)</label>
               <input type="number" min={1} className="form-control" name="durationInDays" value={form.durationInDays} onChange={handleChange} />
             </div>
             {/* Max Slots */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Max Slots *</label>
+              <label className="form-label">Số chỗ tối đa *</label>
               <input type="number" className={`form-control ${errors.maxSlots ? "is-invalid" : ""}`} name="maxSlots" value={form.maxSlots} onChange={handleChange} />
               {errors.maxSlots && <div className="invalid-feedback">{errors.maxSlots}</div>}
             </div>
             {/* Min Slots */}
             <div className="col-md-6 mb-3">
-              <label className="form-label">Min Slots *</label>
+              <label className="form-label">Số chỗ tối thiểu *</label>
               <input type="number" className={`form-control ${errors.minSlots ? "is-invalid" : ""}`} name="minSlots" value={form.minSlots} onChange={handleChange} />
               {errors.minSlots && <div className="invalid-feedback">{errors.minSlots}</div>}
             </div>
             {/* Price of Adults */}
             <div className="col-md-4 mb-3">
-              <label className="form-label">Price of Adults</label>
+              <label className="form-label">Giá người lớn</label>
               <input type="number" className="form-control" name="priceOfAdults" value={form.priceOfAdults} onChange={handleChange} />
             </div>
             {/* Price of Children */}
             <div className="col-md-4 mb-3">
-              <label className="form-label">Price of Children</label>
+              <label className="form-label">Giá trẻ em</label>
               <input type="number" className="form-control" name="priceOfChildren" value={form.priceOfChildren} onChange={handleChange} />
             </div>
             {/* Price of Infants */}
             <div className="col-md-4 mb-3">
-              <label className="form-label">Price of Infants</label>
+              <label className="form-label">Giá trẻ nhỏ</label>
               <input type="number" className="form-control" name="priceOfInfants" value={form.priceOfInfants} onChange={handleChange} />
             </div>
             {/* Description */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Description</label>
+              <label className="form-label">Mô tả</label>
               <textarea className="form-control" name="description" value={form.description} onChange={handleChange} rows={2} />
             </div>
             {/* Note */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Note</label>
+              <label className="form-label">Ghi chú</label>
               <textarea className="form-control" name="note" value={form.note || ""} onChange={handleChange} rows={2} />
             </div>
             {/* Departure Dates */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Departure Dates</label>
+              <label className="form-label">Ngày khởi hành</label>
               {form.departureDates.map((item, idx) => (
                 <div key={idx} className="input-group mb-2">
                   <input
@@ -449,14 +451,14 @@ function CreateTourPage() {
                     value={item.departureDate1}
                     onChange={e => handleArrayChange("departureDates", idx, "departureDate1", e.target.value)}
                   />
-                  <button type="button" className="btn btn-danger" onClick={() => removeArrayField("departureDates", idx)} disabled={form.departureDates.length === 1}>Remove</button>
+                  <button type="button" className="btn btn-danger" onClick={() => removeArrayField("departureDates", idx)} disabled={form.departureDates.length === 1}>Xóa</button>
                 </div>
               ))}
-              <button type="button" className="btn btn-secondary" onClick={() => addArrayField("departureDates", { departureDate1: "" })}>Add Departure Date</button>
+              <button type="button" className="btn btn-secondary" onClick={() => addArrayField("departureDates", { departureDate1: "" })}>Thêm ngày khởi hành</button>
             </div>
             {/* Tour Experiences */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Tour Experiences</label>
+              <label className="form-label">Trải nghiệm tour</label>
               {form.tourExperiences.map((item, idx) => (
                 <div key={idx} className="input-group mb-2">
                   <input
@@ -464,24 +466,24 @@ function CreateTourPage() {
                     className="form-control"
                     value={item.content}
                     onChange={e => handleArrayChange("tourExperiences", idx, "content", e.target.value)}
-                    placeholder="Experience Content"
+                    placeholder="Nội dung trải nghiệm"
                   />
-                  <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourExperiences", idx)} disabled={form.tourExperiences.length === 1}>Remove</button>
+                  <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourExperiences", idx)} disabled={form.tourExperiences.length === 1}>Xóa</button>
                 </div>
               ))}
-              <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourExperiences", { content: "" })}>Add Experience</button>
+              <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourExperiences", { content: "" })}>Thêm trải nghiệm</button>
             </div>
             {/* Tour Itineraries - Modal Trigger */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Tour Itineraries</label>
+              <label className="form-label">Lịch trình tour</label>
               <div>
                 {form.tourItineraries.map((item, idx) => (
                   <div key={idx} className="border p-3 mb-2 d-flex justify-content-between align-items-center">
                     <div>
-                      <b>Day {item.dayNumber}:</b> {item.title}
+                      <b>Ngày {item.dayNumber}:</b> {item.title}
                     </div>
                     <div>
-                      <button type="button" className="btn btn-sm btn-warning me-2" onClick={() => openItineraryModal(idx)}>Edit</button>
+                      <button type="button" className="btn btn-sm btn-warning me-2" onClick={() => openItineraryModal(idx)}>Chỉnh sửa</button>
                     </div>
                   </div>
                 ))}
@@ -489,7 +491,7 @@ function CreateTourPage() {
             </div>
             {/* Tour Media */}
             <div className="col-md-12 mb-3">
-              <label className="form-label">Tour Media</label>
+              <label className="form-label">Media tour</label>
               {form.tourMedia.map((item, idx) => (
                 <div key={idx} className="input-group mb-2">
                   <input
@@ -503,45 +505,45 @@ function CreateTourPage() {
                     onChange={e => handleArrayChange("tourMedia", idx, "mediaType", e.target.value)}
                   >
                     <option value="">Chọn loại media</option>
-                    <option value="Image">Image</option>
+                    <option value="Image">Hình ảnh</option>
                     <option value="Video">Video</option>
                   </select>
-                  <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourMedia", idx)} disabled={form.tourMedia.length === 1}>Remove</button>
+                  <button type="button" className="btn btn-danger" onClick={() => removeArrayField("tourMedia", idx)} disabled={form.tourMedia.length === 1}>Xóa</button>
                 </div>
               ))}
-              <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourMedia", { mediaFile: null, mediaType: "", mediaUrl: "" })}>Add Media</button>
+              <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourMedia", { mediaFile: null, mediaType: "", mediaUrl: "" })}>Thêm media</button>
             </div>
           </div>
           <div className="text-center mt-4">
             <button type="submit" className="btn btn-primary px-5">
-              Create Tour
+              Tạo tour
             </button>
           </div>
         </form>
         {/* Itinerary Modal */}
         <Modal
-          title={itineraryEditIdx !== null ? "Edit Itinerary" : "Add Itinerary"}
+          title={itineraryEditIdx !== null ? "Chỉnh sửa lịch trình" : "Thêm lịch trình"}
           open={showItineraryModal}
           onCancel={closeItineraryModal}
           footer={[
-            <Button key="cancel" onClick={closeItineraryModal}>Cancel</Button>,
-            <Button key="save" type="primary" onClick={saveItinerary}>Save</Button>
+            <Button key="cancel" onClick={closeItineraryModal}>Hủy</Button>,
+            <Button key="save" type="primary" onClick={saveItinerary}>Lưu</Button>
           ]}
         >
           <div className="mb-2">
-            <label>Day Number</label>
+            <label>Ngày</label>
             <input type="number" className="form-control" name="dayNumber" value={itineraryForm.dayNumber} onChange={handleItineraryFormChange} />
           </div>
           <div className="mb-2">
-            <label>Title</label>
+            <label>Tiêu đề</label>
             <input type="text" className="form-control" name="title" value={itineraryForm.title} onChange={handleItineraryFormChange} />
           </div>
           <div className="mb-2">
-            <label>Description</label>
+            <label>Mô tả</label>
             <input type="text" className="form-control" name="description" value={itineraryForm.description} onChange={handleItineraryFormChange} />
           </div>
           <div className="mb-2">
-            <label>Itinerary Media</label>
+            <label>Media lịch trình</label>
             {itineraryForm.itineraryMedia.map((media, mediaIdx) => (
               <div key={mediaIdx} className="input-group mb-2">
                 <input
@@ -555,20 +557,20 @@ function CreateTourPage() {
                   onChange={e => handleItineraryMediaChange(mediaIdx, "mediaType", e.target.value)}
                 >
                   <option value="">Chọn loại media</option>
-                  <option value="Image">Image</option>
+                  <option value="Image">Hình ảnh</option>
                   <option value="Video">Video</option>
                 </select>
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Caption"
+                  placeholder="Chú thích"
                   value={media.caption}
                   onChange={e => handleItineraryMediaChange(mediaIdx, "caption", e.target.value)}
                 />
-                <button type="button" className="btn btn-danger" onClick={() => removeItineraryMedia(mediaIdx)} disabled={itineraryForm.itineraryMedia.length === 1}>Remove</button>
+                <button type="button" className="btn btn-danger" onClick={() => removeItineraryMedia(mediaIdx)} disabled={itineraryForm.itineraryMedia.length === 1}>Xóa</button>
               </div>
             ))}
-            <button type="button" className="btn btn-secondary" onClick={addItineraryMedia}>Add Itinerary Media</button>
+            <button type="button" className="btn btn-secondary" onClick={addItineraryMedia}>Thêm media lịch trình</button>
           </div>
         </Modal>
       </div>

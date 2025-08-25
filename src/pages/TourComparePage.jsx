@@ -96,6 +96,29 @@ const TourComparePage = () => {
   if (!selectedTour) return <div>Đang tải...</div>;
 
   return (
+    <>
+    <div className="breadcrumb-bar breadcrumb-bg-01 text-center">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-12 col-12">
+                        {/* <h2 className="breadcrumb-title mb-2">Hồ sơ của tôi</h2> */}
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb justify-content-center mb-0">
+                                <li className="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i className="isax isax-home5"></i>
+                                    </a>
+                                </li>
+                                {/* <li className="breadcrumb-item active" aria-current="page">
+                                    Hồ sơ của tôi
+                                </li> */}
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     <div className="container my-4">
       <h3 className="mb-4 text-center">So sánh Tour Du Lịch</h3>
       <div className="row">
@@ -115,9 +138,7 @@ const TourComparePage = () => {
               <p><b>Phương tiện:</b> {getTransportIcon(selectedTour.transportation)} {selectedTour.transportation}</p>
               <p><b>Đánh giá trung bình:</b> {selectedTour.averageRating ?? "Chưa có"} <FaStar className="text-warning" /></p>
               <p><b>Đơn vị tổ chức:</b> <FaBuilding /> {selectedTour.companyName}</p>
-              <Button variant="success" onClick={() => setShowModal(true)}>
-                So sánh với tour khác
-              </Button>
+              
             </div>
           </div>
         </div>
@@ -197,7 +218,7 @@ const TourComparePage = () => {
                   <h5 className="text-primary">{compareData.tour1.title}</h5>
                   <p>{compareData.tour1.description}</p>
                   <ul className="list-unstyled">
-                    <li><b>Giá người lớn:</b> {compareData.tour1.priceOfAdults?.toLocaleString()} VNĐ</li>
+                    <li><b>Giá:</b> {compareData.tour1.priceOfAdults?.toLocaleString()} VNĐ</li>
                     <li><b>Thời lượng:</b> {compareData.tour1.durationInDays} ngày</li>
                     <li><b>Tỷ lệ đặt chỗ:</b> {compareData.tour1.occupancyRate} %</li>
                     <li><b>Điểm đánh giá:</b> {compareData.tour1.averageRating} <FaStar className="text-warning" /></li>
@@ -255,6 +276,7 @@ const TourComparePage = () => {
         </Modal.Footer>
       </Modal>
     </div>
+    </>
   );
 };
 

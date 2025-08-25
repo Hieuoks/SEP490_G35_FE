@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { uploadToCloudinary } from '../../../services/imgUploadService';
+import SocialLoginButtons from "./SocialLoginButtons";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -90,7 +91,6 @@ const RegisterForm = () => {
     e.preventDefault();
     if (validate()) {
       try {
-        console.log('Submitting registration with data:', formData);
         await register(
           formData.userName,
           formData.email,
@@ -102,36 +102,11 @@ const RegisterForm = () => {
         );
         toast.success('Đăng ký thành công!');
 
-        if (formData.roleName === 'Tour Operator') {
-          try {
-            const loginRes = await login(formData.email, formData.password);
-            Cookies.set('token', loginRes.token);
-            Cookies.set('userId', loginRes.userId);
-            Cookies.set('email', loginRes.email);
-            Cookies.set('roleName', loginRes.roleName);
-            localStorage.setItem('token', loginRes.token);
-            toast.success('Đăng nhập tự động thành công!');
-            navigate('/tour-operator/create');
-            return;
-          } catch (err) {
-            toast.error('Đăng nhập tự động thất bại. Vui lòng đăng nhập lại.');
-            navigate('/login');
-            return;
-          }
-        } else {
-          setFormData({
-            userName: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            address: '',
-            phoneNumber: '',
-            avatar: '',
-            roleName: 'Customer'
-          });
-          setErrors({});
-          navigate('/login');
-        }
+        // Lưu email vào localStorage và chuyển sang trang verify
+        localStorage.setItem('email', formData.email);
+        localStorage.setItem('roleName', formData.roleName);
+        localStorage.setItem('password', formData.password);
+        navigate('/verify');
       } catch (error) {
         toast.error('Đăng ký thất bại. Vui lòng thử lại.');
       }
@@ -288,14 +263,7 @@ const RegisterForm = () => {
 
       <div className="login-or mb-3"><span className="span-or">Hoặc</span></div>
 
-      <div className="d-flex align-items-center mb-3">
-        <a href="#" className="btn btn-light flex-fill d-flex align-items-center justify-content-center me-2">
-          <img src={logoGG} className="me-2" alt="Google" /> Google
-        </a>
-        <a href="#" className="btn btn-light flex-fill d-flex align-items-center justify-content-center">
-          <img src={logoFB} className="me-2" alt="Facebook" /> Facebook
-        </a>
-      </div>
+      <SocialLoginButtons />
 
       <div className="d-flex justify-content-center">
         <p className="fs-14">Đã có tài khoản? <a href="/login" className="link-primary fw-medium">Đăng nhập</a></p>

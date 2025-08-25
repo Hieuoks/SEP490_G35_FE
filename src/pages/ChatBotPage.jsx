@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import CustomerSidebar from "../components/CustomerSideBar";
 import { ChatBotService } from "../services/chatService";
 import Cookies from "js-cookie";
+import Breadcrumb from "../components/breadcrumb";
+import { BsSendFill } from "react-icons/bs";
 
 const BOT_NAME = "DreamTour AI";
 const USER_NAME = "Bạn";
@@ -97,64 +99,64 @@ const ChatBotPage = () => {
   };
 
   return (
-    <div className="d-flex" style={{ minHeight: "100vh", backgroundColor: "#f5f7fa" }}>
-      {/* Sidebar */}
-      <CustomerSidebar />
 
-      {/* Khoảng trống giữa sidebar và chat */}
-      <div style={{ width: "20px" }}></div>
+    <div>
+      <div class="breadcrumb-bar breadcrumb-bg-04 text-center">
+      </div>
+      <div class="content">
+        <div class="container">
+          <div class="customer-chat">
+            <div class="row chat-window">
+              <div className="col-lg-12 chat-cont-right chat-window-long" style={{ minHeight: "60vh", backgroundColor: "#f5f7fa" }}>
+                {/* Chatbox */}
+                <div className="flex-grow-1 d-flex flex-column">
+                  <div className="d-flex flex-column flex-grow-1 card rounded-0 shadow-sm">
+                    {/* Body */}
+                    <div
+                      className="card-body flex-grow-1 overflow-auto"
+                      style={{ backgroundColor: "#f9fafb", maxHeight: "calc(100vh - 180px)" }}
+                    >
+                      {messages.map((msg, idx) => (
+                        <div
+                          key={idx}
+                          className={`d-flex mb-3 ${msg.sender === USER_NAME ? "justify-content-end" : "justify-content-start"
+                            }`}
+                        >
+                          <div
+                            className={`p-2 px-3 rounded-3 shadow-sm ${msg.sender === USER_NAME ? "bg-primary text-white" : "bg-light border"
+                              }`}
+                            style={{ maxWidth: "75%" }}
+                          >
+                            <div className="fw-semibold small mb-1">{msg.sender}</div>
+                            <div>{msg.text}</div>
+                            {/* Nếu là bot và có suggestions thì hiển thị */}
+                            {msg.sender === BOT_NAME && msg.suggestions && msg.suggestions.length > 0 && renderSuggestions(msg.suggestions)}
+                          </div>
+                        </div>
+                      ))}
+                      <div ref={chatEndRef} />
+                    </div>
 
-      {/* Chatbox */}
-      <div className="flex-grow-1 d-flex flex-column">
-        <div className="d-flex flex-column flex-grow-1 card rounded-0 shadow-sm">
-          {/* Header */}
-          <div className="card-header bg-danger text-white text-center fw-bold">
-            DreamTour AI Chatbot
-          </div>
-
-          {/* Body */}
-          <div
-            className="card-body flex-grow-1 overflow-auto"
-            style={{ backgroundColor: "#f9fafb", maxHeight: "calc(100vh - 180px)" }}
-          >
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`d-flex mb-3 ${
-                  msg.sender === USER_NAME ? "justify-content-end" : "justify-content-start"
-                }`}
-              >
-                <div
-                  className={`p-2 px-3 rounded-3 shadow-sm ${
-                    msg.sender === USER_NAME ? "bg-primary text-white" : "bg-light border"
-                  }`}
-                  style={{ maxWidth: "75%" }}
-                >
-                  <div className="fw-semibold small mb-1">{msg.sender}</div>
-                  <div>{msg.text}</div>
-                  {/* Nếu là bot và có suggestions thì hiển thị */}
-                  {msg.sender === BOT_NAME && msg.suggestions && msg.suggestions.length > 0 && renderSuggestions(msg.suggestions)}
+                    {/* Footer */}
+                    <form className="card-footer d-flex gap-2" onSubmit={handleSend}>
+                      <input
+                        className="form-control rounded-pill"
+                        type="text"
+                        placeholder="Nhập tin nhắn..."
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        autoFocus
+                        disabled={loading}
+                      />
+                      <button className="btn btn-danger rounded-circle px-3" type="submit" disabled={loading || !input.trim()}>
+                        <BsSendFill />
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
-            ))}
-            <div ref={chatEndRef} />
+            </div>
           </div>
-
-          {/* Footer */}
-          <form className="card-footer d-flex gap-2" onSubmit={handleSend}>
-            <input
-              className="form-control rounded-pill"
-              type="text"
-              placeholder="Nhập tin nhắn..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              autoFocus
-              disabled={loading}
-            />
-            <button className="btn btn-danger rounded-circle px-3" type="submit" disabled={loading || !input.trim()}>
-              <i className="bi bi-send-fill"></i>
-            </button>
-          </form>
         </div>
       </div>
     </div>

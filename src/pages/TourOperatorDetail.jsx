@@ -74,25 +74,27 @@ const TourDetailPage = () => {
 
   return (
     <>
-      <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 col-12">
-              <h2 className="breadcrumb-title mb-2">Nhà Điều Hành</h2>
-              <nav aria-label="breadcrumb">
-                <ol className="breadcrumb justify-content-center mb-0">
-                  <li className="breadcrumb-item">
-                    <a href="/">
-                      <i className="fas fa-home"></i>
-                    </a>
-                  </li>
-                  <li className="breadcrumb-item">Chi tiết nhà điều hành</li>
-                </ol>
-              </nav>
+      <div className="breadcrumb-bar breadcrumb-bg-01 text-center">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-12 col-12">
+                        {/* <h2 className="breadcrumb-title mb-2">Hồ sơ của tôi</h2> */}
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb justify-content-center mb-0">
+                                <li className="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i className="isax isax-home5"></i>
+                                    </a>
+                                </li>
+                                {/* <li className="breadcrumb-item active" aria-current="page">
+                                    Hồ sơ của tôi
+                                </li> */}
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
 
       <div className="content py-5">
         <div className="container">

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { message } from 'antd';
-import { getHeader } from './api';
+import { getHeader, getHeader2 } from './api';
 import Cookies from 'js-cookie';
 import { get } from 'react-hook-form';
 const BASE_URL = 'http://localhost:5298/api';
@@ -31,13 +31,9 @@ export const getNoteByTourGuide = async () => {
 }
 export const createNote = async (note) => {
   try {
-    const response = await axios.post(`${BASE_URL}/GuideNote/notes-by-TourGuide`, {
-        BookingId : note.BookingId,
-        Title : note.title,
-        Content : note.content,
-        ExtraCost : 0,
-        Attachments: note.medias,
-    }, getHeader());
+    const response = await axios.post(`${BASE_URL}/GuideNote/notes-by-TourGuide`, note, {
+      headers: getHeader2(),
+    });
     message.success('Note created successfully');
     return response.data;
   } catch (error) {
@@ -46,12 +42,13 @@ export const createNote = async (note) => {
     throw error;
   }
 }
-export const updateNote = async (noteId, title,content,medias) => {
+export const updateNote = async (noteId, title,extraCost,content,medias) => {
     try {
         const response = await axios.put(`${BASE_URL}/GuideNote/notes/${noteId}`, {
             title: title,
             content: content,
-            medias: medias
+            extraCost:extraCost,
+            mediaUrls: medias
         }, {
             headers: getHeader(),
         });

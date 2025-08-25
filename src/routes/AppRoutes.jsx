@@ -38,6 +38,7 @@ import CustomerProfile from '../pages/CustomerProfile';
 import NotificationPage from '../pages/NotificationPage';
 import ChangePasswordForm from '../features/auth/ChangePasswordForm';
 import ChatBotPage from '../pages/ChatBotPage';
+import VerificationPage from '../features/auth/VerificationPage';
 const MainLayout = ({ children }) => {
   return (
     <>
@@ -54,6 +55,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/verify" element={<VerificationPage />} />
         <Route path="/profile" element={<ProflePage />} />
         <Route path="/customer/profile" element={<CustomerProfile />} />
         <Route path="/customer/setting" element={<CustomerProfile />} />

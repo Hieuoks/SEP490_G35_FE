@@ -54,20 +54,20 @@ if (operatorData && operatorData.tourOperatorId) {
       toast.success("Login successful!");
         if (roleName === "Tour Operator") {
         if (operatorData && operatorData.tourOperatorId) {
-          navigate('/operator/dashboard');
+          window.location.href = '/operator/dashboard';
         } else {
           // Nếu chưa có operatorId thì chuyển về trang tạo nhà điều hành
-          navigate('/tour-operator/create');
+          window.location.href = '/tour-operator/create';
         }
       } else if (roleName === "Admin") {
-  navigate('/admin/dashboard');
-} else if (roleName === "Customer") {
-  navigate('/home');
-} else if (roleName === "Tour Guide"){
-  navigate('/guide/schedule');
-}else{
-  navigate('/home');
-}
+        window.location.href = '/admin/dashboard';
+      } else if (roleName === "Customer") {
+        window.location.href = '/home';
+      } else if (roleName === "Tour Guide") {
+        window.location.href = '/guide/schedule';
+      } else {
+        window.location.href = '/home';
+      }
     } catch (error) {
       console.error("Login failed:", error);
       toast.error(error?.message || "Login failed. Please check your credentials.");

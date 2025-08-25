@@ -36,7 +36,7 @@ const TourPage = () => {
   const fetchTours = async () => {
     try {
       const res = await getTour(1, 1000);
-      console.log(res.data); // lấy nhiều để filter phía client
+      console.log("new",res.data); // lấy nhiều để filter phía client
       setTourList(res.data);
     } catch (error) {
       console.error('Error fetching tours:', error);
@@ -55,7 +55,7 @@ const TourPage = () => {
       const matchTransport = !filters.transportation || tour.transportation === filters.transportation;
       const matchStart = !filters.startPoint || tour.startPoint === filters.startPoint;
       const min = filters.minPrice !== '' ? Number(filters.minPrice) : 0;
-      const max = filters.maxPrice !== '' ? Number(filters.maxPrice) : 999999;
+      const max = filters.maxPrice !== '' ? Number(filters.maxPrice) : 999999999999999999;
       const matchPrice =
   (tour.priceOfAdults >= min && tour.priceOfAdults <= max) ||
   (tour.priceOfChildren >= min && tour.priceOfChildren <= max) ||
@@ -86,44 +86,27 @@ const TourPage = () => {
 
   return (
     <>
-     <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
-  <div className="container">
-    <div className="row">
-      <div className="col-md-12 col-12">
-        <h2 className="breadcrumb-title mb-2">Gói du lịch</h2>
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb justify-content-center mb-0">
-            <li className="breadcrumb-item">
-              <a href="home">
-                <FontAwesomeIcon icon={faHome} />
-              </a>
-            </li>
-            <li className="breadcrumb-item">Danh sách gói du lịch</li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-    {/* Search input ngay dưới breadcrumb */}
-    <div className="row justify-content-center mt-3">
-      <div className="col-md-6">
-        <div className="input-icon">
-          <span className="input-icon-addon">
-            <i className="isax isax-search-normal"></i>
-          </span>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Tìm kiếm theo tên tour"
-            value={filters.title}
-            onChange={(e) =>
-              setFilters((prev) => ({ ...prev, title: e.target.value, page: 1 }))
-            }
-          />
+    <div className="breadcrumb-bar breadcrumb-bg-01 text-center">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-12 col-12">
+                        {/* <h2 className="breadcrumb-title mb-2">Hồ sơ của tôi</h2> */}
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb justify-content-center mb-0">
+                                <li className="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i className="isax isax-home5"></i>
+                                    </a>
+                                </li>
+                                {/* <li className="breadcrumb-item active" aria-current="page">
+                                    Hồ sơ của tôi
+                                </li> */}
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
       <div className="container mt-4">
         <div className="row">
           <div className="col-xl-3 col-lg-4">
