@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { message } from 'antd';
-import { getHeader } from './api';
+import { getHeader, getHeader2 } from './api';
 import Cookies from 'js-cookie';
 import { get } from 'react-hook-form';
 const BASE_URL = 'https://localhost:7012/api';
@@ -31,17 +31,10 @@ export const getNoteByTourGuide = async () => {
 }
 export const createNote = async (note) => {
   try {
-    const response = await axios.post(`${BASE_URL}/GuideNote/notes-by-TourGuide`, {
-        BookingId : note.BookingId,
-        Title : note.title,
-        Content : note.content,
-        ExtraCost : 0,
-        Attachments: note.medias,
-    }, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-      },
+
+    const response = await axios.post(`${BASE_URL}/GuideNote/notes-by-TourGuide`, note, {
+      headers: getHeader2(),
+
     });
     message.success('Note created successfully');
     return response.data;
@@ -51,11 +44,14 @@ export const createNote = async (note) => {
     throw error;
   }
 }
-export const updateNote = async (noteId, title,content,medias) => {
+export const updateNote = async (noteId, title,extraCost,content,medias) => {
     try {
         const response = await axios.put(`${BASE_URL}/GuideNote/notes/${noteId}`, {
             title: title,
             content: content,
+
+            extraCost:extraCost,
+
             mediaUrls: medias
         }, {
             headers: getHeader(),

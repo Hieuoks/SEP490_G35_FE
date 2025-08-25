@@ -21,7 +21,7 @@ const PayPacCom = () => {
 
             console.log("Fetching package detail for ID:", packageId);
             const data = await getDetailPac(packageId); // Truyền packageId vào hàm
-            setPackagesRes(data);
+            setPackagesRes(data.data);
             console.log("API response:", data);
 
         } catch (error) {

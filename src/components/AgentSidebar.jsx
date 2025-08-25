@@ -106,24 +106,8 @@ const AgentSidebar = () => {
                 Hóa đơn mới
               </button>
             </li>
-            <li className="mb-2">
-              <button
-                className="btn btn-light w-100 text-start d-flex align-items-center"
-                onClick={() => scrollToSection("recent-hotel-bookings")}
-              >
-                <FontAwesomeIcon icon={faList} className="me-2 text-warning" />
-                Đơn đặt tour
-              </button>
-            </li>
-            <li className="mb-2">
-              <button
-                className="btn btn-light w-100 text-start d-flex align-items-center"
-                onClick={() => scrollToSection("recent-tour-bookings")}
-              >
-                <FontAwesomeIcon icon={faList} className="me-2 text-secondary" />
-                Tour gần đây
-              </button>
-            </li>
+            
+            
             <li className="mb-2">
               <a
                 href="/admin/packages"

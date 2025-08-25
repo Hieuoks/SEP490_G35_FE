@@ -14,12 +14,14 @@ const OpeSidebar = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
+                
                 const data = await getProfile();
                 setUserResponse(data);
             } catch (error) {
                 console.error("Lỗi khi lấy thông tin người dùng:", error);
             }
         };
+        
         fetchUserProfile();
     }, []);
 

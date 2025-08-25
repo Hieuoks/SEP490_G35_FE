@@ -3,6 +3,7 @@ import { getProfile, updateProfile } from "../../../services/profileService";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from "antd";
+import Cookies from 'js-cookie';
 const ProfileSetting = () => {
     const [userResponse, setUserResponse] = useState(null);
             useEffect(() => {
@@ -60,7 +61,10 @@ const ProfileSetting = () => {
                     setFormData({   UserId: '' , UserName:'', Email: '', 
                                     Address: '', PhoneNumber: '', AvatarFile: '',AvatarPreview: ''});
                     setErrors({});
-                    navigate('/profile');
+                    if(Cookies.get('roleName')==='Customer')
+                        navigate('/customer/profile');
+                    else
+                        navigate('/profile');
                 })
                 .catch(error => {
                     console.error('Profile update failed:', error);

@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaSearch, FaEdit, FaTrash, FaBuilding, FaInfoCircle, FaPlus, FaChevronLeft, FaChevronRight, FaStore } from 'react-icons/fa';
 import { getNotes, createNote, updateNote, deleteNote,getNoteByTourGuide } from '../../../services/noteService';
+import { uploadToCloudinary } from "../../../services/imgUploadService";
 const GuideNoteCom = () => {
     const [keyword, setKeyword] = useState('');
     const [notes, setNotes] = useState([]);
@@ -15,7 +16,9 @@ const GuideNoteCom = () => {
     const { bookingId } = useParams();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [Medias, setMedias] = useState([]);
+    const [extraCost, setExtraCost] = useState(0);
+const [Medias, setMedias] = useState([]); // array of string (urls)
+const [fileInputs, setFileInputs] = useState([0]);
     const fetchingNotes = async () => {
         try {
             let response;
@@ -50,24 +53,57 @@ const GuideNoteCom = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = notes.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(notes.length / itemsPerPage);
+    const [detailNote, setDetailNote] = useState(null);
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
     
-    const handleUpdateNote = async (noteId) => {
-        try {
-            const response = await updateNote(noteId, title, content,Medias);
-            toast.success('Note updated successfully');
-            console.log('Note updated:', response);
-            setTitle('');
-            setContent('');
-            setMedias([]);
-            fetchingNotes();
-        } catch (error) {
-            console.error('Error updating note:', error);
-            toast.error('Unable to update note');
-        } 
+    const [oldMedias, setOldMedias] = useState([]); // link ảnh cũ từ backend
+const [newMedias, setNewMedias] = useState([]); // link ảnh mới upload
+
+// Khi mở modal update:
+const openUpdateModal = (note) => {
+    setTitle(note.title);
+    setContent(note.content);
+    setExtraCost(note.extraCost);
+    setOldMedias(note.mediaUrls || []);
+    setNewMedias([]);
+};
+
+const handleUploadNewMedia = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+        const res = await uploadToCloudinary(file);
+        const url = res.secure_url || res.url;
+        setNewMedias(prev => [...prev, url]);
+        toast.success('Tải ảnh thành công!');
+    } catch {
+        toast.error('Tải ảnh thất bại!');
     }
+};
+
+const handleRemoveOldMedia = (idx) => {
+    setOldMedias(prev => prev.filter((_, i) => i !== idx));
+};
+const handleRemoveNewMedia = (idx) => {
+    setNewMedias(prev => prev.filter((_, i) => i !== idx));
+};
+
+const handleUpdateNote = async (noteId) => {
+    try {
+        const medias = [...oldMedias, ...newMedias];
+        await updateNote(noteId, title, extraCost, content, medias);
+        toast.success('Note updated successfully');
+        setTitle('');
+        setContent('');
+        setOldMedias([]);
+        setNewMedias([]);
+        fetchingNotes();
+    } catch (error) {
+        toast.error('Unable to update note');
+    }
+};
 
     const handleDeleteNote = async (noteId) => {
         try {
@@ -80,26 +116,48 @@ const GuideNoteCom = () => {
             toast.error('Unable to delete note');
         }
     }
-    const handleAddNote = async () => {
-        try {
-            const note = {
-                BookingId : bookingId,
-                title: title,
-                content: content,
-            };
-            console.log("request",note);
-            const response = await createNote(note);
-            toast.success('Note created successfully');
-            console.log('Note created:', response);
-            setTitle('');
-            setContent('');
-            setMedias([]);
-            fetchingNotes();
-        } catch (error) {
-            console.error('Error creating note:', error);
-            toast.error('Unable to create note');
-        }
+   const [mediaFiles, setMediaFiles] = useState([]); // array of File
+
+const handleAddFileInput = () => {
+    setMediaFiles((prev) => [...prev, null]);
+};
+
+const handleFileChange = (e, idx) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setMediaFiles((prev) => {
+        const newArr = [...prev];
+        newArr[idx] = file;
+        return newArr;
+    });
+};
+
+const handleRemoveFileInput = (idx) => {
+    setMediaFiles((prev) => prev.filter((_, i) => i !== idx));
+};
+
+const handleAddNote = async () => {
+    try {
+        const formData = new FormData();
+        formData.append("BookingId", bookingId);
+        formData.append("Title", title);
+        formData.append("Content", content);
+        formData.append("ExtraCost", extraCost);
+        mediaFiles.forEach((file, idx) => {
+            if (file) formData.append("Attachments", file); // "medias" là array file
+        });
+
+        const response = await createNote(formData); // createNote phải hỗ trợ FormData
+        toast.success('Note created successfully');
+        setTitle('');
+        setContent('');
+        setMediaFiles([]);
+        fetchingNotes();
+    } catch (error) {
+        console.error('Error creating note:', error);
+        toast.error('Unable to create note');
     }
+};
    return (
     <div className="col-xl-9 col-lg-8">
 
@@ -142,7 +200,14 @@ const GuideNoteCom = () => {
             </div>
         ) : (
             currentItems.map((note) => (
-                <div className="card shadow-none" key={note.noteId}>
+                <div
+    className="card shadow-none"
+    key={note.noteId}
+    style={{ cursor: "pointer" }}
+    data-bs-toggle="modal"
+    data-bs-target="#DetailNoteModal"
+    onClick={() => setDetailNote(note)}
+>
                     <div className="card-body">
                         <div className="border-bottom mb-3">
                             <div className="d-flex justify-content-between align-items-center flex-wrap row-gap-2 mb-2">
@@ -239,34 +304,119 @@ const GuideNoteCom = () => {
 
             <div key={note.noteId}>
                 <div className="modal fade" id={`Update${note.noteId}`}>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5>Chỉnh sửa ghi chú</h5>
-                                <a href="javascript:void(0);" onClick={() => {
-                                    setContent('');
-                                    setTitle('');
-                                }} data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                            </div>
-                            <div >
-                                <div className="modal-body pb-0">
-                                    <div className="mb-3">
-                                        <label className="form-label">Tiêu đề <span className="text-danger">*</span></label>
-                                        <input className="form-control" defaultValue={title} onChange={(e) => { setTitle(e.target.value) }} />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">Nội dung <span className="text-danger">*</span></label>
-                                        <textarea className="form-control" rows="3" defaultValue={content} onChange={(e) => { setContent(e.target.value) }}></textarea>
-                                    </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => handleUpdateNote(note.noteId)}>Lưu thay đổi</button>
-                                </div>
-                            </div>
+    <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+            <div className="modal-header">
+                <h5>Chỉnh sửa ghi chú</h5>
+                <a href="javascript:void(0);" onClick={() => {
+                    setContent('');
+                    setTitle('');
+                    setExtraCost(0);
+                    setMedias([]);
+                    setFileInputs([0]);
+                }} data-bs-dismiss="modal" className="btn-close text-dark"></a>
+            </div>
+            <div>
+                <div className="modal-body pb-0">
+                    <div className="mb-3">
+                        <label className="form-label">Tiêu đề <span className="text-danger">*</span></label>
+                        <input className="form-control" value={title} onChange={(e) => setTitle(e.target.value)} />
 
-                        </div>
                     </div>
+                    <div className="mb-3">
+                        <label className="form-label">Nội dung <span className="text-danger">*</span></label>
+                        <textarea className="form-control" rows="3" value={content} onChange={(e) => setContent(e.target.value)}></textarea>
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Chi phí phát sinh</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={extraCost}
+                            onChange={e => setExtraCost(Number(e.target.value))}
+                            min={0}
+                        />
+                    </div>
+                    <div className="mb-3">
+    <label className="form-label">Ảnh/Media</label>
+    <div className="d-flex flex-wrap gap-2 mb-2">
+        {oldMedias.map((img, idx) => (
+            <div key={idx} className="position-relative me-2 mb-2">
+                <a href={img} target="_blank" rel="noopener noreferrer">
+                    <img src={img} alt="media" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 6, border: '1px solid #eee' }} />
+                </a>
+                <button
+                    type="button"
+                    className="btn btn-sm btn-danger position-absolute top-0 end-0"
+                    style={{ transform: 'translate(50%,-50%)', zIndex: 2 }}
+                    onClick={() => handleRemoveOldMedia(idx)}
+                >X</button>
+            </div>
+        ))}
+        {newMedias.map((img, idx) => (
+            <div key={idx} className="position-relative me-2 mb-2">
+                <a href={img} target="_blank" rel="noopener noreferrer">
+                    <img src={img} alt="media" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 6, border: '1px solid #eee' }} />
+                </a>
+                <button
+                    type="button"
+                    className="btn btn-sm btn-danger position-absolute top-0 end-0"
+                    style={{ transform: 'translate(50%,-50%)', zIndex: 2 }}
+                    onClick={() => handleRemoveNewMedia(idx)}
+                >X</button>
+            </div>
+        ))}
+    </div>
+    <input
+        type="file"
+        className="form-control"
+        accept="image/*"
+        onChange={handleUploadNewMedia}
+    />
+</div>
                 </div>
+                <div className="modal-footer">
+                    <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => handleUpdateNote(note.noteId)}>Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div className="modal fade" id="DetailNoteModal" tabIndex="-1">
+    <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+            <div className="modal-header">
+                <h5>Chi tiết ghi chú</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div className="modal-body">
+                {detailNote && (
+                    <>
+                        <div className="mb-2"><b>Tiêu đề:</b> {detailNote.title}</div>
+                        <div className="mb-2"><b>Nội dung:</b> {detailNote.content}</div>
+                        <div className="mb-2"><b>Chi phí phát sinh:</b> {detailNote.extraCost}</div>
+                        <div className="mb-2"><b>Ngày tạo:</b> {new Date(detailNote.createdAt).toLocaleString("vi-VN")}</div>
+                        <div className="mb-2"><b>Tour:</b> {detailNote.tourTitle}</div>
+                        <div className="mb-2"><b>Ngày khởi hành:</b> {new Date(detailNote.departureDate).toLocaleDateString("vi-VN")}</div>
+                        <div className="mb-2"><b>Hướng dẫn viên:</b> {detailNote.tourGuideName}</div>
+                        <div className="mb-2"><b>Ảnh/Media:</b></div>
+                        <div className="d-flex flex-wrap gap-2 mb-2">
+                           {detailNote.mediaUrls && detailNote.mediaUrls.length > 0 ? (
+    detailNote.mediaUrls.map((img, idx) => (
+        <a key={idx} href={img} target="_blank" rel="noopener noreferrer">
+            <img src={img} alt="media" style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 6, border: '1px solid #eee' }} />
+        </a>
+    ))
+) : (
+    <span>Không có ảnh</span>
+)}
+                        </div>
+                    </>
+                )}
+            </div>
+        </div>
+    </div>
+</div>
                 <div className="modal fade" id={`Delete${note.noteId}`}>
                     <div className="modal-dialog modal-dialog-centered modal-sm">
                         <div className="modal-content">
@@ -290,34 +440,75 @@ const GuideNoteCom = () => {
             </div>
         ))}
         <div className="modal fade" id="Add">
-            <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5>Thêm ghi chú</h5>
-                        <a href="javascript:void(0);" onClick={() => {
-                            setContent('');
-                            setTitle('');
-                        }} data-bs-dismiss="modal" className="btn-close text-dark"></a>
+    <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+            <div className="modal-header">
+                <h5>Thêm ghi chú</h5>
+                <a href="javascript:void(0);" onClick={() => {
+                    setContent('');
+                    setTitle('');
+                    setExtraCost(0);
+                    setMedias([]);
+                    setFileInputs([]);
+                }} data-bs-dismiss="modal" className="btn-close text-dark"></a>
+            </div>
+            <div>
+                <div className="modal-body pb-0">
+                    <div className="mb-3">
+                        <label className="form-label">Tiêu đề <span className="text-danger">*</span></label>
+                        <input className="form-control" value={title} onChange={(e) => { setTitle(e.target.value) }} />
                     </div>
-                    <div >
-                        <div className="modal-body pb-0">
-                            <div className="mb-3">
-                                <label className="form-label">Tiêu đề <span className="text-danger">*</span></label>
-                                <input className="form-control"  onChange={(e) => { setTitle(e.target.value) }} />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Nội dung <span className="text-danger">*</span></label>
-                                <textarea className="form-control" rows="3" onChange={(e) => { setContent(e.target.value) }}></textarea>
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => handleAddNote()}>Lưu</button>
-                        </div>
+                    <div className="mb-3">
+                        <label className="form-label">Nội dung <span className="text-danger">*</span></label>
+                        <textarea className="form-control" rows="3" value={content} onChange={(e) => { setContent(e.target.value) }}></textarea>
+
                     </div>
+                    <div className="mb-3">
+                        <label className="form-label">Chi phí phát sinh</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={extraCost}
+                            onChange={e => setExtraCost(Number(e.target.value))}
+                            min={0}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Ảnh/Media</label>
+                       {mediaFiles.map((file, idx) => (
+    <div key={idx} className="d-flex align-items-center mb-2">
+        <input
+            type="file"
+            className="form-control"
+            accept="image/*"
+            onChange={e => handleFileChange(e, idx)}
+        />
+        {file && (
+            <span className="ms-2">{file.name}</span>
+        )}
+        <button
+            type="button"
+            className="btn btn-sm btn-danger ms-2"
+            onClick={() => handleRemoveFileInput(idx)}
+            disabled={mediaFiles.length === 1}
+        >X</button>
+    </div>
+))}
+<button
+    type="button"
+    className="btn btn-outline-primary btn-sm"
+    onClick={handleAddFileInput}
+>+ Thêm file</button>
+                    </div>
+                </div>
+                <div className="modal-footer">
+                    <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => handleAddNote()}>Lưu</button>
                 </div>
             </div>
 
         </div>
+    </div>
+</div>
     </div>
 );
 

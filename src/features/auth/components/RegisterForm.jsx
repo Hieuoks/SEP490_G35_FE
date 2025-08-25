@@ -91,7 +91,6 @@ const RegisterForm = () => {
     e.preventDefault();
     if (validate()) {
       try {
-        console.log('Submitting registration with data:', formData);
         await register(
           formData.userName,
           formData.email,
@@ -103,36 +102,11 @@ const RegisterForm = () => {
         );
         toast.success('Đăng ký thành công!');
 
-        if (formData.roleName === 'Tour Operator') {
-          try {
-            const loginRes = await login(formData.email, formData.password);
-            Cookies.set('token', loginRes.token);
-            Cookies.set('userId', loginRes.userId);
-            Cookies.set('email', loginRes.email);
-            Cookies.set('roleName', loginRes.roleName);
-            localStorage.setItem('token', loginRes.token);
-            toast.success('Đăng nhập tự động thành công!');
-            navigate('/tour-operator/create');
-            return;
-          } catch (err) {
-            toast.error('Đăng nhập tự động thất bại. Vui lòng đăng nhập lại.');
-            navigate('/login');
-            return;
-          }
-        } else {
-          setFormData({
-            userName: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            address: '',
-            phoneNumber: '',
-            avatar: '',
-            roleName: 'Customer'
-          });
-          setErrors({});
-          navigate('/login');
-        }
+        // Lưu email vào localStorage và chuyển sang trang verify
+        localStorage.setItem('email', formData.email);
+        localStorage.setItem('roleName', formData.roleName);
+        localStorage.setItem('password', formData.password);
+        navigate('/verify');
       } catch (error) {
         toast.error('Đăng ký thất bại. Vui lòng thử lại.');
       }

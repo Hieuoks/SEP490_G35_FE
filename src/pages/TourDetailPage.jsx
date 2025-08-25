@@ -30,25 +30,27 @@ function TourDetail() {
 }, [id]);
   return (
     <>
-     <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
+     <div className="breadcrumb-bar breadcrumb-bg-01 text-center">
             <div className="container">
-              <div className="row">
-                <div className="col-md-12 col-12">
-                  <h2 className="breadcrumb-title mb-2">Gói du lịch</h2>
-                  <nav aria-label="breadcrumb">
-                    <ol className="breadcrumb justify-content-center mb-0">
-                      <li className="breadcrumb-item">
-                        <a href="home">
-                          <FontAwesomeIcon icon={faHome} />
-                        </a>
-                      </li>
-                      <li className="breadcrumb-item">Thông tin gói du lịch</li>
-                    </ol>
-                  </nav>
+                <div className="row">
+                    <div className="col-md-12 col-12">
+                        {/* <h2 className="breadcrumb-title mb-2">Hồ sơ của tôi</h2> */}
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb justify-content-center mb-0">
+                                <li className="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i className="isax isax-home5"></i>
+                                    </a>
+                                </li>
+                                {/* <li className="breadcrumb-item active" aria-current="page">
+                                    Hồ sơ của tôi
+                                </li> */}
+                            </ol>
+                        </nav>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
     
     <div className="container my-4">
       <div className="row">

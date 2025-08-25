@@ -30,7 +30,7 @@ const initialState = {
   address: [],
   workingHours: "",
   mediaUrl: "",
-  UserId: Cookies.get("userId") || "",
+  UserId: Cookies.get("userId") || localStorage.getItem("userId") || "",
 };
 
 function CreateTourOpPage() {
@@ -114,6 +114,7 @@ const handleAddressChange = (e) => {
       companyLogo: companyLogoUrl,
       mediaUrl: mediaUrl,
       address: Array.isArray(form.address) ? form.address.join(", ") : form.address,
+      UserId: Cookies.get("userId") || localStorage.getItem("userId") || "",
     };
 console.log('submitData', submitData);
       await createTourOperator(submitData);
@@ -153,25 +154,27 @@ console.log('submitData', submitData);
   return (
     <>
     
-      <div className="breadcrumb-bar breadcrumb-bg-02 text-center">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12 col-12">
-              <h2 className="breadcrumb-title mb-2">Nhà Điều Hành</h2>
-              <nav aria-label="breadcrumb">
-                <ol className="breadcrumb justify-content-center mb-0">
-                  <li className="breadcrumb-item">
-                    <a href="home">
-                      <FontAwesomeIcon icon={faHome} />
-                    </a>
-                  </li>
-                  <li className="breadcrumb-item">Tạo nhà điều hành</li>
-                </ol>
-              </nav>
+      <div className="breadcrumb-bar breadcrumb-bg-01 text-center">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-12 col-12">
+                        {/* <h2 className="breadcrumb-title mb-2">My Profile</h2> */}
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb justify-content-center mb-0">
+                                <li className="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i className="isax isax-home5"></i>
+                                    </a>
+                                </li>
+                                {/* <li className="breadcrumb-item active" aria-current="page">
+                                    My Profile
+                                </li> */}
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
 
       <div className="container py-5">
         <h2 className="mb-4 text-center">Tạo Nhà Điều Hành</h2>

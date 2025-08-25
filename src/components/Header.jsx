@@ -199,94 +199,92 @@ const HeaderTest = () => {
                 )}
 
                 {userId ? (
-                  roleName === "Tour Operator" ? (
-                    <div class="dropdown profile-dropdown">
-                      <a href="javascript:void(0);" class="d-flex align-items-center" data-bs-toggle="dropdown">
-                        <span class="avatar avatar-md">
-                          <img src={userResponse?.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} alt="Img" class="img-fluid rounded-circle border border-white border-4" />
-                        </span>
-                      </a>
-                      <ul class="dropdown-menu dropdown-menu-end p-3">
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/dashboard">Dashboard</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/tours">Tour</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/booking">Đơn booking</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/schedules">Schedule</a>
-                        </li>
-                        <li>
-                          <hr class="dropdown-divider my-2" />
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/profile">Hồ sơ</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Logout</a>
-                        </li>
-                      </ul>
-                    </div>
-                  ) : roleName === "Customer" ? (
-                    <div class="dropdown profile-dropdown">
-                      <a href="javascript:void(0);" class="d-flex align-items-center" data-bs-toggle="dropdown">
-                        <span class="avatar avatar-md">
-                          <img src={userResponse?.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} alt="Img" class="img-fluid rounded-circle border border-white border-4" />
-                        </span>
-                      </a>
-                      <ul class="dropdown-menu dropdown-menu-end p-3">
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="dashboard.html">Dashboard</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="customer-hotel-booking.html">My Booking</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="my-profile.html">My Profile</a>
-                        </li>
-                        <li>
-                          <hr class="dropdown-divider my-2" />
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="profile-settings.html">Settings</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Logout</a>
-                        </li>
-                      </ul>
-                    </div>
-                  ) : (
-                    <div class="dropdown profile-dropdown">
-                      <a href="javascript:void(0);" class="d-flex align-items-center" data-bs-toggle="dropdown">
-                        <span class="avatar avatar-md">
-                          <img src={userResponse?.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} alt="Img" class="img-fluid rounded-circle border border-white border-4" />
-                        </span>
-                      </a>
-                      <ul class="dropdown-menu dropdown-menu-end p-3">
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="customer-hotel-booking.html">My Schedule</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="my-profile.html">My Profile</a>
-                        </li>
-                        <li>
-                          <hr class="dropdown-divider my-2" />
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="profile-settings.html">Settings</a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Logout</a>
-                        </li>
-                      </ul>
-                    </div>
-                  )
-                ) : (
-                  <a href="/login" class="btn btn-primary me-0">Đăng nhập</a>
-                )}
+  roleName === "Tour Operator" ? (
+    <div className="dropdown profile-dropdown">
+      <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
+        <span className="avatar avatar-md">
+          <img src={userResponse?.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
+        </span>
+      </a>
+      <ul className="dropdown-menu dropdown-menu-end p-3">
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/dashboard">Bảng điều khiển</a>
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/tours">Quản lý tour</a>
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/booking">Đơn đặt tour</a>
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/schedules">Lịch trình</a>
+        </li>
+        <li>
+          <hr className="dropdown-divider my-2" />
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/profile">Hồ sơ</a>
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Đăng xuất</a>
+        </li>
+      </ul>
+    </div>
+  ) : roleName === "Customer" ? (
+    <div className="dropdown profile-dropdown">
+      <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
+        <span className="avatar avatar-md">
+          <img src={userResponse?.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
+        </span>
+      </a>
+      <ul className="dropdown-menu dropdown-menu-end p-3">
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/booking">Đơn đặt của tôi</a>
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/customer/profile">Hồ sơ của tôi</a>
+        </li>
+        <li>
+          <hr className="dropdown-divider my-2" />
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/customer/setting">Cài đặt</a>
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Đăng xuất</a>
+        </li>
+      </ul>
+    </div>
+  ) : roleName === "Admin"?(<div></div>): (
+    <div className="dropdown profile-dropdown">
+      <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
+        <span className="avatar avatar-md">
+          <img src={userResponse?.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
+        </span>
+      </a>
+      <ul className="dropdown-menu dropdown-menu-end p-3">
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/guide/schedule">Lịch trình của tôi</a>
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/profile">Hồ sơ của tôi</a>
+        </li>
+        <li>
+          <hr className="dropdown-divider my-2" />
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="profile-settings.html">Cài đặt</a>
+        </li>
+        <li>
+          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Đăng xuất</a>
+        </li>
+      </ul>
+    </div>
+  )
+) : (
+  <a href="/login" className="btn btn-primary me-0">Đăng nhập</a>
+)}
+
               </div>
             </div>
           </div>

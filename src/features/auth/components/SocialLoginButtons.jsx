@@ -15,12 +15,15 @@ const SocialLoginButtons = () => {
         onSuccess={credentialResponse => {
           const tokenId = credentialResponse.credential;
           // Gửi tokenId này về backend để verify
-          fetch(`https://localhost:7012/api/Auth/google?token=${credentialResponse.credential}`, {
+
+          fetch(`http://localhost:5298/api/Auth/google?token=${credentialResponse.credential}`, {
+
             method: "POST"
           })
             .then(res => res.json())
             .then(data => {
               Cookies.set("token", data.token, { expires: 1 });
+              localStorage.setItem("token", data.token);
               Cookies.set("email", data.email, { expires: 1 });
               Cookies.set("userId", data.userId, { expires: 1 });
               Cookies.set("roleName", data.roleName, { expires: 1 });

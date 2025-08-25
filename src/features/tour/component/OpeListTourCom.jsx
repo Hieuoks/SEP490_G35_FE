@@ -118,39 +118,85 @@ const OpeListTourCom = () => {
                         </div>
                     ) : (
                         listTour.map((tour) => (
-                            <div className="col-xl-4 col-md-6 d-flex" key={tour.tourId}>
-                                <div className="place-item mb-4 flex-fill">
-                                    <div className="place-img">
-                                        <a href={`/tour/detail/${tour.tourId}`} className="d-block" target="_blank">
-                                            <img src={tour.tourAvartar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} className="img-fluid" alt="img" onError={(e) => {
-                                                e.target.onError = null;
-                                                e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
-                                            }} />
-                                        </a>
-                                        <div className="edit-delete-item d-flex align-items-center">
-                                            <a href={`/tour/update/${tour.tourId}`} className="me-2 d-inline-flex align-items-center justify-content-center"><FaEdit /></a>
-                                            <a href="#" className="d-inline-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#delete-list"><FaTrash /></a>
-                                        </div>
-                                        <div className="fav-item">
-                                            {tour.isActive ? (
-                                                <span className="badge bg-info d-inline-flex align-items-center"><i className="isax isax-check me-1"></i>Đang hoạt động</span>
-                                            ) : (
-                                                <span className="badge bg-danger d-inline-flex align-items-center"><i className="isax isax-close me-1"></i>Ngừng hoạt động</span>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="place-content">
-                                        <h5 className="mb-1 text-truncate"><a href="hotel-details.html">{tour.title}</a></h5>
-                                        <p className="d-flex align-items-center mb-2"><FaStore className="me-2" />{tour.companyName}</p>
-                                        <div className="d-flex align-items-center justify-content-between border-top pt-3">
-                                            <h5 className="text-primary text-nowrap me-2">{formatPrice(tour.priceOfAdults)}<span className="fs-14 fw-normal text-default">/người</span></h5>
-                                            <div className="d-flex align-items-center lh-1">
-                                                <a className="d-flex align-items-center" onClick={() => { handleNevigate(tour.title, tour.tourId) }}><FaInfoCircle className="me-1" />Ngày khởi hành</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+              <div className="col-xl-4 col-md-6 d-flex" key={tour.tourId}>
+  <div className="place-item mb-4 flex-fill d-flex flex-column h-100">
+    <div className="place-img">
+      <a href={`/tour/detail/${tour.tourId}`} className="d-block" target="_blank" rel="noopener noreferrer">
+        <img
+          src={tour.tourAvartar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"}
+          className="img-fluid"
+          alt="img"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
+          }}
+        />
+      </a>
+      <div className="fav-item">
+        {tour.isActive ? (
+          <span className="badge bg-info d-inline-flex align-items-center">
+            <i className="isax isax-check me-1"></i>Đang hoạt động
+          </span>
+        ) : (
+          <span className="badge bg-danger d-inline-flex align-items-center">
+            <i className="isax isax-close me-1"></i>Ngừng hoạt động
+          </span>
+        )}
+      </div>
+    </div>
+    <div className="place-content d-flex flex-column flex-grow-1">
+      <h5 className="mb-1 text-truncate">
+        <a href="hotel-details.html">{tour.title}</a>
+      </h5>
+      <p className="d-flex align-items-center mb-2">
+        <FaStore className="me-2" />
+        {tour.companyName}
+      </p>
+      <div className="d-flex align-items-center justify-content-between border-top pt-3 mb-3">
+        <h5 className="text-primary text-nowrap me-2">
+          {formatPrice(tour.priceOfAdults)}
+          <span className="fs-14 fw-normal text-default">/người</span>
+        </h5>
+        <div className="d-flex align-items-center lh-1">
+          <a
+            className="d-flex align-items-center"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              handleNevigate(tour.title, tour.tourId);
+            }}
+          >
+            <FaInfoCircle className="me-1" />
+            Ngày khởi hành
+          </a>
+        </div>
+      </div>
+      <div className="mt-auto">
+        <div className="edit-delete-item d-flex align-items-center justify-content-end">
+          <button
+            type="button"
+            className="btn btn-light me-2 d-inline-flex align-items-center justify-content-center"
+            onClick={e => {
+              e.preventDefault();
+              window.open(`/tour/update/${tour.tourId}`, "_blank");
+            }}
+            title="Chỉnh sửa"
+          >
+            <FaEdit />
+          </button>
+          <a
+            href="#"
+            className="btn btn-light d-inline-flex align-items-center justify-content-center"
+            data-bs-toggle="modal"
+            data-bs-target="#delete-list"
+            title="Xóa"
+          >
+            <FaTrash />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
                         ))
                     )}
 

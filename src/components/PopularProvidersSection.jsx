@@ -56,120 +56,82 @@ export default function PopularProvidersSection({ tourOp }) {
   };
 
   return (
-    <section className="section">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-8">
-            <div className="section-header-six">
-              <span className="badge badge-soft-primary rounded-pill mb-1">
-                Nhà cung cấp phổ biến nhất
-              </span>
-              <h2>
-                Trải nghiệm chỗ ở thư giãn<span className="text-primary">.</span>
-              </h2>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="text-end">
-              <a href="tour-operator" className="btn btn-dark sec-head-btn">
-                Xem tất cả nhà cung cấp
-                <FaArrowRight className="ms-2" />
-              </a>
-            </div>
+  <section className="section">
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <div className="section-header-six">
+            <span className="badge badge-soft-primary rounded-pill mb-1">
+              Nhà cung cấp phổ biến nhất
+            </span>
+            <h2>
+              Trải nghiệm chỗ ở thư giãn<span className="text-primary">.</span>
+            </h2>
           </div>
         </div>
-        <div className="row justify-content-center">
-          {currentProviders.length === 0 ? (
-            <div className="text-center py-5">Không có nhà cung cấp nào.</div>
-          ) : (
-            currentProviders.map((p, idx) => {
-              const providerIdx = startIndex + idx;
-              const media =
-                Array.isArray(p.media) && p.media.length > 0
-                  ? p.media.map((m) => m.mediaUrl)
-                  : p.companyLogo
-                  ? [p.companyLogo]
-                  : ["assets/img/icons/providers-logo.svg"];
-              const imgIndex = imgIndexes[providerIdx] ?? 0;
+        <div className="col-md-4">
+          <div className="text-end">
+            <a href="tour-operator" className="btn btn-dark sec-head-btn">
+              Xem tất cả nhà cung cấp
+              <FaArrowRight className="ms-2" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="row justify-content-center">
+        {currentProviders.length === 0 ? (
+          <div className="text-center py-5">Không có nhà cung cấp nào.</div>
+        ) : (
+          currentProviders.map((p, idx) => {
+            const providerIdx = startIndex + idx;
+            const media =
+              Array.isArray(p.media) && p.media.length > 0
+                ? p.media.map((m) => m.mediaUrl)
+                : p.companyLogo
+                ? [p.companyLogo]
+                : ["assets/img/icons/providers-logo.svg"];
+            const imgIndex = imgIndexes[providerIdx] ?? 0;
 
-              return (
-                <div className="col-md-4 mb-4" key={p.tourOperatorId || providerIdx}>
-                  <div
-                    className="card h-100"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleGoDetail(p.tourOperatorId)}
-                  >
-                    <div className="card-body text-center">
-                      <div className="position-relative mb-3" style={{ minHeight: 100 }}>
-                        <button
-                          className="btn btn-light btn-sm position-absolute start-0 top-50 translate-middle-y"
-                          style={{ zIndex: 2 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handlePrevImg(providerIdx, media.length);
-                          }}
-                          disabled={media.length <= 1}
-                        >
-                          &lt;
-                        </button>
-                        <img
-                          src={media[imgIndex]}
-                          className="rounded-circle w-auto m-auto"
-                          alt={p.companyName}
-                          style={{ maxWidth: 80, maxHeight: 80 }}
-                        />
-                        <button
-                          className="btn btn-light btn-sm position-absolute end-0 top-50 translate-middle-y"
-                          style={{ zIndex: 2 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleNextImg(providerIdx, media.length);
-                          }}
-                          disabled={media.length <= 1}
-                        >
-                          &gt;
-                        </button>
+            return (
+              <div className="col-md-4 mb-4" key={p.tourOperatorId || providerIdx}>
+                <div
+                  className="card h-100"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleGoDetail(p.tourOperatorId)}
+                >
+                  <div className="card-body text-center">
+                    <div className="position-relative mb-3 d-flex justify-content-center align-items-center" style={{ minHeight: 180 }}>
+                      <img
+                        src={media[imgIndex]}
+                        className="rounded-circle"
+                        alt={p.companyName}
+                        style={{ width: 140, height: 140, objectFit: "cover" }}
+                      />
+                    </div>
+                    <h5 className="mb-2">
+                      <span>{p.companyName}</span>
+                    </h5>
+                    <div className="d-flex align-items-center seperate-dot justify-content-center">
+                      <span>{truncateDescription(p.description)}</span>
+                      <span>{p.address}</span>
+                    </div>
+                    <div className="d-flex align-items-center justify-content-between mt-3 pt-3 border-top">
+                      <div className="d-flex align-items-center">
+                        <span className="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">
+                          {p.rating ?? "4.9"}
+                        </span>
+                        <FaStar className="text-warning me-1" />
                       </div>
-                      <h5 className="mb-2">
-                        <span>{p.companyName}</span>
-                      </h5>
-                      <div className="d-flex align-items-center seperate-dot justify-content-center">
-                        <span>{truncateDescription(p.description)}</span>
-                        <span>{p.address}</span>
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between mt-3 pt-3 border-top">
-                        <div className="d-flex align-items-center">
-                          <span className="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-2">
-                            {p.rating ?? "4.9"}
-                          </span>
-                          <FaStar className="text-warning me-1" />
-                        </div>
-                        {/* Có thể thêm số tour nếu có */}
-                      </div>
+                      {/* Có thể thêm số tour nếu có */}
                     </div>
                   </div>
                 </div>
-              );
-            })
-          )}
-        </div>
-        <div className="d-flex justify-content-between px-3 pb-3">
-          <button
-            className="btn btn-outline-primary"
-            onClick={handlePrevGroup}
-            disabled={operators.length <= 3}
-          >
-            &lt; Bộ trước
-          </button>
-          <button
-            className="btn btn-outline-primary"
-            onClick={handleNextGroup}
-            disabled={operators.length <= 3}
-          >
-            Bộ tiếp &gt;
-          </button>
-        </div>
+              </div>
+            );
+          })
+        )}
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
 }
