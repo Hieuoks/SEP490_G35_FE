@@ -176,11 +176,15 @@ const handleAddNote = async () => {
                                     <FaSearch className="fs-14" />
                                 </span>
                                 <input type="text" className="form-control" placeholder="Tìm kiếm" onChange={(e) => setKeyword(e.target.value)} />
+
                             </div>
                         </div>
                         <div>
                             {role === 'Tour Guide' && bookingId ? (
-                                <a className="btn btn-primary d-inline-flex align-items-center me-0" data-bs-toggle="modal" data-bs-target="#Add"><FaPlus className="me-1 fs-16" />Thêm ghi chú</a>
+                                <a className="btn btn-primary d-inline-flex align-items-center me-0" data-bs-toggle="modal" data-bs-target="#Add" onClick={()=>{
+                                    setContent("");
+                                    setTitle("");
+                                }}><FaPlus className="me-1 fs-16" />Thêm ghi chú</a>
                             ) : (
                                 <div></div>
                             )}
@@ -317,6 +321,7 @@ const handleAddNote = async () => {
                     <div className="mb-3">
                         <label className="form-label">Tiêu đề <span className="text-danger">*</span></label>
                         <input className="form-control" value={title} onChange={(e) => setTitle(e.target.value)} />
+
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Nội dung <span className="text-danger">*</span></label>
@@ -417,6 +422,7 @@ const handleAddNote = async () => {
                         <div className="modal-content">
                             <div className="modal-body">
 
+
                                 <div className="text-center">
                                     <h5 className="mb-3">Xoá ghi chú</h5>
                                     <p className="mb-3">Bạn có chắc chắn muốn xoá ghi chú này?</p>
@@ -427,6 +433,7 @@ const handleAddNote = async () => {
                                 </div>
 
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -454,6 +461,7 @@ const handleAddNote = async () => {
                     <div className="mb-3">
                         <label className="form-label">Nội dung <span className="text-danger">*</span></label>
                         <textarea className="form-control" rows="3" value={content} onChange={(e) => { setContent(e.target.value) }}></textarea>
+
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Chi phí phát sinh</label>
@@ -497,10 +505,12 @@ const handleAddNote = async () => {
                     <button type="submit" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => handleAddNote()}>Lưu</button>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
     </div>
 );
+
 }
 export default GuideNoteCom;

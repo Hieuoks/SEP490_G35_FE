@@ -15,7 +15,9 @@ const SocialLoginButtons = () => {
         onSuccess={credentialResponse => {
           const tokenId = credentialResponse.credential;
           // Gửi tokenId này về backend để verify
+
           fetch(`http://localhost:5298/api/Auth/google?token=${credentialResponse.credential}`, {
+
             method: "POST"
           })
             .then(res => res.json())

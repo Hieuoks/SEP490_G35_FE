@@ -27,6 +27,7 @@ const OpeSidebar = () => {
 
     const [mypackage, setMyPackage] = useState([]);
     const getMyPackages = async () => {
+
         await checkpackage(userId)
             .then((res) => {
                 setMyPackage(res);
@@ -36,6 +37,7 @@ const OpeSidebar = () => {
                 console.error("Lỗi khi kiểm tra gói:", error);
             });
     };
+
     useEffect(() => {
         getMyPackages();
     }, []);
@@ -88,42 +90,43 @@ const OpeSidebar = () => {
                                 </li>
                                 <li>
                                     <a href="/operator/dashboard" className="d-flex align-items-center">
-                                        <i className="isax isax-grid-55"></i> Bảng điều khiển
+                                         Bảng điều khiển
                                     </a>
                                 </li>
                                 <li>
                                     <div className="message-content">
                                         <a href="/operator/tours" className="d-flex align-items-center">
-                                            <i className="isax isax-message-square5"></i> Tour
+                                             Tour
                                         </a>
                                     </div>
                                 </li>
                                 <li>
                                     <div className="message-content">
                                         <a href="/operator/schedules" className="d-flex align-items-center">
-                                            <i className="isax isax-message-square5"></i> Lịch trình
+                                             Lịch trình
                                         </a>
                                     </div>
                                 </li>
                                 <li className="submenu">
                                     <a href="/operator/booking" className="d-block">
-                                        <i className="isax isax-calendar-tick5"></i>
+                                        
                                         <span> Đặt tour</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <div className="message-content">
-                                        <a href="/note" className="d-flex align-items-center">
-                                            <i className="isax isax-message-square5"></i> Ghi chú
-                                        </a>
-                                    </div>
-                                </li>
-                                {mypackage.length !== 0 && mypackage.tourGuideFunction ? (
-                                    <li className="mb-2">
+                                
+                                {mypackage !== null && mypackage.tourGuideFunction ? (
+                                    <div>
+                                    <li className="message-content">
                                         <a href="/operator/guides" className="d-flex align-items-center">
-                                            <i className="isax isax-heart5"></i> Hướng dẫn viên
+                                             Hướng dẫn viên
                                         </a>
                                     </li>
+                                    <li className="message-content">
+                                        <a href="/note" className="d-flex align-items-center">
+                                             Ghi chú
+                                        </a>
+                                    </li>
+                                    </div>
                                 ) : (
                                     <li></li>
                                 )}
@@ -132,7 +135,7 @@ const OpeSidebar = () => {
                                 </li>
                                 <li>
                                     <a href="/operator/package" className="d-flex align-items-center">
-                                        <i className="isax isax-magic-star5"></i> Giao dịch
+                                        Giao dịch
                                     </a>
                                 </li>
                             </div>
@@ -144,18 +147,17 @@ const OpeSidebar = () => {
                                 <li>
                                     <div className="message-content">
                                         <a href="/guide/schedule" className="d-flex align-items-center">
-                                            <i className="isax isax-message-square5"></i> Lịch trình
+                                             Lịch trình
                                         </a>
                                     </div>
                                 </li>
                                 <li>
                                     <div className="message-content">
                                         <a href="/note" className="d-flex align-items-center">
-                                            <i className="isax isax-message-square5"></i> Ghi chú
+                                             Ghi chú
                                         </a>
                                     </div>
                                 </li>
-                                <li></li>
                             </div>
                         )}
 
@@ -167,12 +169,12 @@ const OpeSidebar = () => {
                                 href="/profile"
                                 className="d-flex align-items-center"
                             >
-                                <i className="isax isax-profile-tick5"></i> Hồ sơ của tôi
+                             Hồ sơ của tôi
                             </a>
                         </li>
                         <li>
                             <a href="/setting/editprofile" className="d-flex align-items-center">
-                                <i className="isax isax-setting-25"></i> Cài đặt
+                                 Cài đặt
                             </a>
                         </li>
                         {/* Thêm link sang trang chi tiết nhà điều hành */}
@@ -182,18 +184,18 @@ const OpeSidebar = () => {
                                     href={`/tour-operator/detail/${operatorId}`}
                                     className="d-flex align-items-center"
                                 >
-                                    <i className="isax isax-document-text"></i> Thông tin nhà điều hành
+                                Thông tin nhà điều hành
                                 </a>
                             </li>
                         )}
                         <li>
-                            <button
-                                className="d-flex align-items-center pb-0 btn btn-link"
+                            <a
+                                className="d-flex align-items-center"
                                 style={{ color: "inherit", textDecoration: "none" }}
                                 onClick={handleLogout}
                             >
-                                <i className="isax isax-logout-15"></i> Đăng xuất
-                            </button>
+                            Đăng xuất
+                            </a>
                         </li>
                     </ul>
                 </div>

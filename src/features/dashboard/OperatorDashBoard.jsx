@@ -4,9 +4,9 @@ import Footer from "../../components/Footer";
 import OpeSidebar from "../../components/OpeSidebar";
 import OpeDashCom from "./component/OpeDashCom";
 const OperatorDashBoard = () => {
-  return (
-    <div>
-            <Header/>
+    return (
+        <div>
+            <Header />
             <Breadcrumb />
             <div className="content">
                 <div className="container">
@@ -23,7 +23,7 @@ const OperatorDashBoard = () => {
                     <div className="xb-cursor--follower xb-js-follower"></div>
                 </div>
             </div>
-    </div>
-  );
+        </div>
+    );
 }
 export default OperatorDashBoard;
