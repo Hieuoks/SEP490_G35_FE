@@ -145,8 +145,8 @@ const OpeScheduleCom = () => {
                                     <th>ID</th>
                                     <th>Tour & Loại</th>
                                     <th>Ngày khởi hành</th>
-                                    <th>Số chỗ tối đa</th>
-                                    <th>Số chỗ đã đặt</th>
+                                    <th>Số chỗ còn lại</th>
+                                    <th>Số booking</th>
                                     <th>Trạng thái</th>
                                     <th>Hành động</th>
                                 </tr>
