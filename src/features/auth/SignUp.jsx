@@ -15,8 +15,8 @@ const RegisterPage = () => (
             <RegisterHeader />
             <div className="card authentication-card">
               <div className="card-header text-center">
-                <h5 className="mb-1">Sign Up</h5>
-                <p>Create your DreamsTour Account</p>
+                <h5 className="mb-1">Đăng ký</h5>
+                <p>Tạo tài khoản DreamsTour của bạn</p>
               </div>
               <div className="card-body">
                 <RegisterForm />

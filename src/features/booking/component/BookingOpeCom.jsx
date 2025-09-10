@@ -8,7 +8,7 @@ const BookingOpeCom = () => {
     const navigate = useNavigate();
     const [keyword, setKeyword] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(3);
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
@@ -79,7 +79,7 @@ const BookingOpeCom = () => {
                 })
                 .catch((error) => {
                     console.error("Error updating contract:", error);
-                    toast.error("Failed to update contract");
+                    toast.error(error.response?.data || "Failed to update contract");
                 });
         }
 
@@ -229,9 +229,9 @@ return (
             <div className="value d-flex align-items-center">
                 <span>Hiển thị</span>
                 <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
                     <option value={3}>3</option>
+                    <option value={6}>6</option>
+                    <option value={9}>9</option>
                 </select>
                 <span>dòng</span>
             </div>

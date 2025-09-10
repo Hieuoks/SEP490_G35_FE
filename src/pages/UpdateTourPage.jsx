@@ -78,6 +78,7 @@ function UpdateTourPage() {
           tourOperatorId: data.tourOperatorId || 1,
           tourId: id,
           tourStatus: data.tourStatus || "Active",
+TourAvartarFile:data.tourAvartar||null,
           departureDates: data.departureDates?.length
             ? data.departureDates.map(d => ({
                 id: d.id ?? 0,
@@ -123,7 +124,7 @@ function UpdateTourPage() {
         });
       } catch (error) {
         toast.error("Không tìm thấy tour!");
-        navigate("/listpage");
+        navigate("/tour-list");
       }
     }
 
@@ -463,6 +464,15 @@ function UpdateTourPage() {
                 onChange={handleAvatarChange}
                 accept="image/*"
               />
+              {form.TourAvartarFile && typeof form.TourAvartarFile === "string" && (
+  <div className="mt-2">
+    <img
+      src={form.TourAvartarFile}
+      alt="Tour Avatar"
+      style={{ width: 120, height: 80, objectFit: "cover", borderRadius: 4 }}
+    />
+  </div>
+)}
               {errors.TourAvartarFile && <div className="invalid-feedback d-block">{errors.TourAvartarFile}</div>}
             </div>
             {/* Title */}
@@ -498,7 +508,19 @@ function UpdateTourPage() {
             {/* Transportation */}
             <div className="col-md-6 mb-3">
               <label className="form-label">Phương tiện *</label>
-              <input type="text" className={`form-control ${errors.transportation ? "is-invalid" : ""}`} name="transportation" value={form.transportation} onChange={handleChange} />
+              <select
+    className={`form-control ${errors.transportation ? "is-invalid" : ""}`}
+    name="transportation"
+    value={form.transportation}
+    onChange={handleChange}
+  >
+    <option value="">Chọn phương tiện</option>
+    <option value="Xe Khách">Xe Khách</option>
+    <option value="Ô Tô">Ô Tô</option>
+    <option value="Thuyền">Thuyền</option>
+    <option value="Máy Bay">Máy Bay</option>
+    <option value="Tàu Hỏa">Tàu Hỏa</option>
+  </select>
               {errors.transportation && <div className="invalid-feedback">{errors.transportation}</div>}
             </div>
             {/* Duration */}
@@ -509,29 +531,29 @@ function UpdateTourPage() {
             {/* Max Slots */}
             <div className="col-md-6 mb-3">
               <label className="form-label">Số lượng tối đa *</label>
-              <input type="number" className={`form-control ${errors.maxSlots ? "is-invalid" : ""}`} name="maxSlots" value={form.maxSlots} onChange={handleChange} />
+              <input min={1} type="number" className={`form-control ${errors.maxSlots ? "is-invalid" : ""}`} name="maxSlots" value={form.maxSlots} onChange={handleChange} />
               {errors.maxSlots && <div className="invalid-feedback">{errors.maxSlots}</div>}
             </div>
             {/* Min Slots */}
             <div className="col-md-6 mb-3">
               <label className="form-label">Số lượng tối thiểu *</label>
-              <input type="number" className={`form-control ${errors.minSlots ? "is-invalid" : ""}`} name="minSlots" value={form.minSlots} onChange={handleChange} />
+              <input  min={1} type="number" className={`form-control ${errors.minSlots ? "is-invalid" : ""}`} name="minSlots" value={form.minSlots} onChange={handleChange} />
               {errors.minSlots && <div className="invalid-feedback">{errors.minSlots}</div>}
             </div>
             {/* Price of Adults */}
             <div className="col-md-4 mb-3">
               <label className="form-label">Giá người lớn *</label>
-              <input type="number" className="form-control" name="priceOfAdults" value={form.priceOfAdults} onChange={handleChange} />
+              <input min={1} type="number" className="form-control" name="priceOfAdults" value={form.priceOfAdults} onChange={handleChange} />
             </div>
             {/* Price of Children */}
             <div className="col-md-4 mb-3">
               <label className="form-label">Giá trẻ em</label>
-              <input type="number" className="form-control" name="priceOfChildren" value={form.priceOfChildren} onChange={handleChange} />
+              <input min={1} type="number" className="form-control" name="priceOfChildren" value={form.priceOfChildren} onChange={handleChange} />
             </div>
             {/* Price of Infants */}
             <div className="col-md-4 mb-3">
               <label className="form-label">Giá trẻ nhỏ</label>
-              <input type="number" className="form-control" name="priceOfInfants" value={form.priceOfInfants} onChange={handleChange} />
+              <input min={1} type="number" className="form-control" name="priceOfInfants" value={form.priceOfInfants} onChange={handleChange} />
             </div>
             {/* Description */}
             <div className="col-md-12 mb-3">

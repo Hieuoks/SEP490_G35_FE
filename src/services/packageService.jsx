@@ -19,6 +19,7 @@ export const getPackages = async () => {
 }
 
 export const updatePackage = async (formData) => {
+  
   try {
     const response = await axios.put(`${BASE_URL}/ServicePackage/UpdateServicePackage`, formData, {
       headers: {

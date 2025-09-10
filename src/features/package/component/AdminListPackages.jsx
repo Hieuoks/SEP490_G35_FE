@@ -20,7 +20,7 @@ const AdminListPackages = () => {
     }, []);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        packageId: '', name: '', price: 0, maxTour: 0,maxImage:0 ,maxVideo:false,tourGuideFunction:false,discountPercentage: 0, description: ''
+        packageId: '', name: '', price: 0, maxTour: 0,maxImage:0 ,maxVideo:false,tourGuideFunction:false, discountPercentage: 0, description: ''
     });
     const [errors, setErrors] = useState({});
     const validate = () => {
@@ -43,12 +43,14 @@ const AdminListPackages = () => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: name === 'maxVideo' || name === 'tourGuideFunction' ? value === 'true'? true :false : value
+            [name]: name === 'maxVideo' || name === 'tourGuideFunction' ? value === 'true'? true :false : value,
+    discountPercentage: 0 
         }));
     };
     const handleUpdateSubmit = (e) => {
         e.preventDefault();
         if (validate()) {
+            console.log('Form is valid:', formData);
             updatePackage(formData)
                 .then(response => {
                     console.log('Form is valid:', formData);

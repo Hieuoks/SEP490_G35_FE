@@ -73,7 +73,7 @@ const CRUDDepartCom = () => {
         } catch (error) {
             setGuides([]);
             console.error("Error fetching tour guides:", error);
-            toast.error("Lỗi khi lấy dữ liệu hướng dẫn viên.");
+           
         }
     };
     useEffect(() => {
@@ -135,14 +135,16 @@ const CRUDDepartCom = () => {
 
                         }).catch((err) => {
                             console.error("Error add guides:", err);
-                            toast.error(err.response?.data.message);
+                            toast.error(err.response?.data);
                         })
                 }
                 fetchDepartureDates();
             })
             .catch((error) => {
                 console.error("Error add depart:", error);
-                toast.error(error.response?.data.message);
+                toast.error(error.response?.data.errors.StartDate[0]||"Không thể trùng ngày khởi hành đã tồn tại của tour");
+            }).catch((error2)=>{
+                toast.error(error2.response?.data.message||"Không thể trùng ngày khởi hành đã tồn tại của tour");
             });
         setSelectedGuide([]);
 
@@ -220,7 +222,8 @@ const CRUDDepartCom = () => {
 
         } catch (error) {
             console.error("Error updating departure guides:", error);
-            toast.error("Lỗi khi cập nhật hướng dẫn viên");
+
+            toast.error(error?.response.data);
         }
     }
     const [mypackage,setMyPackage] = useState(null);

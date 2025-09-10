@@ -27,8 +27,9 @@ const SocialLoginButtons = () => {
               Cookies.set("email", data.email, { expires: 1 });
               Cookies.set("userId", data.userId, { expires: 1 });
               Cookies.set("roleName", data.roleName, { expires: 1 });
+              localStorage.setItem("roleName", data.roleName);
               toast.success("đăng nhập thành công ");
-              navigate("/home");
+              window.location.href = "/home";
             })
             .catch(error => {
               console.log("error", error);

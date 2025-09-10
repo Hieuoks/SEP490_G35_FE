@@ -134,27 +134,7 @@ function ReviewItem({ review, isReply, onEdit, onDelete, canEdit, onReport, onIm
         </div>
         {canEdit ? (
           <div>
-            <select
-              className="form-select form-select-sm"
-              style={{ width: 120, display: "inline-block" }}
-              onChange={async (e) => {
-                if (e.target.value === "edit") {
-                  try {
-                    const res = await getFeedbackDetail(review.user.ratingId);
-                    onEdit(res.data);
-                  } catch (error) {
-                    toast.error("Không thể lấy thông tin đánh giá!");
-                  }
-                }
-                if (e.target.value === "delete") onDelete(review);
-                e.target.value = "";
-              }}
-              defaultValue=""
-            >
-              <option value="" disabled>Chọn thao tác</option>
-              <option value="edit">Cập nhật</option>
-              <option value="delete">Xóa</option>
-            </select>
+            
           </div>
         ) : (
           <button className="btn btn-outline-danger btn-sm" onClick={() => onReport(review)}>
@@ -232,7 +212,11 @@ function Reviews({ tour }) {
           delete dataToSend.mediaFile;
         }
         await updateFeedback(editReview.ratingId, dataToSend);
+        // reload trang để cập nhật đánh giá mới
         toast.success("Cập nhật đánh giá thành công!");
+        setTimeout(() => {
+  window.location.reload();
+}, 2000);
       } else {
         // CREATE: gửi FormData đúng trường cho backend
         const formData = new FormData();
@@ -242,8 +226,12 @@ function Reviews({ tour }) {
         if (reviewData.mediaFile) {
           formData.append("ImageFile", reviewData.mediaFile);
         }
+        // reload trang để cập nhật đánh giá mới
         await createFeedback(formData);
-        toast.success("Đánh giá của bạn đã được gửi!");
+toast.success("Đánh giá của bạn đã được gửi!");
+setTimeout(() => {
+  window.location.reload();
+}, 2000);
       }
       setIsModalOpen(false);
       setEditReview(null);
@@ -416,9 +404,7 @@ function Reviews({ tour }) {
 
       <div className="d-flex align-items-center justify-content-between flex-wrap mb-2" id="reviews">
         <h6 className="mb-3">Đánh giá ({reviewList.length})</h6>
-        <button className="btn btn-primary btn-md mb-3" onClick={handleOpenModal}>
-          <i className="isax isax-edit-2 me-1"></i>Viết đánh giá
-        </button>
+        
       </div>
 
       {/* Thống kê đánh giá */}

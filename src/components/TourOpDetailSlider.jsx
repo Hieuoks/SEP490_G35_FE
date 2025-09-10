@@ -165,47 +165,28 @@ const TourDetailSlider = ({ tour }) => {
             {tour?.isActive && (
               <span className="badge badge-xs bg-success rounded-pill ms-2">
                 <FontAwesomeIcon icon={faTicketAlt} className="me-1" />
-                Verified
+                Đã xác thực
               </span>
             )}
           </h4>
           <div className="d-flex align-items-center flex-wrap">
             <p className="fs-14 mb-2 me-3 pe-3 border-end">
               <FontAwesomeIcon icon={faReceipt} className="text-primary me-2" />
-              License No: {tour?.licenseNumber}
+              Số giấy phép: {tour?.licenseNumber}
             </p>
             <p className="fs-14 mb-2 me-3 pe-3 border-end">
               <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" />
               {tour?.address}
-              <a
-                href="#location"
-                className="link-primary text-decoration-underline fw-medium ms-2"
-              >
-                View Location
-              </a>
+              
             </p>
           </div>
         </div>
-        <div className="d-flex align-items-center mb-3">
-          <a
-            href="javascript:void(0);"
-            className="btn btn-outline-light btn-icon btn-sm d-flex align-items-center justify-content-center me-2"
-          >
-            <FontAwesomeIcon icon={faShareAlt} />
-          </a>
-          <a
-            href="javascript:void(0);"
-            className="btn btn-outline-light btn-sm d-inline-flex align-items-center"
-          >
-            <FontAwesomeIcon icon={faHeart} className="text-danger me-1" />
-            Save
-          </a>
-        </div>
+        
       </div>
 
       {/* Description */}
       <div className="bg-light-200 card-bg-light mb-4">
-        <h5 className="fs-18 mb-3">Description</h5>
+        <h5 className="fs-18 mb-3">Mô tả</h5>
         <div className="mb-2">
           <p>{tour?.description || 'No description available.'}</p>
         </div>

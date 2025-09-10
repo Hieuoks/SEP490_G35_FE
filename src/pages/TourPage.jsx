@@ -103,9 +103,9 @@ const TourPage = () => {
                 </ol>
               </nav>
             </div>
-          </div>
-          {/* Search input ngay dưới breadcrumb */}
-          <div className="row justify-content-center mt-3">
+
+             <div className="row justify-content-center mt-3">
+
             <div className="col-md-6">
               <div className="input-icon">
                 <span className="input-icon-addon">

@@ -206,15 +206,15 @@ function CreateTourPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
-    if (!form.title) newErrors.title = "Title is required";
-    if (!form.priceOfAdults) newErrors.priceOfAdults = "Price is required";
-    if (!form.priceOfChildren) newErrors.priceOfChildren = "Price is required";
-    if (!form.priceOfInfants) newErrors.priceOfChildren = "Price is required";
-    if (!form.startPoint) newErrors.startPoint = "Start Point is required";
-    if (!form.transportation) newErrors.transportation = "Transportation is required";
-    if (!form.maxSlots) newErrors.maxSlots = "Max Slots is required";
-    if (!form.minSlots) newErrors.minSlots = "Min Slots is required";
-    if (!form.TourAvatarFile) newErrors.TourAvatarFile = "Tour avatar is required";
+if (!form.title) newErrors.title = "Tiêu đề là bắt buộc";
+if (!form.priceOfAdults) newErrors.priceOfAdults = "Giá người lớn là bắt buộc";
+if (!form.priceOfChildren) newErrors.priceOfChildren = "Giá trẻ em là bắt buộc";
+if (!form.priceOfInfants) newErrors.priceOfInfants = "Giá trẻ nhỏ là bắt buộc";
+if (!form.startPoint) newErrors.startPoint = "Điểm khởi hành là bắt buộc";
+if (!form.transportation) newErrors.transportation = "Phương tiện là bắt buộc";
+if (!form.maxSlots) newErrors.maxSlots = "Số chỗ tối đa là bắt buộc";
+if (!form.minSlots) newErrors.minSlots = "Số chỗ tối thiểu là bắt buộc";
+if (!form.TourAvatarFile) newErrors.TourAvatarFile = "Ảnh đại diện tour là bắt buộc";
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) {
       Object.values(newErrors).forEach(msg => toast.error(msg));
@@ -328,121 +328,137 @@ function CreateTourPage() {
                 </div>
             </div>
         </div>
-      <div className="container py-5">
-        <h2 className="mb-4 text-center">Tạo Tour Mới</h2>
-         {(apiErrorMessage || Object.keys(apiErrors).length > 0) && (
-          <div className="alert alert-danger">
-            {apiErrorMessage && <div>{apiErrorMessage}</div>}
-            {Object.keys(apiErrors).length > 0 && (
-              <ul className="mb-0">
-                {Object.entries(apiErrors).map(([field, msgs]) =>
-                  msgs.map((msg, idx) => (
-                    <li key={field + idx}>
-                      <b>{field}:</b> {msg}
-                    </li>
-                  ))
-                )}
+  <div className="container">
+    <div className="row">
+      {/* Sidebar */}
+      <div className="col-lg-3 theiaStickySidebar">
+        <div className="card border-0 mb-4 mb-lg-0">
+          <div className="card-body">
+            <div>
+              <h5 className="mb-3">Thêm Tour</h5>
+              <ul className="add-tab-list">
+                <li><a href="#basic_info" className="active">Thông tin tour</a></li>
+                <li><a href="#location">Địa điểm</a></li>
+                <li><a href="#highlights">Trải nghiệm</a></li>
+                <li><a href="#itinerary">Lịch trình</a></li>
+                <li><a href="#media">Media</a></li>
+                <li><a href="#description">Mô tả</a></li>
               </ul>
-            )}
+            </div>
           </div>
-        )}
-        <form className="card p-4 shadow" onSubmit={handleSubmit}>
-          <div className="row">
-            {/* Tour Avatar */}
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Ảnh đại diện tour</label>
-              <input
-                type="file"
-                className="form-control"
-                onChange={handleAvatarChange}
-                accept="image/*"
-              />
+        </div>
+      </div>
+      {/* /Sidebar */}
+
+      {/* Main Form */}
+      <div className="col-lg-9">
+        <form className="card shadow-none p-4" onSubmit={handleSubmit}>
+          {/* Thông tin tour */}
+          <div className="card shadow-none mb-4" id="basic_info">
+            <div className="card-header">
+              <h5 className="fs-18">Thông tin tour</h5>
             </div>
-            {/* Title */}
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Tiêu đề *</label>
-              <input type="text" className={`form-control ${errors.title ? "is-invalid" : ""}`} name="title" value={form.title} onChange={handleChange} />
-              {errors.title && <div className="invalid-feedback">{errors.title}</div>}
+            <div className="card-body pb-1">
+              <div className="row">
+                <div className="col-md-12 mb-3">
+                  <label className="form-label">Ảnh đại diện tour</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    onChange={handleAvatarChange}
+                    accept="image/*"
+                  />
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Tiêu đề *</label>
+                  <input type="text" className={`form-control ${errors.title ? "is-invalid" : ""}`} name="title" value={form.title} onChange={handleChange} />
+                  {errors.title && <div className="invalid-feedback">{errors.title}</div>}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Điểm khởi hành *</label>
+                  <select
+                    className={`form-control ${errors.startPoint ? "is-invalid" : ""}`}
+                    name="startPoint"
+                    value={form.startPoint}
+                    onChange={handleChange}
+                  >
+                    <option value="">Chọn điểm khởi hành</option>
+                    {startPoints.map((point) => (
+                      <option key={point} value={point}>{point}</option>
+                    ))}
+                  </select>
+                  {errors.startPoint && <div className="invalid-feedback">{errors.startPoint}</div>}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Phương tiện *</label>
+                  <select
+                    className={`form-control ${errors.transportation ? "is-invalid" : ""}`}
+                    name="transportation"
+                    value={form.transportation}
+                    onChange={handleChange}
+                  >
+                    <option value="">Chọn phương tiện</option>
+                    <option value="Xe Khách">Xe Khách</option>
+                    <option value="Ô Tô">Ô Tô</option>
+                    <option value="Thuyền">Thuyền</option>
+                    <option value="Máy Bay">Máy Bay</option>
+                    <option value="Tàu Hỏa">Tàu Hỏa</option>
+                  </select>
+                  {errors.transportation && <div className="invalid-feedback">{errors.transportation}</div>}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Thời lượng (ngày)</label>
+                  <input type="number" min={1} className="form-control" name="durationInDays" value={form.durationInDays} onChange={handleChange} />
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Số chỗ tối đa *</label>
+                  <input min={1} type="number" className={`form-control ${errors.maxSlots ? "is-invalid" : ""}`} name="maxSlots" value={form.maxSlots} onChange={handleChange} />
+                  {errors.maxSlots && <div className="invalid-feedback">{errors.maxSlots}</div>}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Số chỗ tối thiểu *</label>
+                  <input min={1} type="number" className={`form-control ${errors.minSlots ? "is-invalid" : ""}`} name="minSlots" value={form.minSlots} onChange={handleChange} />
+                  {errors.minSlots && <div className="invalid-feedback">{errors.minSlots}</div>}
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label className="form-label">Giá người lớn</label>
+                  <input min={1} type="number" className="form-control" name="priceOfAdults" value={form.priceOfAdults} onChange={handleChange} />
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label className="form-label">Giá trẻ em</label>
+                  <input min={1} type="number" className="form-control" name="priceOfChildren" value={form.priceOfChildren} onChange={handleChange} />
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label className="form-label">Giá trẻ nhỏ</label>
+                  <input min={1} type="number" className="form-control" name="priceOfInfants" value={form.priceOfInfants} onChange={handleChange} />
+                </div>
+              </div>
             </div>
-            {/* Start Point */}
-            <div className="col-md-6 mb-3">
-      <label className="form-label">Điểm khởi hành *</label>
-      <select
-        className={`form-control ${errors.startPoint ? "is-invalid" : ""}`}
-        name="startPoint"
-        value={form.startPoint}
-        onChange={handleChange}
-      >
-        <option value="">Chọn điểm khởi hành</option>
-        {startPoints.map((point) => (
-          <option key={point} value={point}>{point}</option>
-        ))}
-      </select>
-      {errors.startPoint && <div className="invalid-feedback">{errors.startPoint}</div>}
-    </div>
-            {/* Transportation */}
-            <div className="col-md-6 mb-3">
-  <label className="form-label">Phương tiện *</label>
-  <select
-    className={`form-control ${errors.transportation ? "is-invalid" : ""}`}
-    name="transportation"
-    value={form.transportation}
-    onChange={handleChange}
-  >
-    <option value="">Chọn phương tiện</option>
-    <option value="Xe Khách">Xe Khách</option>
-    <option value="Ô Tô">Ô Tô</option>
-    <option value="Thuyền">Thuyền</option>
-    <option value="Máy Bay">Máy Bay</option>
-    <option value="Tàu Hỏa">Tàu Hỏa</option>
-  </select>
-  {errors.transportation && <div className="invalid-feedback">{errors.transportation}</div>}
-</div>
-            {/* Duration */}
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Thời lượng (ngày)</label>
-              <input type="number" min={1} className="form-control" name="durationInDays" value={form.durationInDays} onChange={handleChange} />
+          </div>
+          {/* Địa điểm */}
+          <div className="card shadow-none mb-4" id="location">
+            <div className="card-header">
+              <h5 className="fs-18">Địa điểm</h5>
             </div>
-            {/* Max Slots */}
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Số chỗ tối đa *</label>
-              <input type="number" className={`form-control ${errors.maxSlots ? "is-invalid" : ""}`} name="maxSlots" value={form.maxSlots} onChange={handleChange} />
-              {errors.maxSlots && <div className="invalid-feedback">{errors.maxSlots}</div>}
+            <div className="card-body pb-1">
+              <div className="row">
+                <div className="col-md-12 mb-3">
+                  <label className="form-label">Mô tả</label>
+                  <textarea className="form-control" name="description" value={form.description} onChange={handleChange} rows={2} />
+                </div>
+                <div className="col-md-12 mb-3">
+                  <label className="form-label">Ghi chú</label>
+                  <textarea className="form-control" name="note" value={form.note || ""} onChange={handleChange} rows={2} />
+                </div>
+              </div>
             </div>
-            {/* Min Slots */}
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Số chỗ tối thiểu *</label>
-              <input type="number" className={`form-control ${errors.minSlots ? "is-invalid" : ""}`} name="minSlots" value={form.minSlots} onChange={handleChange} />
-              {errors.minSlots && <div className="invalid-feedback">{errors.minSlots}</div>}
+          </div>
+          {/* Ngày khởi hành */}
+          <div className="card shadow-none mb-4" id="highlights">
+            <div className="card-header">
+              <h5 className="fs-18">Ngày khởi hành</h5>
             </div>
-            {/* Price of Adults */}
-            <div className="col-md-4 mb-3">
-              <label className="form-label">Giá người lớn</label>
-              <input type="number" className="form-control" name="priceOfAdults" value={form.priceOfAdults} onChange={handleChange} />
-            </div>
-            {/* Price of Children */}
-            <div className="col-md-4 mb-3">
-              <label className="form-label">Giá trẻ em</label>
-              <input type="number" className="form-control" name="priceOfChildren" value={form.priceOfChildren} onChange={handleChange} />
-            </div>
-            {/* Price of Infants */}
-            <div className="col-md-4 mb-3">
-              <label className="form-label">Giá trẻ nhỏ</label>
-              <input type="number" className="form-control" name="priceOfInfants" value={form.priceOfInfants} onChange={handleChange} />
-            </div>
-            {/* Description */}
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Mô tả</label>
-              <textarea className="form-control" name="description" value={form.description} onChange={handleChange} rows={2} />
-            </div>
-            {/* Note */}
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Ghi chú</label>
-              <textarea className="form-control" name="note" value={form.note || ""} onChange={handleChange} rows={2} />
-            </div>
-            {/* Departure Dates */}
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Ngày khởi hành</label>
+            <div className="card-body pb-1">
               {form.departureDates.map((item, idx) => (
                 <div key={idx} className="input-group mb-2">
                   <input
@@ -456,9 +472,13 @@ function CreateTourPage() {
               ))}
               <button type="button" className="btn btn-secondary" onClick={() => addArrayField("departureDates", { departureDate1: "" })}>Thêm ngày khởi hành</button>
             </div>
-            {/* Tour Experiences */}
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Trải nghiệm tour</label>
+          </div>
+          {/* Trải nghiệm tour */}
+          <div className="card shadow-none mb-4" id="highlights">
+            <div className="card-header">
+              <h5 className="fs-18">Trải nghiệm tour</h5>
+            </div>
+            <div className="card-body pb-1">
               {form.tourExperiences.map((item, idx) => (
                 <div key={idx} className="input-group mb-2">
                   <input
@@ -473,9 +493,13 @@ function CreateTourPage() {
               ))}
               <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourExperiences", { content: "" })}>Thêm trải nghiệm</button>
             </div>
-            {/* Tour Itineraries - Modal Trigger */}
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Lịch trình tour</label>
+          </div>
+          {/* Lịch trình tour */}
+          <div className="card shadow-none mb-4" id="itinerary">
+            <div className="card-header">
+              <h5 className="fs-18">Lịch trình tour</h5>
+            </div>
+            <div className="card-body pb-1">
               <div>
                 {form.tourItineraries.map((item, idx) => (
                   <div key={idx} className="border p-3 mb-2 d-flex justify-content-between align-items-center">
@@ -489,9 +513,13 @@ function CreateTourPage() {
                 ))}
               </div>
             </div>
-            {/* Tour Media */}
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Media tour</label>
+          </div>
+          {/* Media tour */}
+          <div className="card shadow-none mb-4" id="media">
+            <div className="card-header">
+              <h5 className="fs-18">Media tour</h5>
+            </div>
+            <div className="card-body pb-1">
               {form.tourMedia.map((item, idx) => (
                 <div key={idx} className="input-group mb-2">
                   <input
@@ -514,13 +542,14 @@ function CreateTourPage() {
               <button type="button" className="btn btn-secondary" onClick={() => addArrayField("tourMedia", { mediaFile: null, mediaType: "", mediaUrl: "" })}>Thêm media</button>
             </div>
           </div>
+          
           <div className="text-center mt-4">
             <button type="submit" className="btn btn-primary px-5">
               Tạo tour
             </button>
           </div>
         </form>
-        {/* Itinerary Modal */}
+        {/* Itinerary Modal giữ nguyên */}
         <Modal
           title={itineraryEditIdx !== null ? "Chỉnh sửa lịch trình" : "Thêm lịch trình"}
           open={showItineraryModal}
@@ -574,7 +603,10 @@ function CreateTourPage() {
           </div>
         </Modal>
       </div>
-    </>
+      {/* /Main Form */}
+    </div>
+  </div>
+</>
   );
 }
 export default CreateTourPage;

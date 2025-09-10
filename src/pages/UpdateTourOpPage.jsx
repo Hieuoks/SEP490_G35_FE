@@ -148,7 +148,7 @@ function UpdateTourOpPage() {
         ...form,
         companyLogo: companyLogoUrl,
         mediaUrl: mediaUrl,
-        address: addressStr,
+        address: form.address,
       };
 
       await updateTourOperator(id, submitData);
@@ -165,8 +165,8 @@ function UpdateTourOpPage() {
   };
 
   return (
-    <>
-      <div className="breadcrumb-bar breadcrumb-bg-01 text-center">
+   <>
+    <div className="breadcrumb-bar breadcrumb-bg-01 text-center">
             <div className="container">
                 <div className="row">
                     <div className="col-md-12 col-12">
@@ -187,191 +187,230 @@ function UpdateTourOpPage() {
                 </div>
             </div>
         </div>
+  <div className="container">
+    <div className="row">
+      {/* Sidebar */}
+      <div className="col-lg-3 theiaStickySidebar">
+        <div className="card border-0 mb-4 mb-lg-0">
+          <div className="card-body">
+            <div>
+              <h5 className="mb-3">Cập nhật Nhà Điều Hành</h5>
+              <ul className="add-tab-list">
+                <li><a href="#basic_info" className="active">Thông tin cơ bản</a></li>
+                <li><a href="#location">Địa chỉ</a></li>
+                <li><a href="#media">Media</a></li>
+                <li><a href="#description">Mô tả</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* /Sidebar */}
 
-      <div className="container py-5">
-        <h2 className="mb-4 text-center">Cập nhật Nhà Điều Hành</h2>
-        {serverError && (
-          <div className="alert alert-danger text-center">{serverError}</div>
-        )}
-        <form className="card p-4 shadow" onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Tên công ty *</label>
-              <input
-                type="text"
-                className={`form-control ${errors.companyName ? "is-invalid" : ""}`}
-                name="companyName"
-                value={form.companyName}
-                onChange={handleChange}
-              />
-              {errors.companyName && <div className="invalid-feedback">{errors.companyName}</div>}
+      {/* Main Form */}
+      <div className="col-lg-9">
+        <form className="card shadow-none p-4" onSubmit={handleSubmit}>
+          {/* Thông tin cơ bản */}
+          <div className="card shadow-none mb-4" id="basic_info">
+            <div className="card-header">
+              <h5 className="fs-18">Thông tin cơ bản</h5>
             </div>
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Logo công ty</label>
-              <input
-                type="file"
-                className="form-control"
-                accept="image/*"
-                onChange={handleLogoFileChange}
-              />
-              {form.companyLogo && (
-                <img
-                  src={form.companyLogo}
-                  alt="Logo Preview"
-                  style={{ maxWidth: 120, maxHeight: 80, marginTop: 8, border: "1px solid #eee" }}
-                />
-              )}
-            </div>
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Mô tả</label>
-              <textarea
-                className="form-control"
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                rows={2}
-              />
-            </div>
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Số giấy phép *</label>
-              <input
-                type="text"
-                className={`form-control ${errors.licenseNumber ? "is-invalid" : ""}`}
-                name="licenseNumber"
-                value={form.licenseNumber}
-                onChange={handleChange}
-              />
-              {errors.licenseNumber && <div className="invalid-feedback">{errors.licenseNumber}</div>}
-            </div>
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Ngày cấp giấy phép</label>
-              <input
-                type="date"
-                className="form-control"
-                name="licenseIssuedDate"
-                value={form.licenseIssuedDate ? form.licenseIssuedDate.slice(0, 10) : ""}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Mã số thuế</label>
-              <input
-                type="text"
-                className="form-control"
-                name="taxCode"
-                value={form.taxCode}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Năm thành lập *</label>
-              <input
-                type="number"
-                className={`form-control ${errors.establishedYear ? "is-invalid" : ""}`}
-                name="establishedYear"
-                value={form.establishedYear}
-                onChange={handleChange}
-              />
-              {errors.establishedYear && <div className="invalid-feedback">{errors.establishedYear}</div>}
-            </div>
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Hotline *</label>
-              <input
-                type="text"
-                className={`form-control ${errors.hotline ? "is-invalid" : ""}`}
-                name="hotline"
-                value={form.hotline}
-                onChange={handleChange}
-              />
-              {errors.hotline && <div className="invalid-feedback">{errors.hotline}</div>}
-            </div>
-            <div className="col-md-6 mb-3">
-              <label className="form-label">Website</label>
-              <input
-                type="text"
-                className="form-control"
-                name="website"
-                value={form.website}
-                onChange={handleChange}
-                placeholder="https://yourcompany.com"
-              />
-            </div>
-            <div className="col-md-4 mb-3">
-              <label className="form-label">Facebook</label>
-              <input
-                type="text"
-                className="form-control"
-                name="facebook"
-                value={form.facebook}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-4 mb-3">
-              <label className="form-label">Instagram</label>
-              <input
-                type="text"
-                className="form-control"
-                name="instagram"
-                value={form.instagram}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="col-md-4 mb-3">
-              <label className="form-label">Media</label>
-              <input
-                type="file"
-                className="form-control"
-                accept="image/*,video/*"
-                onChange={handleMediaFileChange}
-              />
-              {form.mediaUrl && (
-                <div>
-                  <span className="text-muted">Xem trước:</span>
-                  <img
-                    src={form.mediaUrl}
-                    alt="Media Preview"
-                    style={{ maxWidth: 120, maxHeight: 80, marginTop: 8, border: "1px solid #eee" }}
-                    onError={e => { e.target.style.display = 'none'; }}
+            <div className="card-body pb-1">
+              <div className="row">
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Tên công ty *</label>
+                  <input
+                    type="text"
+                    className={`form-control ${errors.companyName ? "is-invalid" : ""}`}
+                    name="companyName"
+                    value={form.companyName}
+                    onChange={handleChange}
+                  />
+                  {errors.companyName && <div className="invalid-feedback">{errors.companyName}</div>}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Logo công ty</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    accept="image/*"
+                    onChange={handleLogoFileChange}
+                  />
+                  {form.companyLogo && (
+                    <img
+                      src={form.companyLogo}
+                      alt="Logo Preview"
+                      style={{ maxWidth: 120, maxHeight: 80, marginTop: 8, border: "1px solid #eee" }}
+                    />
+                  )}
+                </div>
+                <div className="col-md-12 mb-3">
+                  <label className="form-label">Mô tả</label>
+                  <textarea
+                    className="form-control"
+                    name="description"
+                    value={form.description}
+                    onChange={handleChange}
+                    rows={2}
                   />
                 </div>
-              )}
-            </div>
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Địa chỉ hoạt động *</label>
-              <div className="row">
-                {getAddressColumns().map((col, colIdx) => (
-                  <div className="col-md-2" key={colIdx}>
-                    {col.map(({ addr, idx }) => (
-                      <div className="form-check" key={addr}>
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          id={`addr-${idx}`}
-                          value={addr}
-                          checked={form.address.includes(addr)}
-                          onChange={handleAddressChange}
-                        />
-                        <label className="form-check-label" htmlFor={`addr-${idx}`}>
-                          {addr}
-                        </label>
-                        {colIdx < 4 && <span>, </span>}
-                      </div>
-                    ))}
-                  </div>
-                ))}
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Số giấy phép *</label>
+                  <input
+                    type="text"
+                    className={`form-control ${errors.licenseNumber ? "is-invalid" : ""}`}
+                    name="licenseNumber"
+                    value={form.licenseNumber}
+                    onChange={handleChange}
+                  />
+                  {errors.licenseNumber && <div className="invalid-feedback">{errors.licenseNumber}</div>}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Ngày cấp giấy phép</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    name="licenseIssuedDate"
+                    value={form.licenseIssuedDate ? form.licenseIssuedDate.slice(0, 10) : ""}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Mã số thuế</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="taxCode"
+                    value={form.taxCode}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Năm thành lập *</label>
+                  <input
+                    type="number"
+                    className={`form-control ${errors.establishedYear ? "is-invalid" : ""}`}
+                    name="establishedYear"
+                    value={form.establishedYear}
+                    onChange={handleChange}
+                  />
+                  {errors.establishedYear && <div className="invalid-feedback">{errors.establishedYear}</div>}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Hotline *</label>
+                  <input
+                    type="text"
+                    className={`form-control ${errors.hotline ? "is-invalid" : ""}`}
+                    name="hotline"
+                    value={form.hotline}
+                    onChange={handleChange}
+                  />
+                  {errors.hotline && <div className="invalid-feedback">{errors.hotline}</div>}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Website</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="website"
+                    value={form.website}
+                    onChange={handleChange}
+                    placeholder="https://yourcompany.com"
+                  />
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label className="form-label">Facebook</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="facebook"
+                    value={form.facebook}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="col-md-4 mb-3">
+                  <label className="form-label">Instagram</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="instagram"
+                    value={form.instagram}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
-              {errors.address && <div className="text-danger mt-1">{errors.address}</div>}
             </div>
-            <div className="col-md-12 mb-3">
-              <label className="form-label">Giờ làm việc</label>
-              <input
-                type="text"
-                className="form-control"
-                name="workingHours"
-                value={form.workingHours}
-                onChange={handleChange}
-                placeholder="VD: Thứ 2 - Thứ 6, 8:00-17:00"
-              />
+          </div>
+          {/* Địa chỉ */}
+          <div className="card shadow-none mb-4" id="location">
+            <div className="card-header">
+              <h5 className="fs-18">Địa chỉ</h5>
+            </div>
+            <div className="card-body pb-1">
+              <div className="row">
+                <div className="col-md-12 mb-3">
+                  <label className="form-label">Địa chỉ hoạt động *</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="address"
+                    value={form.address}
+                    onChange={handleChange}
+                  />
+                  {errors.address && <div className="text-danger mt-1">{errors.address}</div>}
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Media */}
+          <div className="card shadow-none mb-4" id="media">
+            <div className="card-header">
+              <h5 className="fs-18">Media</h5>
+            </div>
+            <div className="card-body pb-1">
+              <div className="row">
+                <div className="col-md-12 mb-3">
+                  <label className="form-label">Media</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    accept="image/*,video/*"
+                    onChange={handleMediaFileChange}
+                  />
+                  {form.mediaUrl && (
+                    <div>
+                      <span className="text-muted">Xem trước:</span>
+                      <img
+                        src={form.mediaUrl}
+                        alt="Media Preview"
+                        style={{ maxWidth: 120, maxHeight: 80, marginTop: 8, border: "1px solid #eee" }}
+                        onError={e => { e.target.style.display = 'none'; }}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Mô tả & giờ làm việc */}
+          <div className="card shadow-none mb-4" id="description">
+            <div className="card-header">
+              <h5 className="fs-18">Mô tả & Giờ làm việc</h5>
+            </div>
+            <div className="card-body pb-1">
+              <div className="row">
+                <div className="col-md-12 mb-3">
+                  <label className="form-label">Giờ làm việc</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="workingHours"
+                    value={form.workingHours}
+                    onChange={handleChange}
+                    placeholder="VD: Thứ 2 - Thứ 6, 8:00-17:00"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div className="text-center mt-4">
@@ -381,7 +420,10 @@ function UpdateTourOpPage() {
           </div>
         </form>
       </div>
-    </>
+      {/* /Main Form */}
+    </div>
+  </div>
+</>
   );
 }
 
