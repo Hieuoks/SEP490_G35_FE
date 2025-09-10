@@ -22,6 +22,7 @@ const Content = () => {
 
   return (
     <>
+
       <div className="breadcrumb-bar breadcrumb-bg-01 text-center">
         <div className="container">
           <div className="row">
@@ -50,6 +51,7 @@ const Content = () => {
           <TourList searchQuery={searchQuery} />
         </div>
       </div>
+
     </>
   );
 };

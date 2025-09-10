@@ -1,7 +1,7 @@
 import { message } from "antd";
 
 import axios from 'axios';
-export const BASE_URL = 'http://localhost:9999/api/v1';
+export const BASE_URL = 'https://localhost:7012/api';
 const token = localStorage.getItem('token');
 
 const HEADERS_NOT_AUTHORIZATION = {

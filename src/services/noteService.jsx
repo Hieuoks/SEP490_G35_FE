@@ -3,7 +3,7 @@ import { message } from 'antd';
 import { getHeader, getHeader2 } from './api';
 import Cookies from 'js-cookie';
 import { get } from 'react-hook-form';
-const BASE_URL = 'http://localhost:5298/api';
+const BASE_URL = 'https://localhost:7012/api';
 const userId = Cookies.get('userId');
 export const getNotes = async () => {
   try {
@@ -31,8 +31,10 @@ export const getNoteByTourGuide = async () => {
 }
 export const createNote = async (note) => {
   try {
+
     const response = await axios.post(`${BASE_URL}/GuideNote/notes-by-TourGuide`, note, {
       headers: getHeader2(),
+
     });
     message.success('Note created successfully');
     return response.data;
@@ -47,7 +49,9 @@ export const updateNote = async (noteId, title,extraCost,content,medias) => {
         const response = await axios.put(`${BASE_URL}/GuideNote/notes/${noteId}`, {
             title: title,
             content: content,
+
             extraCost:extraCost,
+
             mediaUrls: medias
         }, {
             headers: getHeader(),

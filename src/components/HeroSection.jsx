@@ -55,6 +55,7 @@ const HeroSection = () => {
                   <h5 className="mb-0 text-center">Tìm kiếm tour hoặc nhà điều hành</h5>
                 </div>
                 <div className="card-body">
+
                   <form onSubmit={handleSubmit} className="d-flex justify-content-center gap-2">
                     <select
                       className="form-select"
@@ -69,6 +70,7 @@ const HeroSection = () => {
                       type="text"
                       className="form-control me-2"
                       placeholder={searchType === "tour" ? "Nhập tên tour..." : "Nhập tên nhà điều hành..."}
+
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       style={{ maxWidth: 400 }}
