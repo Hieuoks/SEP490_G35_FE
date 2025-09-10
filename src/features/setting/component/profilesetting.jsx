@@ -98,7 +98,7 @@ const ProfileSetting = () => {
                 <div className="card-body pb-3">
                     <div className="settings-link d-flex align-items-center flex-wrap">
                         <a href="profile-settings.html" className="active ps-3"><i className="isax isax-user-octagon me-2"></i>Cài đặt hồ sơ</a>
-                        <a href="notification-settings.html"><i className="isax isax-notification me-2"></i>Thông báo</a>
+
                     </div>
                     {/* Settings Content */}
                     <div className="settings-content mb-3">

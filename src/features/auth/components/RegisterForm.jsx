@@ -75,9 +75,10 @@ const RegisterForm = () => {
       setUploading(true);
       try {
         const url = await uploadToCloudinary(file);
+        console.log('Uploaded avatar URL:', url);
         setFormData(prev => ({
           ...prev,
-          avatar: url
+          avatar: url.secure_url
         }));
         toast.success('Tải ảnh đại diện thành công!');
       } catch (error) {
@@ -108,7 +109,19 @@ const RegisterForm = () => {
         localStorage.setItem('password', formData.password);
         navigate('/verify');
       } catch (error) {
-        toast.error('Đăng ký thất bại. Vui lòng thử lại.');
+           if (error.response && error.response.data && error.response.data.errors) {
+          const apiErrors = error.response.data.errors;
+          let errorMsg = "";
+          Object.keys(apiErrors).forEach((key) => {
+            errorMsg += apiErrors[key].join(" ") + " ";
+          });
+          toast.error(errorMsg.trim());
+        } else if (error.response && error.response.data && error.response.data.title) {
+          // Trường hợp lỗi trả về có title (ví dụ: email đã tồn tại)
+          toast.error(error.response.data.title);
+        } else {
+          toast.error('Đăng ký thất bại. Email đã tồn tại.');
+        }
       }
     }
   };

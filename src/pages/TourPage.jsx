@@ -106,6 +106,24 @@ const TourPage = () => {
                     </div>
                 </div>
             </div>
+             <div className="row justify-content-center mt-3">
+            <div className="col-md-6">
+              <div className="input-icon">
+                <span className="input-icon-addon">
+                  <i className="isax isax-search-normal"></i>
+                </span>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Tìm kiếm theo tên tour"
+                  value={filters.title}
+                  onChange={(e) =>
+                    setFilters((prev) => ({ ...prev, title: e.target.value, page: 1 }))
+                  }
+                />
+              </div>
+            </div>
+          </div>
         </div>
       <div className="container mt-4">
         <div className="row">

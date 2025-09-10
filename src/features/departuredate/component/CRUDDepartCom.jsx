@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { FaEye, FaChevronLeft, FaChevronRight, FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { checkpackage } from "../../../services/packageService";
+const userId = Cookies.get('userId');
 const CRUDDepartCom = () => {
     const [departureDates, setDepartureDates] = useState([]);
     const [filterList, setFilterList] = useState([]);
@@ -36,7 +38,6 @@ const CRUDDepartCom = () => {
                 // tăng dần
             } else if (status === '3') {
                 filtered = filtered.filter(item => new Date(item.departureDate) < today);
-
             } else {
                 // default: giảm dần
             }
@@ -61,6 +62,7 @@ const CRUDDepartCom = () => {
     }, [keyword, status]);
     const handleFilterChange = (e) => {
         setStatus(e.target.value);
+        setCurrentPage(1);
     }
     const fetchGuides = async () => {
         try {
@@ -71,7 +73,7 @@ const CRUDDepartCom = () => {
         } catch (error) {
             setGuides([]);
             console.error("Error fetching tour guides:", error);
-            toast.error("Lỗi khi lấy dữ liệu hướng dẫn viên.");
+           
         }
     };
     useEffect(() => {
@@ -133,14 +135,16 @@ const CRUDDepartCom = () => {
 
                         }).catch((err) => {
                             console.error("Error add guides:", err);
-                            toast.error(err.response?.data.message);
+                            toast.error(err.response?.data);
                         })
                 }
                 fetchDepartureDates();
             })
             .catch((error) => {
                 console.error("Error add depart:", error);
-                toast.error(error.response?.data.message);
+                toast.error(error.response?.data.errors.StartDate[0]||"Không thể trùng ngày khởi hành đã tồn tại của tour");
+            }).catch((error2)=>{
+                toast.error(error2.response?.data.message||"Không thể trùng ngày khởi hành đã tồn tại của tour");
             });
         setSelectedGuide([]);
 
@@ -169,7 +173,7 @@ const CRUDDepartCom = () => {
         Cookies.set("Depart", departureDate);
         navigate(`/departure/booking/${id}`);
     }
-
+    
 
     const handleUpdateDepart = async (departureDateId, oldGuides) => {
         try {
@@ -218,9 +222,24 @@ const CRUDDepartCom = () => {
 
         } catch (error) {
             console.error("Error updating departure guides:", error);
-            toast.error("Lỗi khi cập nhật hướng dẫn viên");
+
+            toast.error(error?.response.data);
         }
     }
+    const [mypackage,setMyPackage] = useState(null);
+        const getMyPackages = async () => {
+    
+                await checkpackage(userId).then((res) => {
+                    setMyPackage(res);
+                })
+                .catch((error) => {
+                    setMyPackage([]);
+                    console.error("Error checking package:", error);
+                });   
+        };
+        useEffect(() => {
+            getMyPackages();
+        }, []);
     return (
     <div className="col-xl-9 col-lg-8 theiaStickySidebar">
 
@@ -540,6 +559,8 @@ const CRUDDepartCom = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                        {mypackage !== null && mypackage.tourGuideFunction ? (
+                                        <div>
                                         <div className="upcoming-details">
                                             <h6 className="mb-2">Hướng dẫn viên</h6>
                                             <div className="custom-datatable-filter table-responsive">
@@ -600,6 +621,10 @@ const CRUDDepartCom = () => {
                                                 )}
                                             </select>
                                         </div>
+                                        </div>
+                                        ):(
+                                            <div></div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -644,6 +669,8 @@ const CRUDDepartCom = () => {
                                     </div>
                                 </div>
                             </div>
+                            {mypackage !== null && mypackage.tourGuideFunction ? (
+                            <div>
                             <div className="upcoming-details">
                                 <h6 className="mb-2">Hướng dẫn viên</h6>
                                 <div className="custom-datatable-filter table-responsive">
@@ -704,6 +731,10 @@ const CRUDDepartCom = () => {
                                     )}
                                 </select>
                             </div>
+                            </div>
+                            ):(
+                                <div></div>
+                            )}
                         </div>
                     </div>
                     <div className="modal-footer">

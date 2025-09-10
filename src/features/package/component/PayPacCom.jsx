@@ -12,7 +12,7 @@ const PayPacCom = () => {
     const { packageId } = useParams();
     const userid = Cookies.get("userId");
     const [number, setNumber] = useState(1);
-    const [urlQR, setUrlQR] = useState("https://img.vietqr.io/image/MB-260220032602-compact.png");
+    const [urlQR, setUrlQR] = useState("https://img.vietqr.io/image/BIDV-4550882656-compact.png");
     const [content, setContent] = useState("");
     const fetchPackageDetail = async () => {
         try {
@@ -55,7 +55,7 @@ const PayPacCom = () => {
     };
 
     const handleConfirm = (amount) => {
-        setUrlQR(`https://img.vietqr.io/image/MB-260220032602-compact.png` + `?amount=${packagesRes.price * number}&addInfo=${content}`);
+        setUrlQR(`https://img.vietqr.io/image/BIDV-4550882656-compact.png` + `?amount=${packagesRes.price * number}&addInfo=${content}`);
         console.log("request:", userid, packageId, amount, number);
         PurchasePackage(userid, packageId, amount, "QR", number)
             .then((res) => {
@@ -249,7 +249,7 @@ const PayPacCom = () => {
                                             <div className="d-flex align-items-center mb-3">
                                                 <img src={mbBank} alt="MB Bank" className="me-3" style={{ width: '40px', height: '40px' }} />
                                                 <div>
-                                                    <h6 className="mb-1">MB Bank</h6>
+                                                    <h6 className="mb-1">BIDV Bank</h6>
                                                 </div>
                                             </div>
                                         </div>
@@ -257,12 +257,12 @@ const PayPacCom = () => {
                                         <div className="transfer-details">
                                             <div className="detail-item mb-3">
                                                 <label className="form-label fw-medium">Số tài khoản:</label>
-                                                <h6 className="fs-16">260220032602</h6>
+                                                <h6 className="fs-16">4550882656</h6>
                                             </div>
 
                                             <div className="detail-item mb-3">
                                                 <label className="form-label fw-medium">Chủ tài khoản:</label>
-                                                <h6 className="fs-16">Đỗ Tuấn Đạt</h6>
+                                                <h6 className="fs-16">Đỗ Thị Thu Hương</h6>
                                             </div>
 
                                             <div className="detail-item mb-3">

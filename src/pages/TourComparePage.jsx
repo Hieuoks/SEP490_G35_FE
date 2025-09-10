@@ -6,11 +6,11 @@ import { useParams } from "react-router-dom";
 
 const getTransportIcon = (type) => {
   switch (type) {
-    case "Xe bus":
+    case "Xe Khách":
       return <FaBus />;
-    case "Máy bay":
+    case "Máy Bay":
       return <FaPlane />;
-    case "Tàu hỏa":
+    case "Tàu Hỏa":
       return <FaTrain />;
     default:
       return <FaBus />;

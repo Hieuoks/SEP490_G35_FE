@@ -3,7 +3,8 @@ import { toast } from 'react-toastify';
 import Cookies from "js-cookie";
 import { useNavigate } from 'react-router-dom';
 import { getTourByoperator } from "../../../services/tourService";
-import { FaSearch, FaEdit, FaTrash, FaBuilding, FaInfoCircle, FaPlus, FaChevronLeft, FaChevronRight, FaStore } from 'react-icons/fa';
+import { FaSearch, FaEdit, FaTrash,FaCheckCircle,FaBuilding, FaInfoCircle, FaPlus, FaChevronLeft, FaChevronRight, FaStore } from 'react-icons/fa';
+import axios from "axios";
 const OpeListTourCom = () => {
     const [keyword, setKeyword] = useState('');
     const [listTour, setListTour] = useState([]);
@@ -27,8 +28,7 @@ const OpeListTourCom = () => {
             return `${num.toLocaleString()} VND`;
         }
     };
-    useEffect(() => {
-        const fetchTour = async () => {
+     const fetchTour = async () => {
             setLoading(true);
             try {
                 const response = await getTourByoperator(keyword, pageNumber, pageSize);
@@ -46,6 +46,8 @@ const OpeListTourCom = () => {
                 setLoading(false);
             }
         };
+    useEffect(() => {
+       
         fetchTour();
 
     }, [keyword, pageNumber, pageSize]);
@@ -75,7 +77,17 @@ const OpeListTourCom = () => {
         Cookies.set('tourTitle', tourTitle);
         navigate(`/operator/tour/departdate/${id}`);
     }
-    
+    const handleDeleteTour = (tourId) => {
+        axios.patch(`http://localhost:5298/api/Tour/ToggleTourStatus/${tourId}`, { status: "deleted" })
+            .then((response) => {
+                console.log("Tour deleted:", response.data);
+                // Cập nhật lại danh sách tour sau khi xóa
+     fetchTour();
+            })
+            .catch((error) => {
+                console.error("Error deleting tour:", error);
+            });
+    }
 
     return (
     <div className="col-xl-9 col-lg-8">
@@ -121,7 +133,8 @@ const OpeListTourCom = () => {
               <div className="col-xl-4 col-md-6 d-flex" key={tour.tourId}>
   <div className="place-item mb-4 flex-fill d-flex flex-column h-100">
     <div className="place-img">
-      <a href={`/tour/detail/${tour.tourId}`} className="d-block" target="_blank" rel="noopener noreferrer">
+        
+      
         <img
           src={tour.tourAvartar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"}
           className="img-fluid"
@@ -131,8 +144,30 @@ const OpeListTourCom = () => {
             e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
           }}
         />
-      </a>
-      <div className="fav-item">
+        <div className="mt-auto">
+        <div className="edit-delete-item d-flex align-items-center justify-content-end">
+          <a href={`/tour/update/${tour.tourId}`} className="me-2 d-inline-flex align-items-center justify-content-center"><FaEdit /></a>
+          {tour.isActive ? (<a
+            href="#"
+            className="me-2 d-inline-flex align-items-center justify-content-center"
+            onClick={() => handleDeleteTour(tour.tourId)}
+            title="Xóa"
+          >
+            <FaTrash />
+          </a>):(
+            <a
+            href="#"
+            className="me-2 d-inline-flex align-items-center justify-content-center"
+            onClick={() => handleDeleteTour(tour.tourId)}
+            title="Xóa"
+          >
+            <FaCheckCircle />
+          </a>
+          )}
+        </div>
+      </div>
+    
+      <div>
         {tour.isActive ? (
           <span className="badge bg-info d-inline-flex align-items-center">
             <i className="isax isax-check me-1"></i>Đang hoạt động
@@ -146,12 +181,13 @@ const OpeListTourCom = () => {
     </div>
     <div className="place-content d-flex flex-column flex-grow-1">
       <h5 className="mb-1 text-truncate">
-        <a href="hotel-details.html">{tour.title}</a>
+        <a href={`/tour/detail/${tour.tourId}`} target="_blank" rel="noopener noreferrer">{tour.title}</a>
       </h5>
       <p className="d-flex align-items-center mb-2">
         <FaStore className="me-2" />
         {tour.companyName}
       </p>
+      
       <div className="d-flex align-items-center justify-content-between border-top pt-3 mb-3">
         <h5 className="text-primary text-nowrap me-2">
           {formatPrice(tour.priceOfAdults)}
@@ -168,34 +204,15 @@ const OpeListTourCom = () => {
             <FaInfoCircle className="me-1" />
             Ngày khởi hành
           </a>
+          
         </div>
+        
       </div>
-      <div className="mt-auto">
-        <div className="edit-delete-item d-flex align-items-center justify-content-end">
-          <button
-            type="button"
-            className="btn btn-light me-2 d-inline-flex align-items-center justify-content-center"
-            onClick={e => {
-              e.preventDefault();
-              window.open(`/tour/update/${tour.tourId}`, "_blank");
-            }}
-            title="Chỉnh sửa"
-          >
-            <FaEdit />
-          </button>
-          <a
-            href="#"
-            className="btn btn-light d-inline-flex align-items-center justify-content-center"
-            data-bs-toggle="modal"
-            data-bs-target="#delete-list"
-            title="Xóa"
-          >
-            <FaTrash />
-          </a>
-        </div>
-      </div>
+      
     </div>
+   
   </div>
+   
 </div>
                         ))
                     )}

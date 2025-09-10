@@ -66,7 +66,7 @@ const TourCard = ({ tour }) => {
               <span className="badge badge-warning badge-xs text-gray-9 fs-13 fw-medium me-1">
                 {averageRating ? averageRating.toFixed(1) : "5.0"}
               </span>
-              <p className="fs-14">(105 Reviews)</p>
+              
             </div>
           </div>
 
@@ -103,15 +103,7 @@ const TourCard = ({ tour }) => {
                 <i className="fa-solid fa-users me-1"></i>
                 {guests} Guests
               </p>
-              <a href="#" className="avatar avatar-sm ms-3">
-                <img
-                  src="assets/img/users/user-08.jpg"
-                  className="rounded-circle"
-                  alt="Operator"
-                  title={companyName}
-                  style={{ width: 32, height: 32, objectFit: "cover" }}
-                />
-              </a>
+              
             </div>
           </div>
         </div>

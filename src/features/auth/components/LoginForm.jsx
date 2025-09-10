@@ -44,7 +44,7 @@ const LoginForm = () => {
         Cookies.set("userId", userId, { expires: 1 });
         Cookies.set("roleName", roleName, { expires: 1 });
       }
-
+localStorage.setItem("roleName", roleName);
       localStorage.setItem("token", token);
 const operatorData = await getOperatorID();
 if (operatorData && operatorData.tourOperatorId) {

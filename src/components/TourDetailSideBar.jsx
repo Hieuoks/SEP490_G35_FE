@@ -24,6 +24,7 @@ function TourSidebar({ tour }) {
   const [departureId, setDepartureID] = useState(tour?.departureDates?.[0]?.id);
   const [note, setNote] = useState("");
   const [contract, setContract] = useState("");
+  const token = localStorage.getItem("token");
 const navigate = useNavigate();
   useEffect(() => {
     if (tour && tour.departureDates?.length > 0) {
@@ -55,6 +56,13 @@ const navigate = useNavigate();
   };
   console.log("Booking payload:", payload);
   try {
+   if (!token) {
+  toast.error("Vui lòng đăng nhập để đặt tour.");
+  setTimeout(() => {
+    window.location.href = '/login';
+  }, 2000); // Đợi 2 giây trước khi chuyển trang
+  return;
+}
     const res = await createBooking(payload);
     toast.success("Đặt tour thành công!");
   } catch (err) {

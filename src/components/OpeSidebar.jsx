@@ -57,7 +57,7 @@ const OpeSidebar = () => {
                         <div className="d-flex align-items-center justify-content-between">
                             <div className="d-flex align-items-center justify-content-center">
                                 <img
-                                    src={userResponse?.avatar}
+                                    src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar}
                                     alt="image"
                                     className="img-fluid avatar avatar-lg rounded-circle flex-shrink-0 me-1"
                                 />
@@ -111,19 +111,22 @@ const OpeSidebar = () => {
                                         <span> Đặt tour</span>
                                     </a>
                                 </li>
-                                <li>
+                                
+                                {mypackage.length !== 0 && mypackage.tourGuideFunction ? (
+                                    <>
+                                    <li className="mb-2">
+                                        <a href="/operator/guides" className="d-flex align-items-center">
+                                            <i className="isax isax-heart5"></i> Hướng dẫn viên
+                                        </a>
+                                    </li>
+                                    <li>
                                     <div className="message-content">
                                         <a href="/note" className="d-flex align-items-center">
                                             <i className="isax isax-message-square5"></i> Ghi chú
                                         </a>
                                     </div>
                                 </li>
-                                {mypackage.length !== 0 && mypackage.tourGuideFunction ? (
-                                    <li className="mb-2">
-                                        <a href="/operator/guides" className="d-flex align-items-center">
-                                            <i className="isax isax-heart5"></i> Hướng dẫn viên
-                                        </a>
-                                    </li>
+                                </>
                                 ) : (
                                     <li></li>
                                 )}

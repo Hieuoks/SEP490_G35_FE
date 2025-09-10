@@ -39,6 +39,7 @@ import NotificationPage from '../pages/NotificationPage';
 import ChangePasswordForm from '../features/auth/ChangePasswordForm';
 import ChatBotPage from '../pages/ChatBotPage';
 import VerificationPage from '../features/auth/VerificationPage';
+import ProtectedRoute from './ProtectedRoute';
 const MainLayout = ({ children }) => {
   return (
     <>
@@ -52,35 +53,14 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/verify" element={<VerificationPage />} />
-        <Route path="/profile" element={<ProflePage />} />
-        <Route path="/customer/profile" element={<CustomerProfile />} />
-        <Route path="/customer/setting" element={<CustomerProfile />} />
-        <Route path="/setting/editProfile" element={<SettingProfile />} />
-        <Route path="/admin/ListAccount" element={<ListAccount />} />
-        <Route path="/package" element={<PackagePage />} />
-        <Route path="/admin/packages" element={<ListPackages />} />
-        <Route path="/home" element={<MainLayout><HomePage /></MainLayout>} />
-        <Route path="/admin/dashboard" element={<MainLayout><AgentDashboard /></MainLayout>} />
-        <Route path="/admin/feedback" element={<MainLayout><RecentFeedback /></MainLayout>} />
-        <Route path="/admin/notifications" element={<MainLayout><NotificationPage /></MainLayout>} />
-        <Route path="/customer/notifications" element={<MainLayout><NotificationPage /></MainLayout>} />
-        <Route path="/tour-operator" element={<MainLayout><TourOperatorPage /></MainLayout>} />
-        <Route path="/tour-operator/detail/:id" element={<MainLayout><TourOperatorDateilPage /></MainLayout>} />
+        <Route element={<ProtectedRoute allowedRoles={['Tour Guide', 'Tour Operator']} />}>
+              
         <Route path="/tour-operator/update/:id" element={<MainLayout><UpdateTourOpPage /></MainLayout>} />
         <Route path="/tour/update/:id" element={<MainLayout><UpdateTourPage /></MainLayout>} />
-        <Route path="/tour-list" element={<MainLayout><TourListPage /></MainLayout>} />
-        <Route path="/tour/detail/:id" element={<MainLayout><TourDetailPage /></MainLayout>} />
-        <Route path="/tour/create" element={<MainLayout><CreateTourPage /></MainLayout>} />
-        <Route path="/tour-operator/create" element={<MainLayout><CreateCompanyPage /></MainLayout>} />
-        <Route path="/booking" element={<MainLayout><BookingConfirmation /></MainLayout>} />
-        <Route path="/forgot-password" element={<><ForgotPasswordPage /></>} />
-        <Route path="/tour/compare/:id" element={<MainLayout><TourComparePage /></MainLayout>} />
-        <Route path="/chat-bot" element={<MainLayout><ChatBotPage /></MainLayout>} />
-        <Route path="/operator/booking" element={<BookingOperator />} />
+                <Route path="/tour/create" element={<MainLayout><CreateTourPage /></MainLayout>} />
+                <Route path="/profile" element={<ProflePage />} />
+                <Route path="/package" element={<PackagePage />} />
+                <Route path="/operator/booking" element={<BookingOperator />} />
         <Route path="/operator/tours" element={<ListOpeTour />} />
         <Route path="/operator/schedules" element={<OpeSchedule />} />
         <Route path="/operator/package" element={<MyPackage />} />
@@ -93,6 +73,40 @@ const AppRoutes = () => {
         <Route path="/package/payment/:packageId" element={<PaymentPackage />} />
         <Route path="/Note" element={<GuideNote />} />
         <Route path="/Note/booking/:bookingId" element={<GuideNote />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={[ 'Admin']} />}>
+         <Route path="/admin/ListAccount" element={<ListAccount />} />
+          <Route path="/admin/packages" element={<ListPackages />} />
+                  <Route path="/admin/dashboard" element={<MainLayout><AgentDashboard /></MainLayout>} />
+        <Route path="/admin/feedback" element={<MainLayout><RecentFeedback /></MainLayout>} />
+        <Route path="/admin/notifications" element={<MainLayout><NotificationPage /></MainLayout>} />
+        </Route>
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/verify" element={<VerificationPage />} />
+        <Route path="/tour-operator/detail/:id" element={<MainLayout><TourOperatorDateilPage /></MainLayout>} />
+        <Route path="/tour-operator/create" element={<MainLayout><CreateCompanyPage /></MainLayout>} />
+
+        <Route path="/customer/profile" element={<CustomerProfile />} />
+        <Route path="/customer/setting" element={<CustomerProfile />} />
+        <Route path="/setting/editProfile" element={<SettingProfile />} />
+       
+        
+       
+        <Route path="/home" element={<MainLayout><HomePage /></MainLayout>} />
+
+        <Route path="/customer/notifications" element={<MainLayout><NotificationPage /></MainLayout>} />
+        <Route path="/tour-operator" element={<MainLayout><TourOperatorPage /></MainLayout>} />
+  
+        <Route path="/tour-list" element={<MainLayout><TourListPage /></MainLayout>} />
+        <Route path="/tour/detail/:id" element={<MainLayout><TourDetailPage /></MainLayout>} />
+
+        <Route path="/booking" element={<MainLayout><BookingConfirmation /></MainLayout>} />
+        <Route path="/forgot-password" element={<><ForgotPasswordPage /></>} />
+        <Route path="/tour/compare/:id" element={<MainLayout><TourComparePage /></MainLayout>} />
+        <Route path="/chat-bot" element={<MainLayout><ChatBotPage /></MainLayout>} />
+        
         <Route path="/reset-password" element={<ChangePasswordForm />} />
         {/* Nếu cần thêm trang lỗi 404 */}
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />

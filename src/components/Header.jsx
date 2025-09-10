@@ -110,8 +110,11 @@ const HeaderTest = () => {
                   <img src={logo} class="logo" alt="Logo" />
                 </a>
               </div>
+              
               <nav id="mobile-menu">
                 <ul class="main-nav">
+                {roleName ==='Customer'&&(
+                  <>
                   <li class="has-submenu megamenu">
                     <a href="/home">Trang chủ</a>
                   </li>
@@ -123,11 +126,9 @@ const HeaderTest = () => {
                     <a href="/tour-operator">Nhà Điều Hành</a>
                   </li>
                   <li class="has-submenu megamenu">
-                    <a href="/tour-operator">Chính sách</a>
-                  </li>
-                  <li class="has-submenu megamenu">
                     <a href="/chat-bot">Chat Bot</a>
                   </li>
+                  </>)}
                   {operatorId && (
                     <li class="has-submenu megamenu">
                       <a href="/package">Gói</a>
@@ -203,7 +204,7 @@ const HeaderTest = () => {
     <div className="dropdown profile-dropdown">
       <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
         <span className="avatar avatar-md">
-          <img src={userResponse?.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
+          <img src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
         </span>
       </a>
       <ul className="dropdown-menu dropdown-menu-end p-3">
@@ -234,7 +235,7 @@ const HeaderTest = () => {
     <div className="dropdown profile-dropdown">
       <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
         <span className="avatar avatar-md">
-          <img src={userResponse?.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
+          <img src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
         </span>
       </a>
       <ul className="dropdown-menu dropdown-menu-end p-3">
@@ -259,7 +260,7 @@ const HeaderTest = () => {
     <div className="dropdown profile-dropdown">
       <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
         <span className="avatar avatar-md">
-          <img src={userResponse?.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
+          <img src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
         </span>
       </a>
       <ul className="dropdown-menu dropdown-menu-end p-3">
