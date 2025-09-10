@@ -148,12 +148,12 @@ const CRUDDepartCom = () => {
 
     }
 
-    const handleDeleteDepart = async (departureDateId,booking) => {
+    const handleDeleteDepart = async (departureDateId, booking) => {
         if (booking > 0) {
             toast.error("Cannot delete departure date with bookings");
             return;
         }
-       
+
         deleteDepartDate(departureDateId)
             .then((response) => {
                 toast.success(response.data?.message);
@@ -171,7 +171,7 @@ const CRUDDepartCom = () => {
         Cookies.set("Depart", departureDate);
         navigate(`/departure/booking/${id}`);
     }
-    
+
 
     const handleUpdateDepart = async (departureDateId, oldGuides) => {
         try {
@@ -223,226 +223,105 @@ const CRUDDepartCom = () => {
             toast.error("Lỗi khi cập nhật hướng dẫn viên");
         }
     }
-    const [mypackage,setMyPackage] = useState(null);
-        const getMyPackages = async () => {
-    
-                await checkpackage(userId).then((res) => {
-                    setMyPackage(res);
-                })
-                .catch((error) => {
-                    setMyPackage([]);
-                    console.error("Error checking package:", error);
-                });   
-        };
-        useEffect(() => {
-            getMyPackages();
-        }, []);
+    const [mypackage, setMyPackage] = useState(null);
+    const getMyPackages = async () => {
+
+        await checkpackage(userId).then((res) => {
+            setMyPackage(res);
+        })
+            .catch((error) => {
+                setMyPackage([]);
+                console.error("Error checking package:", error);
+            });
+    };
+    useEffect(() => {
+        getMyPackages();
+    }, []);
     return (
-    <div className="col-xl-9 col-lg-8 theiaStickySidebar">
+        <div className="col-xl-9 col-lg-8 theiaStickySidebar">
 
-        {/* <!-- Booking Header --> */}
-        <div className="card booking-header border-0">
-            <div className="card-body header-content d-flex align-items-center justify-content-between flex-wrap ">
-                <div>
-                    <h6 className="mb-1">{Cookies.get("tourTitle") || "Lịch khởi hành"}</h6>
-                    <p className="fs-14 text-gray-6 fw-normal ">Tổng số ngày khởi hành: {filterList.length}</p>
-                </div>
-                <div className="d-flex align-items-center flex-wrap">
-                    <a className="btn btn-md btn-primary me-2" data-bs-toggle="modal" data-bs-target="#add" href="javascript:void(0);">
-                        <FaPlus className="me-1" /> Thêm ngày khởi hành
-                    </a>
-                </div>
-            </div>
-        </div>
-        {/* <!-- /Booking Header --> */}
-
-        {/* <!-- Tour Booking List --> */}
-        <div className="card hotel-list">
-            <div className="card-body p-0">
-                <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
-                    <h6 className="">Danh sách</h6>
+            {/* <!-- Booking Header --> */}
+            <div className="card booking-header border-0">
+                <div className="card-body header-content d-flex align-items-center justify-content-between flex-wrap ">
+                    <div>
+                        <h6 className="mb-1">{Cookies.get("tourTitle") || "Lịch khởi hành"}</h6>
+                        <p className="fs-14 text-gray-6 fw-normal ">Tổng số ngày khởi hành: {filterList.length}</p>
+                    </div>
                     <div className="d-flex align-items-center flex-wrap">
-                        <div className="input-icon-start  me-2 position-relative">
-                            <span className="icon-addon">
-                                <i className="isax isax-search-normal-1 fs-14"></i>
-                            </span>
-                            <input type="text" className="form-control form-control-sm" placeholder="Tìm kiếm" onChange={handleSearchChange} />
-                        </div>
-
-                        <div className="dropdown me-3">
-                            <select className="form-control form-control-sm" style={{ minHeight: '32px' }} onChange={handleFilterChange}>
-                                <option value="1" selected>Tất cả</option>
-                                <option value="2">Sắp diễn ra</option>
-                                <option value="3">Đã kết thúc</option>
-                            </select>
-                        </div>
+                        <a className="btn btn-md btn-primary me-2" data-bs-toggle="modal" data-bs-target="#add" href="javascript:void(0);">
+                            <FaPlus className="me-1" /> Thêm ngày khởi hành
+                        </a>
                     </div>
                 </div>
+            </div>
+            {/* <!-- /Booking Header --> */}
 
-                {/* <!-- Hotel List --> */}
-                <div className="custom-datatable-filter table-responsive">
-                    <table className="table datatable">
-                        <thead className="thead-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Tour & Loại</th>
-                                <th>Ngày khởi hành</th>
-                                <th>Số chỗ tối đa</th>
-                                <th>Số chỗ đã đặt</th>
-                                <th>Trạng thái</th>
-                                <th>Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentItems.length === 0 ? (
+            {/* <!-- Tour Booking List --> */}
+            <div className="card hotel-list">
+                <div className="card-body p-0">
+                    <div className="list-header d-flex align-items-center justify-content-between flex-wrap">
+                        <h6 className="">Danh sách</h6>
+                        <div className="d-flex align-items-center flex-wrap">
+                            <div className="input-icon-start  me-2 position-relative">
+                                <span className="icon-addon">
+                                    <i className="isax isax-search-normal-1 fs-14"></i>
+                                </span>
+                                <input type="text" className="form-control form-control-sm" placeholder="Tìm kiếm" onChange={handleSearchChange} />
+                            </div>
+
+                            <div className="dropdown me-3">
+                                <select className="form-control form-control-sm" style={{ minHeight: '32px' }} onChange={handleFilterChange}>
+                                    <option value="1" selected>Tất cả</option>
+                                    <option value="2">Sắp diễn ra</option>
+                                    <option value="3">Đã kết thúc</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* <!-- Hotel List --> */}
+                    <div className="custom-datatable-filter table-responsive">
+                        <table className="table datatable">
+                            <thead className="thead-light">
                                 <tr>
-                                    <td colSpan={6}>Không có ngày khởi hành nào.</td>
+                                    <th>ID</th>
+                                    <th>Tour & Loại</th>
+                                    <th>Ngày khởi hành</th>
+                                    <th>Số chỗ tối đa</th>
+                                    <th>Số chỗ đã đặt</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
                                 </tr>
-                            ) : (
-                                currentItems.map((date) => (
-                                    <tr key={date.id}>
-                                        <td>{date.id}</td>
-                                        <td>
-                                            <div className="d-flex align-items-center">
-                                                <div>
-                                                    <p className="text-dark mb-0 fw-medium fs-14"><a href={`/tour/detail/${date.tourId}`}>{date.tourTitle}</a></p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <h6 className="fs-14 mb-1">
-                                                <a onClick={() => { hanldeNavigate(date.departureDate, date.id) }} className='link-primary fw-medium'>
-                                                    {new Date(date.departureDate).toLocaleDateString('vi-VN')}
-                                                </a>
-                                            </h6>
-                                        </td>
-                                        <td>
-                                            {date.availableSlots}
-                                        </td>
-                                        <td>{date.totalBookings}</td>
-                                        <td>
-                                            {date.isCancelDate ? (
-                                                <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
-                                                    <i className="fa-solid fa-circle fs-5 me-1"></i>Đã huỷ
-                                                </span>
-                                            ) : (
-                                                new Date(date.departureDate) < today ? (
-                                                    <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
-                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Đã kết thúc
-                                                    </span>
-                                                ) : (
-                                                    <span className="badge badge-info rounded-pill d-inline-flex align-items-center fs-10">
-                                                        <i className="fa-solid fa-circle fs-5 me-1"></i>Sắp diễn ra
-                                                    </span>
-                                                )
-                                            )}
-                                        </td>
-                                        <td>
-                                            <div className="d-flex align-items-center">
-                                            {date.isCancelDate ? (
-                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${date.id}`} className="me-4">
-                                                    <FaEye />
-                                                </a>
-                                            ):(
-                                                new Date(date.departureDate) < today ? (
-                                                    <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${date.id}`} className="me-4">
-                                                        <FaEye />
-                                                    </a>
-                                                ):(
-                                                    <div>
-                                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${date.id}`} className="me-4">
-                                                            <FaEye />
-                                                        </a>
-                                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${date.id}`} className="me-4" onClick={() => {
-                                                            setSelectedGuide(date.tourGuides);
-                                                        }}>
-                                                            <FaEdit />
-                                                        </a>
-                                                        <a className="me-4" onClick={() => { handleDeleteDepart(date.id,date.totalBookings) }}>
-                                                            <FaTrash />
-                                                        </a>
-                                                    </div>
-                                                )
-                                            )}
-                                            </div>
-                                        </td>
+                            </thead>
+                            <tbody>
+                                {currentItems.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={6}>Không có ngày khởi hành nào.</td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-                {/* <!-- /Hotel List --> */}
-
-            </div>
-        </div>
-        {/* <!-- /Tour Booking List --> */}
-
-        <div className="table-paginate d-flex justify-content-between align-items-center flex-wrap row-gap-3">
-            <div className="value d-flex align-items-center">
-                <span>Hiển thị</span>
-                <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
-                    <option>5</option>
-                    <option>10</option>
-                    <option>20</option>
-                </select>
-                <span>dòng</span>
-            </div>
-
-            <div className="d-flex align-items-center justify-content-center">
-                <button
-                    className="btn btn-link p-0 me-3"
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                >
-                    <FaChevronLeft />
-                </button>
-                <nav aria-label="Page navigation">
-                    <ul className="paginations d-flex justify-content-center align-items-center">
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <li key={index + 1} className="page-item me-2">
-                                <button
-                                    className={`page-link-1  ${currentPage === index + 1 ? 'active' : ''} d-flex justify-content-center align-items-center`}
-                                    onClick={() => handlePageChange(index + 1)}
-                                >
-                                    {index + 1}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-                <button
-                    className="btn btn-link p-0 ms-3"
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                >
-                    <FaChevronRight />
-                </button>
-            </div>
-        </div>
-        {currentItems.length === 0 ? (
-            <div>Không có nội dung</div>
-        ) : (
-            currentItems.map((date) => (
-                <div key={date.id}>
-                    <div className="modal fade" id={`View${date.id}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" >
-                        <div className="modal-dialog  modal-dialog-centered modal-xl">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5>Thông tin ngày khởi hành <span className="fs-14 fw-medium text-primary">#{date.id}</span></h5>
-                                    <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="upcoming-content">
-                                        <div className="upcoming-title mb-4 d-flex align-items-center justify-content-between p-3 rounded">
-                                            <div className="d-flex align-items-center flex-wrap">
-                                                <div>
-                                                    <h6 className="mb-1">{date.tourTitle}</h6>
-                                                    <div className="title-list"></div>
+                                ) : (
+                                    currentItems.map((date) => (
+                                        <tr key={date.id}>
+                                            <td>{date.id}</td>
+                                            <td>
+                                                <div className="d-flex align-items-center">
+                                                    <div>
+                                                        <p className="text-dark mb-0 fw-medium fs-14"><a href={`/tour/detail/${date.tourId}`}>{date.tourTitle}</a></p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                {date.IsCancelled ? (
+                                            </td>
+                                            <td>
+                                                <h6 className="fs-14 mb-1">
+                                                    <a onClick={() => { hanldeNavigate(date.departureDate, date.id) }} className='link-primary fw-medium'>
+                                                        {new Date(date.departureDate).toLocaleDateString('vi-VN')}
+                                                    </a>
+                                                </h6>
+                                            </td>
+                                            <td>
+                                                {date.availableSlots}
+                                            </td>
+                                            <td>{date.totalBookings}</td>
+                                            <td>
+                                                {date.isCancelDate ? (
                                                     <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
                                                         <i className="fa-solid fa-circle fs-5 me-1"></i>Đã huỷ
                                                     </span>
@@ -457,107 +336,338 @@ const CRUDDepartCom = () => {
                                                         </span>
                                                     )
                                                 )}
-                                            </div>
-                                        </div>
-                                        <div className="upcoming-details">
-                                            <h6 className="mb-2">Chi tiết</h6>
-                                            <div className="row">
-                                                <div className="col-lg-3">
-                                                    <h6 className="fs-14">Ngày khởi hành</h6>
-                                                    <p className="text-gray-6 fs-16 ">{new Date(date.departureDate).toLocaleDateString('vi-VN')}</p>
-                                                </div>
-                                                <div className="col-lg-3">
-                                                    <h6 className="fs-14">Số chỗ tối đa</h6>
-                                                    <p className="text-gray-6 fs-16 ">{date.availableSlots + date.totalBookings}</p>
-                                                </div>
-                                                <div className="col-lg-3">
-                                                    <h6 className="fs-14">Số chỗ đã đặt</h6>
-                                                    <p className="text-gray-6 fs-16 ">{date.totalBookings}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="upcoming-details">
-                                            <h6 className="mb-2">Hướng dẫn viên</h6>
-                                            <div className="custom-datatable-filter table-responsive">
-                                                <table className="table datatable">
-                                                    <thead className="thead-light">
-                                                        <tr>
-                                                            <th>Email</th>
-                                                            <th>Tên</th>
-                                                            <th>Số điện thoại</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {date.tourGuides.length === 0 ? (
-                                                            <tr>
-                                                                <td colSpan={4} className="text-center text-gray-6 fs-16">Chưa chọn hướng dẫn viên</td>
-                                                            </tr>
+                                            </td>
+                                            <td>
+                                                <div className="d-flex align-items-center">
+                                                    {date.isCancelDate ? (
+                                                        <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${date.id}`} className="me-4">
+                                                            <FaEye />
+                                                        </a>
+                                                    ) : (
+                                                        new Date(date.departureDate) < today ? (
+                                                            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${date.id}`} className="me-4">
+                                                                <FaEye />
+                                                            </a>
                                                         ) : (
-                                                            date.tourGuides.map((guide) => (
-                                                                <tr key={guide.tourGuideId}>
-                                                                    <td className="col-lg-5">
-                                                                        <div className="d-flex align-items-center">
-                                                                            <a className="avatar avatar-lg">
-                                                                                <img src={guide.avatar ||"https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} className="img-fluid rounded-circle" onError={(e) => {
-                                                                                    e.target.onerror = null;
-                                                                                    e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
-                                                                                }} />
-                                                                            </a>
-                                                                            <div className="ms-4">
-                                                                                <p className="text-dark mb-0 fw-medium fs-14">{guide.email}</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td className="col-lg-3">{guide.userName}</td>
-                                                                    <td className="col-lg-2">{guide.phoneNumber}</td>
+                                                            <div>
+                                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#View${date.id}`} className="me-4">
+                                                                    <FaEye />
+                                                                </a>
+                                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target={`#Update${date.id}`} className="me-4" onClick={() => {
+                                                                    setSelectedGuide(date.tourGuides);
+                                                                }}>
+                                                                    <FaEdit />
+                                                                </a>
+                                                                <a className="me-4" onClick={() => { handleDeleteDepart(date.id, date.totalBookings) }}>
+                                                                    <FaTrash />
+                                                                </a>
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                    {/* <!-- /Hotel List --> */}
+
+                </div>
+            </div>
+            {/* <!-- /Tour Booking List --> */}
+
+            <div className="table-paginate d-flex justify-content-between align-items-center flex-wrap row-gap-3">
+                <div className="value d-flex align-items-center">
+                    <span>Hiển thị</span>
+                    <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+                        <option>5</option>
+                        <option>10</option>
+                        <option>20</option>
+                    </select>
+                    <span>dòng</span>
+                </div>
+
+                <div className="d-flex align-items-center justify-content-center">
+                    <button
+                        className="btn btn-link p-0 me-3"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    >
+                        <FaChevronLeft />
+                    </button>
+                    <nav aria-label="Page navigation">
+                        <ul className="paginations d-flex justify-content-center align-items-center">
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <li key={index + 1} className="page-item me-2">
+                                    <button
+                                        className={`page-link-1  ${currentPage === index + 1 ? 'active' : ''} d-flex justify-content-center align-items-center`}
+                                        onClick={() => handlePageChange(index + 1)}
+                                    >
+                                        {index + 1}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                    <button
+                        className="btn btn-link p-0 ms-3"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                    >
+                        <FaChevronRight />
+                    </button>
+                </div>
+            </div>
+            {currentItems.length === 0 ? (
+                <div>Không có nội dung</div>
+            ) : (
+                currentItems.map((date) => (
+                    <div key={date.id}>
+                        <div className="modal fade" id={`View${date.id}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" >
+                            <div className="modal-dialog  modal-dialog-centered modal-xl">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5>Thông tin ngày khởi hành <span className="fs-14 fw-medium text-primary">#{date.id}</span></h5>
+                                        <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark"></a>
+                                    </div>
+                                    <div className="modal-body">
+                                        <div className="upcoming-content">
+                                            <div className="upcoming-title mb-4 d-flex align-items-center justify-content-between p-3 rounded">
+                                                <div className="d-flex align-items-center flex-wrap">
+                                                    <div>
+                                                        <h6 className="mb-1">{date.tourTitle}</h6>
+                                                        <div className="title-list"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    {date.IsCancelled ? (
+                                                        <span className="badge badge-danger rounded-pill d-inline-flex align-items-center fs-10">
+                                                            <i className="fa-solid fa-circle fs-5 me-1"></i>Đã huỷ
+                                                        </span>
+                                                    ) : (
+                                                        new Date(date.departureDate) < today ? (
+                                                            <span className="badge badge-success rounded-pill d-inline-flex align-items-center fs-10">
+                                                                <i className="fa-solid fa-circle fs-5 me-1"></i>Đã kết thúc
+                                                            </span>
+                                                        ) : (
+                                                            <span className="badge badge-info rounded-pill d-inline-flex align-items-center fs-10">
+                                                                <i className="fa-solid fa-circle fs-5 me-1"></i>Sắp diễn ra
+                                                            </span>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="upcoming-details">
+                                                <h6 className="mb-2">Chi tiết</h6>
+                                                <div className="row">
+                                                    <div className="col-lg-3">
+                                                        <h6 className="fs-14">Ngày khởi hành</h6>
+                                                        <p className="text-gray-6 fs-16 ">{new Date(date.departureDate).toLocaleDateString('vi-VN')}</p>
+                                                    </div>
+                                                    <div className="col-lg-3">
+                                                        <h6 className="fs-14">Số chỗ tối đa</h6>
+                                                        <p className="text-gray-6 fs-16 ">{date.availableSlots + date.totalBookings}</p>
+                                                    </div>
+                                                    <div className="col-lg-3">
+                                                        <h6 className="fs-14">Số chỗ đã đặt</h6>
+                                                        <p className="text-gray-6 fs-16 ">{date.totalBookings}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="upcoming-details">
+                                                <h6 className="mb-2">Hướng dẫn viên</h6>
+                                                <div className="custom-datatable-filter table-responsive">
+                                                    <table className="table datatable">
+                                                        <thead className="thead-light">
+                                                            <tr>
+                                                                <th>Email</th>
+                                                                <th>Tên</th>
+                                                                <th>Số điện thoại</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {date.tourGuides.length === 0 ? (
+                                                                <tr>
+                                                                    <td colSpan={4} className="text-center text-gray-6 fs-16">Chưa chọn hướng dẫn viên</td>
                                                                 </tr>
-                                                            ))
-                                                        )}
-                                                    </tbody>
-                                                </table>
+                                                            ) : (
+                                                                date.tourGuides.map((guide) => (
+                                                                    <tr key={guide.tourGuideId}>
+                                                                        <td className="col-lg-5">
+                                                                            <div className="d-flex align-items-center">
+                                                                                <a className="avatar avatar-lg">
+                                                                                    <img src={guide.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} className="img-fluid rounded-circle" onError={(e) => {
+                                                                                        e.target.onerror = null;
+                                                                                        e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
+                                                                                    }} />
+                                                                                </a>
+                                                                                <div className="ms-4">
+                                                                                    <p className="text-dark mb-0 fw-medium fs-14">{guide.email}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td className="col-lg-3">{guide.userName}</td>
+                                                                        <td className="col-lg-2">{guide.phoneNumber}</td>
+                                                                    </tr>
+                                                                ))
+                                                            )}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="modal-footer">
-                                    <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal">Đóng</a>
+                                    <div className="modal-footer">
+                                        <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal">Đóng</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal fade" id={`Update${date.id}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1"  >
+                            <div className="modal-dialog  modal-dialog-centered modal-lg">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5>Cập nhật ngày khởi hành <span className="fs-14 fw-medium text-primary">#{date.id}</span></h5>
+                                        <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark" onClick={() => {
+                                            setSelectedGuide([]);
+                                        }}></a>
+                                    </div>
+                                    <div className="modal-body">
+                                        <div className="upcoming-content">
+                                            <div className="upcoming-title mb-4 d-flex align-items-center justify-content-between p-3 rounded">
+                                                <div className="d-flex align-items-center flex-wrap">
+                                                    <div>
+                                                        <h6 className="mb-1">{date.tourTitle}</h6>
+                                                        <div className="title-list"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="upcoming-details">
+                                                <h6 className="mb-2">Chọn ngày khởi hành</h6>
+                                                <div className="row mb-3">
+                                                    <div className="col-lg-6">
+                                                        <h6 className="fs-14 mb-2">Ngày khởi hành</h6>
+                                                        <input type="date" className="form-control form-control-sm" defaultValue={new Date(date.departureDate).toLocaleDateString('en-CA')} onChange={(e) => {
+                                                            setDepartDate(new Date(e.target.value).toISOString());
+                                                        }} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {mypackage !== null && mypackage.tourGuideFunction ? (
+                                                <div>
+                                                    <div className="upcoming-details">
+                                                        <h6 className="mb-2">Hướng dẫn viên</h6>
+                                                        <div className="custom-datatable-filter table-responsive">
+                                                            <table className="table datatable">
+                                                                <thead className="thead-light">
+                                                                    <tr>
+                                                                        <th>Email</th>
+                                                                        <th>Tên</th>
+                                                                        <th>Số điện thoại</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {selectedGuide.length === 0 ? (
+                                                                        <tr>
+                                                                            <td colSpan={4} className="text-center text-gray-6 fs-16">Chưa chọn hướng dẫn viên</td>
+                                                                        </tr>
+                                                                    ) : (
+                                                                        selectedGuide.map((guide) => (
+                                                                            <tr key={guide.tourGuideId}>
+                                                                                <td className="col-lg-5">
+                                                                                    <div className="d-flex align-items-center">
+                                                                                        <a className="avatar avatar-lg">
+                                                                                            <img src={guide.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} className="img-fluid rounded-circle" onError={(e) => {
+                                                                                                e.target.onerror = null;
+                                                                                                e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
+                                                                                            }} />
+                                                                                        </a>
+                                                                                        <div className="ms-4">
+                                                                                            <p className="text-dark mb-0 fw-medium fs-14">{guide.email}</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td className="col-lg-3">{guide.userName}</td>
+                                                                                <td className="col-lg-2">{guide.phoneNumber}</td>
+                                                                                <td className="col-lg-1">
+                                                                                    <button className="btn btn-sm btn-danger" onClick={() => handleRemoveGuide(guide.tourGuideId)}>Xoá</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        ))
+                                                                    )}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div className="upcoming-details">
+                                                        <h6 className="mb-2">Hướng dẫn viên</h6>
+                                                        <select className="form-select form-select-sm mb-3" aria-label=".form-select-sm example" value="" onChange={handleSelectGuide}>
+                                                            <option value="" selected>Chọn hướng dẫn viên</option>
+                                                            {guides.length === 0 ? (
+                                                                <option selected value="">Không có hướng dẫn viên</option>
+                                                            ) : (
+                                                                guides.map((guide) => (
+                                                                    <option key={guide.tourGuideId} value={guide.tourGuideId} className="text-dark mb-0 fw-medium fs-14" >
+                                                                        {guide.email} ({guide.userName})
+                                                                    </option>
+                                                                ))
+                                                            )}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div></div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="modal-footer">
+                                        <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => {
+                                            handleUpdateDepart(date.id, date.tourGuides)
+                                        }}>Lưu</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="modal fade" id={`Update${date.id}`} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1"  >
-                        <div className="modal-dialog  modal-dialog-centered modal-lg">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5>Cập nhật ngày khởi hành <span className="fs-14 fw-medium text-primary">#{date.id}</span></h5>
-                                    <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark" onClick={() => {
-                                        setSelectedGuide([]);
-                                    }}></a>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="upcoming-content">
-                                        <div className="upcoming-title mb-4 d-flex align-items-center justify-content-between p-3 rounded">
-                                            <div className="d-flex align-items-center flex-wrap">
-                                                <div>
-                                                    <h6 className="mb-1">{date.tourTitle}</h6>
-                                                    <div className="title-list"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="upcoming-details">
-                                            <h6 className="mb-2">Chọn ngày khởi hành</h6>
-                                            <div className="row mb-3">
-                                                <div className="col-lg-6">
-                                                    <h6 className="fs-14 mb-2">Ngày khởi hành</h6>
-                                                    <input type="date" className="form-control form-control-sm" defaultValue={new Date(date.departureDate).toLocaleDateString('en-CA')} onChange={(e) => {
-                                                        setDepartDate(new Date(e.target.value).toISOString());
-                                                    }} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {mypackage !== null && mypackage.tourGuideFunction ? (
+                ))
+            )}
+            <div className="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1"  >
+                <div className="modal-dialog  modal-dialog-centered modal-lg">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5>Thêm ngày khởi hành <span className="fs-14 fw-medium text-primary"></span></h5>
+                            <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark" onClick={() => {
+                                setSelectedGuide([]);
+                            }}></a>
+                        </div>
+                        <div className="modal-body">
+                            <div className="upcoming-content">
+                                <div className="upcoming-title mb-4 d-flex align-items-center justify-content-between p-3 rounded">
+                                    <div className="d-flex align-items-center flex-wrap">
                                         <div>
+                                            <h6 className="mb-1">{departureDates.at(0)?.tourTitle || 'Chưa có ngày khởi hành'}</h6>
+                                            <div className="title-list"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="upcoming-details">
+                                    <h6 className="mb-2">Chọn ngày khởi hành</h6>
+                                    <div className="row mb-3">
+                                        <div className="col-lg-6">
+                                            <h6 className="fs-14 mb-2">Ngày khởi hành</h6>
+                                            <input type="date" className="form-control form-control-sm" onChange={(e) => {
+                                                setDepartDate(new Date(e.target.value).toISOString());
+                                            }} />
+                                        </div>
+                                    </div>
+                                </div>
+                                {mypackage !== null && mypackage.tourGuideFunction ? (
+                                    <div>
                                         <div className="upcoming-details">
                                             <h6 className="mb-2">Hướng dẫn viên</h6>
                                             <div className="custom-datatable-filter table-responsive">
@@ -618,129 +728,19 @@ const CRUDDepartCom = () => {
                                                 )}
                                             </select>
                                         </div>
-                                        </div>
-                                        ):(
-                                            <div></div>
-                                        )}
                                     </div>
-                                </div>
-
-                                <div className="modal-footer">
-                                    <a href="javascript:void(0);" className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={() => {
-                                        handleUpdateDepart(date.id, date.tourGuides)
-                                    }}>Lưu</a>
-                                </div>
+                                ) : (
+                                    <div></div>
+                                )}
                             </div>
                         </div>
-                    </div>
-                </div>
-            ))
-        )}
-        <div className="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1"  >
-            <div className="modal-dialog  modal-dialog-centered modal-lg">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5>Thêm ngày khởi hành <span className="fs-14 fw-medium text-primary"></span></h5>
-                        <a href="javascript:void(0);" data-bs-dismiss="modal" className="btn-close text-dark" onClick={() => {
-                            setSelectedGuide([]);
-                        }}></a>
-                    </div>
-                    <div className="modal-body">
-                        <div className="upcoming-content">
-                            <div className="upcoming-title mb-4 d-flex align-items-center justify-content-between p-3 rounded">
-                                <div className="d-flex align-items-center flex-wrap">
-                                    <div>
-                                        <h6 className="mb-1">{departureDates.at(0)?.tourTitle || 'Chưa có ngày khởi hành'}</h6>
-                                        <div className="title-list"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="upcoming-details">
-                                <h6 className="mb-2">Chọn ngày khởi hành</h6>
-                                <div className="row mb-3">
-                                    <div className="col-lg-6">
-                                        <h6 className="fs-14 mb-2">Ngày khởi hành</h6>
-                                        <input type="date" className="form-control form-control-sm" onChange={(e) => {
-                                            setDepartDate(new Date(e.target.value).toISOString());
-                                        }} />
-                                    </div>
-                                </div>
-                            </div>
-                            {mypackage !== null && mypackage.tourGuideFunction ? (
-                            <div>
-                            <div className="upcoming-details">
-                                <h6 className="mb-2">Hướng dẫn viên</h6>
-                                <div className="custom-datatable-filter table-responsive">
-                                    <table className="table datatable">
-                                        <thead className="thead-light">
-                                            <tr>
-                                                <th>Email</th>
-                                                <th>Tên</th>
-                                                <th>Số điện thoại</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {selectedGuide.length === 0 ? (
-                                                <tr>
-                                                    <td colSpan={4} className="text-center text-gray-6 fs-16">Chưa chọn hướng dẫn viên</td>
-                                                </tr>
-                                            ) : (
-                                                selectedGuide.map((guide) => (
-                                                    <tr key={guide.tourGuideId}>
-                                                        <td className="col-lg-5">
-                                                            <div className="d-flex align-items-center">
-                                                                <a className="avatar avatar-lg">
-                                                                    <img src={guide.avatar || "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg"} className="img-fluid rounded-circle" onError={(e) => {
-                                                                        e.target.onerror = null;
-                                                                        e.target.src = "https://res.cloudinary.com/dfn1slnuk/image/upload/v1754286432/ProjectSEP490/Profile/user_avatars/qqfwi0xaux1gmnda3tnt.jpg";
-                                                                    }} />
-                                                                </a>
-                                                                <div className="ms-4">
-                                                                    <p className="text-dark mb-0 fw-medium fs-14">{guide.email}</p>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td className="col-lg-3">{guide.userName}</td>
-                                                        <td className="col-lg-2">{guide.phoneNumber}</td>
-                                                        <td className="col-lg-1">
-                                                            <button className="btn btn-sm btn-danger" onClick={() => handleRemoveGuide(guide.tourGuideId)}>Xoá</button>
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div className="upcoming-details">
-                                <h6 className="mb-2">Hướng dẫn viên</h6>
-                                <select className="form-select form-select-sm mb-3" aria-label=".form-select-sm example" value="" onChange={handleSelectGuide}>
-                                    <option value="" selected>Chọn hướng dẫn viên</option>
-                                    {guides.length === 0 ? (
-                                        <option selected value="">Không có hướng dẫn viên</option>
-                                    ) : (
-                                        guides.map((guide) => (
-                                            <option key={guide.tourGuideId} value={guide.tourGuideId} className="text-dark mb-0 fw-medium fs-14" >
-                                                {guide.email} ({guide.userName})
-                                            </option>
-                                        ))
-                                    )}
-                                </select>
-                            </div>
-                            </div>
-                            ):(
-                                <div></div>
-                            )}
+                        <div className="modal-footer">
+                            <a className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={handleAddDepartDate}>Lưu</a>
                         </div>
-                    </div>
-                    <div className="modal-footer">
-                        <a className="btn btn-md btn-primary" data-bs-dismiss="modal" onClick={handleAddDepartDate}>Lưu</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
 }
 export default CRUDDepartCom;
