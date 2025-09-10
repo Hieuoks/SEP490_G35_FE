@@ -110,29 +110,42 @@ const HeaderTest = () => {
                   <img src={logo} class="logo" alt="Logo" />
                 </a>
               </div>
-              
+
               <nav id="mobile-menu">
                 <ul class="main-nav">
-                {roleName ==='Customer'&&(
-                  <>
-                  <li class="has-submenu megamenu">
-                    <a href="/home">Trang chủ</a>
-                  </li>
+                  {roleName === 'Customer' && (
+                    <>
+                      <li class="has-submenu megamenu">
+                        <a href="/home">Trang chủ</a>
+                      </li>
 
-                  <li class="has-submenu megamenu">
-                    <a href="/tour-list">Tour</a>
-                  </li>
-                  <li class="has-submenu megamenu">
-                    <a href="/tour-operator">Nhà Điều Hành</a>
-                  </li>
-                  <li class="has-submenu megamenu">
-                    <a href="/chat-bot">Chat Bot</a>
-                  </li>
-                  </>)}
+                      <li class="has-submenu megamenu">
+                        <a href="/tour-list">Tour</a>
+                      </li>
+                      <li class="has-submenu megamenu">
+                        <a href="/tour-operator">Nhà Điều Hành</a>
+                      </li>
+                      <li class="has-submenu megamenu">
+                        <a href="/chat-bot">Chat Bot</a>
+                      </li>
+                    </>)}
                   {operatorId && (
-                    <li class="has-submenu megamenu">
-                      <a href="/package">Gói</a>
-                    </li>
+                    <>
+                      <li class="has-submenu megamenu">
+                        <a href="/home">Trang chủ</a>
+                      </li>
+
+                      <li class="has-submenu megamenu">
+                        <a href="/tour-list">Tour</a>
+                      </li>
+                      <li class="has-submenu megamenu">
+                        <a href="/tour-operator">Nhà Điều Hành</a>
+                      </li>
+                      <li class="has-submenu megamenu">
+                        <a href="/package">Gói</a>
+                      </li>
+                    </>
+
                   )}
 
                 </ul>
@@ -200,91 +213,91 @@ const HeaderTest = () => {
                 )}
 
                 {userId ? (
-  roleName === "Tour Operator" ? (
-    <div className="dropdown profile-dropdown">
-      <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
-        <span className="avatar avatar-md">
-          <img src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
-        </span>
-      </a>
-      <ul className="dropdown-menu dropdown-menu-end p-3">
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/dashboard">Bảng điều khiển</a>
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/tours">Quản lý tour</a>
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/booking">Đơn đặt tour</a>
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/schedules">Lịch trình</a>
-        </li>
-        <li>
-          <hr className="dropdown-divider my-2" />
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/profile">Hồ sơ</a>
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Đăng xuất</a>
-        </li>
-      </ul>
-    </div>
-  ) : roleName === "Customer" ? (
-    <div className="dropdown profile-dropdown">
-      <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
-        <span className="avatar avatar-md">
-          <img src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
-        </span>
-      </a>
-      <ul className="dropdown-menu dropdown-menu-end p-3">
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/booking">Đơn đặt của tôi</a>
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/customer/profile">Hồ sơ của tôi</a>
-        </li>
-        <li>
-          <hr className="dropdown-divider my-2" />
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/customer/setting">Cài đặt</a>
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Đăng xuất</a>
-        </li>
-      </ul>
-    </div>
-  ) : roleName === "Admin"?(<div></div>): (
-    <div className="dropdown profile-dropdown">
-      <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
-        <span className="avatar avatar-md">
-          <img src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
-        </span>
-      </a>
-      <ul className="dropdown-menu dropdown-menu-end p-3">
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/guide/schedule">Lịch trình của tôi</a>
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/profile">Hồ sơ của tôi</a>
-        </li>
-        <li>
-          <hr className="dropdown-divider my-2" />
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="profile-settings.html">Cài đặt</a>
-        </li>
-        <li>
-          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Đăng xuất</a>
-        </li>
-      </ul>
-    </div>
-  )
-) : (
-  <a href="/login" className="btn btn-primary me-0">Đăng nhập</a>
-)}
+                  roleName === "Tour Operator" ? (
+                    <div className="dropdown profile-dropdown">
+                      <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
+                        <span className="avatar avatar-md">
+                          <img src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
+                        </span>
+                      </a>
+                      <ul className="dropdown-menu dropdown-menu-end p-3">
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/dashboard">Bảng điều khiển</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/tours">Quản lý tour</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/booking">Đơn đặt tour</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/operator/schedules">Lịch trình</a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider my-2" />
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/profile">Hồ sơ</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Đăng xuất</a>
+                        </li>
+                      </ul>
+                    </div>
+                  ) : roleName === "Customer" ? (
+                    <div className="dropdown profile-dropdown">
+                      <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
+                        <span className="avatar avatar-md">
+                          <img src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
+                        </span>
+                      </a>
+                      <ul className="dropdown-menu dropdown-menu-end p-3">
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/booking">Đơn đặt của tôi</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/customer/profile">Hồ sơ của tôi</a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider my-2" />
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/customer/setting">Cài đặt</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Đăng xuất</a>
+                        </li>
+                      </ul>
+                    </div>
+                  ) : roleName === "Admin" ? (<div></div>) : (
+                    <div className="dropdown profile-dropdown">
+                      <a href="javascript:void(0);" className="d-flex align-items-center" data-bs-toggle="dropdown">
+                        <span className="avatar avatar-md">
+                          <img src={userResponse?.avatar === "string" ? "https://ui-avatars.com/api/?name=" + userResponse?.userName : userResponse?.avatar} alt="Img" className="img-fluid rounded-circle border border-white border-4" />
+                        </span>
+                      </a>
+                      <ul className="dropdown-menu dropdown-menu-end p-3">
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/guide/schedule">Lịch trình của tôi</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="/profile">Hồ sơ của tôi</a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider my-2" />
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="profile-settings.html">Cài đặt</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" onClick={handleLogout}>Đăng xuất</a>
+                        </li>
+                      </ul>
+                    </div>
+                  )
+                ) : (
+                  <a href="/login" className="btn btn-primary me-0">Đăng nhập</a>
+                )}
 
               </div>
             </div>

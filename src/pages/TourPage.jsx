@@ -36,7 +36,7 @@ const TourPage = () => {
   const fetchTours = async () => {
     try {
       const res = await getTour(1, 1000);
-      console.log("new",res.data); // lấy nhiều để filter phía client
+      console.log("new", res.data); // lấy nhiều để filter phía client
       setTourList(res.data);
     } catch (error) {
       console.error('Error fetching tours:', error);
@@ -104,81 +104,82 @@ const TourPage = () => {
               </nav>
             </div>
 
-             <div className="row justify-content-center mt-3">
+            <div className="row justify-content-center mt-3">
 
-            <div className="col-md-6">
-              <div className="input-icon">
-                <span className="input-icon-addon">
-                  <i className="isax isax-search-normal"></i>
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Tìm kiếm theo tên tour"
-                  value={filters.title}
-                  onChange={(e) =>
-                    setFilters((prev) => ({ ...prev, title: e.target.value, page: 1 }))
-                  }
-                />
+              <div className="col-md-6">
+                <div className="input-icon">
+                  <span className="input-icon-addon">
+                    <i className="isax isax-search-normal"></i>
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Tìm kiếm theo tên tour"
+                    value={filters.title}
+                    onChange={(e) =>
+                      setFilters((prev) => ({ ...prev, title: e.target.value, page: 1 }))
+                    }
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mt-4">
-        <div className="row">
-          <div className="col-xl-3 col-lg-4">
-            <FilterSidebar onFilterChange={handleFilterChange} />
-          </div>
-          <div className="col-xl-9 col-lg-8">
-            <h6>{totalRecords} Tours Found</h6>
-            <div
-              className="d-flex flex-wrap"
-              style={{
-                gap: "0px",
-                marginLeft: "-12px",
-                marginRight: "-12px",
-              }}
-            >
-              {filteredList?.map((tour) => (
-                <div
-                  key={tour.tourId}
-                  style={{
-                    flex: "0 0 33.3333%",
-                    maxWidth: "33.3333%",
-                    paddingLeft: "12px",
-                    paddingRight: "12px",
-                  }}
-                >
-                  <TourCard tour={tour} />
-                </div>
-              ))}
+        <div className="container mt-4">
+          <div className="row">
+            <div className="col-xl-3 col-lg-4">
+              <FilterSidebar onFilterChange={handleFilterChange} />
             </div>
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <nav className="mt-4">
-                <ul className="pagination justify-content-center">
-                  <li className={`page-item${filters.page === 1 ? " disabled" : ""}`}>
-                    <button className="page-link" onClick={() => handlePageChange(filters.page - 1)}>
-                      &laquo;
-                    </button>
-                  </li>
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <li key={i + 1} className={`page-item${filters.page === i + 1 ? " active" : ""}`}>
-                      <button className="page-link" onClick={() => handlePageChange(i + 1)}>
-                        {i + 1}
+            <div className="col-xl-9 col-lg-8">
+              <h6>{totalRecords} Tours Found</h6>
+              <div
+                className="d-flex flex-wrap"
+                style={{
+                  gap: "0px",
+                  marginLeft: "-12px",
+                  marginRight: "-12px",
+                }}
+              >
+                {filteredList?.map((tour) => (
+                  <div
+                    key={tour.tourId}
+                    style={{
+                      flex: "0 0 33.3333%",
+                      maxWidth: "33.3333%",
+                      paddingLeft: "12px",
+                      paddingRight: "12px",
+                    }}
+                  >
+                    <TourCard tour={tour} />
+                  </div>
+                ))}
+              </div>
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <nav className="mt-4">
+                  <ul className="pagination justify-content-center">
+                    <li className={`page-item${filters.page === 1 ? " disabled" : ""}`}>
+                      <button className="page-link" onClick={() => handlePageChange(filters.page - 1)}>
+                        &laquo;
                       </button>
                     </li>
-                  ))}
-                  <li className={`page-item${filters.page === totalPages ? " disabled" : ""}`}>
-                    <button className="page-link" onClick={() => handlePageChange(filters.page + 1)}>
-                      &raquo;
-                    </button>
-                  </li>
-                </ul>
-              </nav>
-            )}
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <li key={i + 1} className={`page-item${filters.page === i + 1 ? " active" : ""}`}>
+                        <button className="page-link" onClick={() => handlePageChange(i + 1)}>
+                          {i + 1}
+                        </button>
+                      </li>
+                    ))}
+                    <li className={`page-item${filters.page === totalPages ? " disabled" : ""}`}>
+                      <button className="page-link" onClick={() => handlePageChange(filters.page + 1)}>
+                        &raquo;
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              )}
+            </div>
           </div>
         </div>
       </div>

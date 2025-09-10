@@ -14,7 +14,7 @@ export const getTour = async (page = 1, pageSize = 999) => {
     throw error;
   }
 };
-export const compareTour = async (id1,id2) => {
+export const compareTour = async (id1, id2) => {
   try {
     const response = await axios.get(`${BASE_URL}/Compare/tours/${id1}/${id2}`);
     return response.data;
@@ -44,7 +44,7 @@ export const filterTour = async (title, type, transportation, startPoint, minPri
     throw error;
   }
 };
-export const getTourByOperatorId = async (id,page = 1, pageSize = 999) => {
+export const getTourByOperatorId = async (id, page = 1, pageSize = 999) => {
   try {
     const response = await axios.get(`${BASE_URL}/Tour/touroperator/${id}/tours?pageNumber=${page}&pageSize=${pageSize}`);
     return response.data;
@@ -136,7 +136,7 @@ export const getTourByoperator = async (keyword, pageNumber, pageSize) => {
 export const getRecentAddTOur = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/Tour/List All Tours For Tour Operator/${userId}`,
-      {headers:getHeader()},
+      { headers: getHeader() },
     );
     return response.data;
   } catch (error) {
