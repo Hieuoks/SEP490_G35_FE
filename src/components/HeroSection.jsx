@@ -27,12 +27,12 @@ const HeroSection = () => {
 
   return (
     <section className="hero-section">
-      <div className="banner-slider banner-sec">
+      <div className="banner-slider banner-sec owl-carousel">
         <Carousel>
           {bannerImages.map((img, idx) => (
             <Carousel.Item key={idx}>
               <div className="slider-img">
-                <img src={img} alt={`Banner ${idx + 1}`} className="d-block w-100" />
+                <img src={img} alt={`Banner ${idx + 1}`} />
               </div>
             </Carousel.Item>
           ))}
